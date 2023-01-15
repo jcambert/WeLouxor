@@ -40,6 +40,7 @@ using Volo.Abp.UI;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
+using MediatR;
 
 namespace We.Louxor.Blazor;
 
@@ -88,6 +89,8 @@ public class LouxorBlazorModule : AbpModule
     {
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
+
+        context.Services.AddMediatR(typeof(LouxorApplicationModule).Assembly);
 
         ConfigureAuthentication(context);
         ConfigureUrls(configuration);

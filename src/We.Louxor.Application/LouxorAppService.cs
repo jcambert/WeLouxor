@@ -1,4 +1,5 @@
-﻿using Volo.Abp.Application.Services;
+﻿using MediatR;
+using Volo.Abp.Application.Services;
 using We.Louxor.Localization;
 
 namespace We.Louxor;

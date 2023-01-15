@@ -1,7 +1,11 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
+using Volo.Abp.DependencyInjection;
 
-namespace We.Louxor.InventaireArticle.Queries.Impl;
+namespace We.Louxor.InventaireArticle.Queries;
 
+[Dependency(ServiceLifetime.Transient, ReplaceServices = true)]
+[ExposeServices(typeof(IGetLigneInventaireQuery))]
 public class GetLigneInventaireQuery : IGetLigneInventaireQuery
 {
     public Guid Id { get; set; }

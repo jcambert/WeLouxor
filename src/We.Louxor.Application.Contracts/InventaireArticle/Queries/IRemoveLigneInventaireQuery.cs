@@ -2,8 +2,8 @@
 
 namespace We.Louxor.InventaireArticle.Queries;
 
-public interface IRemoveLigneInventaireQuery:IInventaireQuery<RemoveLigneInventaire>
+public interface IRemoveLigneInventaireQuery:IInventaireQuery<RemoveLigneInventaireResponse>
 {
     Guid Id { get; set; }
 }
-public sealed record RemoveLigneInventaire():InventaireResponse;
+public sealed record RemoveLigneInventaireResponse():InventaireResponse;
