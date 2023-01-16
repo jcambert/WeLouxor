@@ -198,7 +198,7 @@ public class LouxorBlazorModule : AbpModule
     {
         Configure<AbpAspNetCoreMvcOptions>(options =>
         {
-            options.ConventionalControllers.Create(typeof(LouxorApplicationModule).Assembly);
+           // options.ConventionalControllers.Create(typeof(LouxorApplicationModule).Assembly);
         });
     }
 

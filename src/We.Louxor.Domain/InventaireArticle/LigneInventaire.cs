@@ -3,7 +3,7 @@ using Volo.Abp.Domain.Entities.Auditing;
 
 namespace We.Louxor.InventaireArticle;
 
-public class LigneInventaire : FullAuditedAggregateRoot<Guid>, ILigneInventaire
+public class LigneInventaire :  FullAuditedAggregateRoot<Guid>, IBaseLigneInventaire
 {
     public int Page { get; set; }
     public string Of { get; set; }

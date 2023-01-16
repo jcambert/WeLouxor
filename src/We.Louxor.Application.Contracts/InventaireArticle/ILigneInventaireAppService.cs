@@ -7,14 +7,14 @@ namespace We.Louxor.InventaireArticle;
 
 public interface ILigneInventaireAppService:IApplicationService
 {
-    Task<AddLigneInventaireResponse> AddAsync(IAddLigneInventaireQuery query);
+    Task<AddLigneInventaireResponse> AddAsync(AddLigneInventaireQuery query);
 
-    Task<GetLigneInventaireResponse> GetAsync(IGetLigneInventaireQuery query);
+    Task<GetLigneInventaireResponse> GetAsync(GetLigneInventaireQuery query);
 
     Task<List<GetLigneInventaireResponse>> GetListAsync();
 
-    Task<UpdateLigneInventaireResponse> UpdateAsync(IUpdateLigneInventaireQuery query);
+    Task<UpdateLigneInventaireResponse> UpdateAsync(UpdateLigneInventaireQuery query);
 
-    Task<RemoveLigneInventaireResponse> RemoveAsync(IRemoveLigneInventaireQuery query);
+    Task<RemoveLigneInventaireResponse> RemoveAsync(RemoveLigneInventaireQuery query);
 
 }

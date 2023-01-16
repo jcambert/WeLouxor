@@ -2,23 +2,26 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Volo.Abp;
 using We.Louxor.InventaireArticle;
 using We.Louxor.InventaireArticle.Queries;
 
 namespace We.Louxor.Controllers;
 
-public class LigneInventaireController : LouxorController, ILigneInventaireAppService
+[Area("account")]
+//[RemoteService(IsEnabled = false, IsMetadataEnabled = false, Name = AccountRemoteServiceConsts.RemoteServiceName)]
+[Route("api/ligneinventaire")]
+public class LigneInventaireController : LouxorController//, ILigneInventaireAppService
 {
 
     ILigneInventaireAppService Service => LazyServiceProvider.GetRequiredService<ILigneInventaireAppService>();
 
     [HttpPost(),Route("add")]
-
-    public Task<AddLigneInventaireResponse> AddAsync([FromQuery] IAddLigneInventaireQuery query)
+    public Task<AddLigneInventaireResponse> AddAsync([FromQuery] AddLigneInventaireQuery query)
     =>Service.AddAsync(query);
 
     [HttpGet(),Route("get")]
-    public Task<GetLigneInventaireResponse> GetAsync([FromQuery] IGetLigneInventaireQuery query)
+    public Task<GetLigneInventaireResponse> GetAsync([FromQuery] GetLigneInventaireQuery query)
     =>Service.GetAsync(query);
 
     [HttpGet(), Route("getall")]
@@ -26,10 +29,10 @@ public class LigneInventaireController : LouxorController, ILigneInventaireAppSe
     => Service.GetListAsync();
 
     [HttpDelete(),Route("delete")]
-    public Task<RemoveLigneInventaireResponse> RemoveAsync( [FromQuery] IRemoveLigneInventaireQuery query)
+    public Task<RemoveLigneInventaireResponse> RemoveAsync( [FromQuery] RemoveLigneInventaireQuery query)
     => Service.RemoveAsync(query);
 
     [HttpPut(), Route("update")]
-    public Task<UpdateLigneInventaireResponse> UpdateAsync([FromQuery] IUpdateLigneInventaireQuery query)
+    public Task<UpdateLigneInventaireResponse> UpdateAsync([FromQuery] UpdateLigneInventaireQuery query)
     => Service.UpdateAsync(query);
 }

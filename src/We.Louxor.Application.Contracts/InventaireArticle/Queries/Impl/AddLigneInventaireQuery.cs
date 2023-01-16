@@ -7,5 +7,5 @@ namespace We.Louxor.InventaireArticle.Queries;
 [ExposeServices(typeof(IAddLigneInventaireQuery))]
 public class AddLigneInventaireQuery : IAddLigneInventaireQuery
 {
-    public ILigneInventaire Ligne { get; set; }
+    public BaseLigneInventaire Ligne { get; set; }
 }

@@ -9,5 +9,5 @@ namespace We.Louxor.InventaireArticle.Queries;
 public class UpdateLigneInventaireQuery : IUpdateLigneInventaireQuery
 {
     public Guid Id { get; set; }
-    public ILigneInventaire Ligne { get; set; }
+    public BaseLigneInventaire Ligne { get; set; }
 }

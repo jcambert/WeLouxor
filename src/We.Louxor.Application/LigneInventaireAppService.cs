@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Volo.Abp;
 using We.Louxor.InventaireArticle;
 using We.Louxor.InventaireArticle.Queries;
 
 namespace We.Louxor;
-
+//[RemoteService(IsEnabled = false, IsMetadataEnabled = false)]
 public class LigneInventaireAppService : LouxorAppService, ILigneInventaireAppService
 {
-    public Task<AddLigneInventaireResponse> AddAsync(IAddLigneInventaireQuery query)
+    public Task<AddLigneInventaireResponse> AddAsync(AddLigneInventaireQuery query)
     => Mediator.Send(query);
 
-    public Task<GetLigneInventaireResponse> GetAsync(IGetLigneInventaireQuery query)
+    public Task<GetLigneInventaireResponse> GetAsync(GetLigneInventaireQuery query)
     => Mediator.Send(query);
 
     public Task<List<GetLigneInventaireResponse>> GetListAsync()
@@ -18,9 +19,9 @@ public class LigneInventaireAppService : LouxorAppService, ILigneInventaireAppSe
         throw new System.NotImplementedException();
     }
 
-    public Task<RemoveLigneInventaireResponse> RemoveAsync(IRemoveLigneInventaireQuery query)
+    public Task<RemoveLigneInventaireResponse> RemoveAsync(RemoveLigneInventaireQuery query)
     => Mediator.Send(query);
 
-    public Task<UpdateLigneInventaireResponse> UpdateAsync(IUpdateLigneInventaireQuery query)
+    public Task<UpdateLigneInventaireResponse> UpdateAsync(UpdateLigneInventaireQuery query)
     => Mediator.Send(query);
 }
