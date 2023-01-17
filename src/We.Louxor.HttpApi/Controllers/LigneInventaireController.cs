@@ -8,7 +8,7 @@ using We.Louxor.InventaireArticle.Queries;
 
 namespace We.Louxor.Controllers;
 
-[Area("account")]
+[Area("Inventaire")]
 //[RemoteService(IsEnabled = false, IsMetadataEnabled = false, Name = AccountRemoteServiceConsts.RemoteServiceName)]
 [Route("api/ligneinventaire")]
 public class LigneInventaireController : LouxorController//, ILigneInventaireAppService

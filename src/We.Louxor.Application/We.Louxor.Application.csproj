@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Utilities\We.Dbf\We.Dbf.csproj" />
     <ProjectReference Include="..\We.Louxor.Domain\We.Louxor.Domain.csproj" />
     <ProjectReference Include="..\We.Louxor.Application.Contracts\We.Louxor.Application.Contracts.csproj" />
   

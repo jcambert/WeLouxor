@@ -1,10 +1,13 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Linq;
+using Volo.Abp.MultiTenancy;
 using Volo.Abp.ObjectMapping;
 namespace We.Louxor.Handlers;
 
@@ -31,5 +34,8 @@ public abstract class BaseHandler<TQuery, TResponse> : IRequestHandler<TQuery, T
 
     protected ICachedServiceProvider Cache => GetRequiredService<ICachedServiceProvider>();
 
+    protected ILoggerFactory LoggerFactory => LazyServiceProvider.LazyGetRequiredService<ILoggerFactory>();
+
+    protected ILogger Logger => LazyServiceProvider.LazyGetService<ILogger>(provider => LoggerFactory?.CreateLogger(GetType().FullName) ?? NullLogger.Instance);
     public abstract Task<TResponse> Handle(TQuery request, CancellationToken cancellationToken);
 }
