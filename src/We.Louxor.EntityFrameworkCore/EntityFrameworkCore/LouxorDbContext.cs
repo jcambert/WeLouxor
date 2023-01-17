@@ -27,6 +27,7 @@ public class LouxorDbContext :
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
     public DbSet<Article> Articles { get; set; }
     public DbSet<LigneInventaire> LignesInventaires { get; set; }
+    public DbSet<LigneDeCommande> LignesDeCommandes { get; set; }
     #region Entities from the modules
 
     /* Notice: We only implemented IIdentityDbContext and ITenantManagementDbContext

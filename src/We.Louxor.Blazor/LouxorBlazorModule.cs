@@ -91,7 +91,8 @@ public class LouxorBlazorModule : AbpModule
         var configuration = context.Services.GetConfiguration();
 
         context.Services.AddMediatR(typeof(LouxorApplicationModule).Assembly);
-
+        
+        
         ConfigureAuthentication(context);
         ConfigureUrls(configuration);
         ConfigureBundles();
@@ -157,6 +158,11 @@ public class LouxorBlazorModule : AbpModule
                 options.FileSets.ReplaceEmbeddedByPhysical<LouxorBlazorModule>(hostingEnvironment.ContentRootPath);
             });
         }
+        Configure<AbpVirtualFileSystemOptions>(options =>
+        {
+            var path = Path.Combine(hostingEnvironment.WebRootPath, "database");
+            options.FileSets.AddPhysical(path);
+        });
     }
 
     private void ConfigureSwaggerServices(IServiceCollection services)

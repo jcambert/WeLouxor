@@ -3,6 +3,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Reflection.PortableExecutable;
@@ -23,18 +24,19 @@ public class DbfDocument
     private readonly List<RecordData> Records = new();
     private bool _headerloaded;
     private Header _header;
-    private byte[] _datas;
+    //private byte[] _datas;
     public string Filename { get; set; }
     public bool StoreRecords { get; set; }
     public int? LimitRecordCountTo { get; set; } = null;
-    public DbfDocument():this(string.Empty)
+    public DbfDocument() : this(string.Empty)
     {
 
-        
+
     }
     public DbfDocument(string filename)
     {
         this.Filename = filename;
+
         Observable.CombineLatest(HeaderLoaded, FieldsDescriptorLoaded, (h, f) => new { h, f })
             .Subscribe(items =>
             {
@@ -60,25 +62,29 @@ public class DbfDocument
     public IObservable<List<RecordData>> RecordsLoaded => _onRecordsLoaded.AsObservable();
     public IObservable<bool> AllRecordsLoaded => _onAllRecordsloaded.AsObservable();
     public string TableName => Path.GetFileNameWithoutExtension(Filename);
-    public async Task Load(bool loadRecords = false, int? loadRecordSteps = 100, CancellationToken cancellationToken= default)
+
+    public byte[] Datas { get; set; } = new byte[0];
+
+    public async Task Load(bool loadRecords = false, int? loadRecordSteps = 100, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrEmpty(Filename))
             throw new ApplicationException("You must define Filename before loading !");
 
         if (!_headerloaded)
         {
-            _datas = await File.ReadAllBytesAsync(Filename,cancellationToken);
-            _header = new DbfHeaderReader().Read(_datas);
+            if (Datas.Length == 0)
+                Datas = await File.ReadAllBytesAsync(Filename, cancellationToken);
+            _header = new DbfHeaderReader().Read(Datas);
             _onHeaderLoaded.OnNext(_header);
 
-            var _fieldsDesciptor = new DbfDescriptorFieldReader().Read(_datas);
+            var _fieldsDesciptor = new DbfDescriptorFieldReader().Read(Datas);
             _onFieldsDescriptorLoaded.OnNext(_fieldsDesciptor);
         }
         if (loadRecords)
             await LoadRecords(loadRecordSteps, cancellationToken);
     }
 
-    public async Task LoadRecords(int? loadRecordSteps = 100, CancellationToken cancellationToken= default)
+    public async Task LoadRecords(int? loadRecordSteps = 100, CancellationToken cancellationToken = default)
     {
         if (!_headerloaded)
             await Load(false, null, cancellationToken);
@@ -90,17 +96,17 @@ public class DbfDocument
             DbfRecordReader _reader = new DbfRecordReader(_header);
             for (int i = 0; i < _header.NumberOfRecord; i += (loadRecordSteps ?? _header.NumberOfRecord))
             {
-                if(cancellationToken.IsCancellationRequested) { break; }
+                if (cancellationToken.IsCancellationRequested) { break; }
                 _reader.From = i;
                 _reader.To = i + (loadRecordSteps ?? _header.NumberOfRecord);
-                var recs = _reader.Read(_datas,cancellationToken);
-                if(countRecord+recs.Count> maxRecord)
+                var recs = _reader.Read(Datas, cancellationToken);
+                if (countRecord + recs.Count > maxRecord)
                 {
-                    recs=recs.Take(maxRecord-recs.Count).ToList();
+                    recs = recs.Take(maxRecord - recs.Count).ToList();
                 }
                 countRecord += recs.Count;
                 _onRecordsLoaded.OnNext(recs);
-                if (  countRecord>= maxRecord)
+                if (countRecord >= maxRecord)
                 {
                     _onAllRecordsloaded.OnNext(true);
                     break;
@@ -111,11 +117,11 @@ public class DbfDocument
 }
 internal interface IDbfReader<T>
 {
-    T Read(byte[] datas,CancellationToken cancellationToken);
+    T Read(byte[] datas, CancellationToken cancellationToken);
 }
 internal class DbfHeaderReader : IDbfReader<Header>
 {
-    public Header Read(byte[] datas, CancellationToken cancellationToken=default)
+    public Header Read(byte[] datas, CancellationToken cancellationToken = default)
     {
         Header _header = new();
         _header.NumberOfRecord = BitConverter.ToInt32(datas.Skip(4).Take(7).ToArray(), 0);
@@ -128,11 +134,11 @@ internal class DbfHeaderReader : IDbfReader<Header>
 
 internal class DbfDescriptorFieldReader : IDbfReader<List<FieldDescriptor>>
 {
-    public List<FieldDescriptor> Read(byte[] datas, CancellationToken cancellationToken=default)
+    public List<FieldDescriptor> Read(byte[] datas, CancellationToken cancellationToken = default)
     {
         List<FieldDescriptor> _fields = new();
-        int start = 32;
-        int step = 32;
+        int start = 0x20;
+        int step = 0x20;
         bool end = false;
         while (!end)
         {
@@ -169,7 +175,7 @@ internal class DbfRecordReader : IDbfReader<List<RecordData>>
         this._header = header;
         this.To = _header.NumberOfRecord;
     }
-    public List<RecordData> Read(byte[] datas, CancellationToken cancellationToken=default)
+    public List<RecordData> Read(byte[] datas, CancellationToken cancellationToken = default)
     {
         int _start = _header.NumberOfBytesInHeader;
 
@@ -200,11 +206,19 @@ internal class DbfRecordReader : IDbfReader<List<RecordData>>
         rec.IsMarkAsDeleted = is_deleted;
         foreach (var field in _header.Fields)
         {
-            if (field.DecimalCount == 0)
+            //if (field.DecimalCount == 0)
+            //{
+            /*if (Debugger.IsAttached && field.DecimalCount>0)
+                Debugger.Break();*/
+            //Console.WriteLine(field.Name);
+            var data = datas.Skip(start).Take(field.Length).ToArray().ConvertToTheGoodType(field.Type);
+            rec[field.Name] = data;
+            //}
+            /*else
             {
-                var data = datas.Skip(start).Take(field.Length).ToArray().ConvertToTheGoodType(field.Type);
-                rec[field.Name] = data;
-            }
+                if (Debugger.IsAttached)
+                    Debugger.Break();
+            }*/
             start += field.Length;
         }
         return rec;
@@ -306,7 +320,7 @@ internal static class BitconverterExtensions
     => BitConverter.ToDouble(value, 0);
 
     internal static double ToDouble(this string value)
-    => string.IsNullOrEmpty(value.Trim()) ? 0 : double.Parse(value);
+    => string.IsNullOrEmpty(value.Trim()) ? 0 : double.Parse(value.Trim(), CultureInfo.InvariantCulture);
     internal static int ToInt32(this string value)
     => string.IsNullOrEmpty(value.Trim()) ? 0 : Int32.Parse(value);
     internal static DateOnly ToDate(this int value)
@@ -365,7 +379,7 @@ public class RecordData
     public bool IsMarkAsDeleted { get; set; }
     public object this[string name]
     {
-        get => datas[name];
-        set => datas[name] = value;
+        get => datas[name.ToLower()];
+        set => datas[name.ToLower()] = value;
     }
 }

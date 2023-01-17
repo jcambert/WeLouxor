@@ -7,5 +7,5 @@ namespace We.Louxor.InventaireArticle.Queries;
 [ExposeServices(typeof(ILoadCommandeClientQuery))]
 public class LoadCommandeClientQuery : ILoadCommandeClientQuery
 {
-    public string Filename { get; set; } = @"E:\projets\WeLouxor\Database\cmlign.dbf";
+    public string Filename { get; set; } = @"cmlign.dbf";
 }
