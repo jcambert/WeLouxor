@@ -1,8 +1,7 @@
 ﻿namespace We.Louxor.InventaireArticle.Queries;
 
-public interface ILoadArticleQuery:IInventaireQuery<LoadArticleResponse>
+public interface ILoadArticleQuery:ILoadBaseQuery, IInventaireQuery<LoadArticleResponse>
 {
-    string Filename { get; set; }
 }
 
 public sealed record LoadArticleResponse();

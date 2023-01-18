@@ -16,9 +16,9 @@ public class InventaireExtractLouxorController : LouxorController, IInventaireEx
 {
     IInventaireExtractLouxorAppService Service => LazyServiceProvider.GetRequiredService<IInventaireExtractLouxorAppService>();
 
-    [HttpGet,Route("LoadCommandeClient")]
+    [HttpGet, Route("LoadCommandeClient")]
     public Task<LoadCommandeClientResponse> Load(LoadCommandeClientQuery query)
-    =>Service.Load(query);
+    => Service.Load(query);
 
     [HttpGet, Route("LoadArticle")]
     public Task<LoadArticleResponse> Load(LoadArticleQuery query)
@@ -27,4 +27,16 @@ public class InventaireExtractLouxorController : LouxorController, IInventaireEx
     [HttpGet, Route("LoadOrdresDeFabrication")]
     public Task<LoadOrdreDeFabricationResponse> Load(LoadOrdreDeFabricationQuery query)
     => Service.Load(query);
+
+    [HttpDelete, Route("ClearArticle")]
+    public Task<ClearArticleResponse> Clear(ClearArticleQuery query)
+    => Service.Clear(query);
+
+    [HttpDelete, Route("ClearCommandeClient")]
+    public Task<ClearCommandeClientResponse> Clear(ClearCommandeClientQuery query)
+    => Service.Clear(query);
+
+    [HttpDelete, Route("ClearOrdresDeFabrication")]
+    public Task<ClearOrdreDeFabricationResponse> Clear(ClearOrdreDeFabricationQuery query)
+    => Service.Clear(query);
 }

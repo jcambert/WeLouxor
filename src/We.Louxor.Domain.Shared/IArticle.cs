@@ -1,6 +1,6 @@
 ﻿namespace We.Louxor.InventaireArticle;
 
-public interface IArticle: IFullAuditedObject
+public interface IArticle: IEntityLouxor
 {
     string Code { get; set; }
 

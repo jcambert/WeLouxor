@@ -349,6 +349,72 @@ namespace We.Louxor.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "LignesInventaires",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Page = table.Column<int>(type: "integer", nullable: false),
+                    OrdreDeFabication = table.Column<int>(type: "integer", nullable: false),
+                    CodeOperationFinie = table.Column<int>(type: "integer", nullable: false),
+                    NumeroCommandeClient = table.Column<int>(type: "integer", nullable: false),
+                    Article = table.Column<Guid>(type: "uuid", nullable: false),
+                    ArticleDeTete = table.Column<Guid>(type: "uuid", nullable: false),
+                    Quantite = table.Column<double>(type: "double precision", nullable: false),
+                    CoutMatiereDirect = table.Column<double>(type: "double precision", nullable: false),
+                    CoutMachineDirect = table.Column<double>(type: "double precision", nullable: false),
+                    ExtraProperties = table.Column<string>(type: "text", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "uuid", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "uuid", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(type: "uuid", nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LignesInventaires", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LouxorInv_article",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Societe = table.Column<string>(type: "text", nullable: true),
+                    Code = table.Column<string>(type: "text", nullable: true),
+                    Designation = table.Column<string>(type: "text", nullable: true),
+                    CoutMatiereDirect = table.Column<double>(type: "double precision", nullable: false),
+                    CoutMachineDirect = table.Column<double>(type: "double precision", nullable: false),
+                    ExtraProperties = table.Column<string>(type: "text", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LouxorInv_article", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LouxorInv_lignedecommande",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    NumeroDocument = table.Column<int>(type: "integer", nullable: false),
+                    CodeArticle = table.Column<string>(type: "text", nullable: true),
+                    PrixUnitaire = table.Column<double>(type: "double precision", nullable: false),
+                    QuantiteCommande = table.Column<double>(type: "double precision", nullable: false),
+                    DelaiDemande = table.Column<DateOnly>(type: "date", nullable: false),
+                    Societe = table.Column<string>(type: "text", nullable: true),
+                    ExtraProperties = table.Column<string>(type: "text", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LouxorInv_lignedecommande", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OpenIddictApplications",
                 columns: table => new
                 {
@@ -925,6 +991,50 @@ namespace We.Louxor.Migrations
                 column: "UserName");
 
             migrationBuilder.CreateIndex(
+                name: "IX_LouxorInv_article_Code",
+                table: "LouxorInv_article",
+                column: "Code",
+                descending: new bool[0]);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LouxorInv_article_Societe",
+                table: "LouxorInv_article",
+                column: "Societe",
+                descending: new bool[0]);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LouxorInv_article_Societe_Code",
+                table: "LouxorInv_article",
+                columns: new[] { "Societe", "Code" },
+                unique: true,
+                descending: new bool[0]);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LouxorInv_lignedecommande_CodeArticle",
+                table: "LouxorInv_lignedecommande",
+                column: "CodeArticle",
+                descending: new bool[0]);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LouxorInv_lignedecommande_NumeroDocument",
+                table: "LouxorInv_lignedecommande",
+                column: "NumeroDocument",
+                descending: new bool[0]);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LouxorInv_lignedecommande_Societe",
+                table: "LouxorInv_lignedecommande",
+                column: "Societe",
+                descending: new bool[0]);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LouxorInv_lignedecommande_Societe_NumeroDocument",
+                table: "LouxorInv_lignedecommande",
+                columns: new[] { "Societe", "NumeroDocument" },
+                unique: true,
+                descending: new bool[0]);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OpenIddictApplications_ClientId",
                 table: "OpenIddictApplications",
                 column: "ClientId");
@@ -1020,6 +1130,15 @@ namespace We.Louxor.Migrations
 
             migrationBuilder.DropTable(
                 name: "AbpUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "LignesInventaires");
+
+            migrationBuilder.DropTable(
+                name: "LouxorInv_article");
+
+            migrationBuilder.DropTable(
+                name: "LouxorInv_lignedecommande");
 
             migrationBuilder.DropTable(
                 name: "OpenIddictScopes");

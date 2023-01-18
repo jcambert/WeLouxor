@@ -1,7 +1,9 @@
 ﻿namespace We.Louxor.InventaireArticle.Queries;
 
-public interface ILoadCommandeClientQuery:IInventaireQuery<LoadCommandeClientResponse>
+public interface ILoadCommandeClientQuery : ILoadBaseQuery, IInventaireQuery<LoadCommandeClientResponse>
 {
-    string Filename { get; set; }
+    
 }
 public sealed record LoadCommandeClientResponse();
+
+

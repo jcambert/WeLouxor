@@ -343,6 +343,15 @@ internal static class BitconverterExtensions
 
     }
 
+    internal static bool ToBoolean(this string value)
+    =>
+        value.Trim().ToLower() switch
+        {
+            "t" or "yes" => true,
+            "f" or "no" or "" => false,
+            _ => throw new NotSupportedException(value)
+        };
+
 
     internal static object ConvertToTheGoodType(this byte[] value, string type)
     => type.ToLower() switch
@@ -350,6 +359,7 @@ internal static class BitconverterExtensions
         "c" => Encoding.ASCII.GetString(value.TakeWhile(x => x != 0).ToArray()),
         "n" => Encoding.ASCII.GetString(value.ToArray()).ToDouble(), // value.TakeWhile(x=>x!=0).ToArray().ToDouble(),
         "d" => Encoding.ASCII.GetString(value.TakeWhile(x => x != 0).ToArray()).Trim().ToInt32().ToDate(),
+        "l" => Encoding.ASCII.GetString(value).ToBoolean(),
         "m" => string.Empty,
         _ => throw new NotSupportedException(type),
     };

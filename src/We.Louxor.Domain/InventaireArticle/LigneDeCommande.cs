@@ -31,5 +31,6 @@ public class LigneDeCommande : AggregateRoot<Guid>, ILigneDeCommande
     /// datdem
     /// </summary>
     public DateOnly DelaiDemande { get; set; }
+    public string Societe { get; set; }
 }
 

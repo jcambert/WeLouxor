@@ -1652,22 +1652,6 @@ namespace We.Louxor.Migrations
                     b.Property<double>("CoutMatiereDirect")
                         .HasColumnType("double precision");
 
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("CreationTime");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("CreatorId");
-
-                    b.Property<Guid?>("DeleterId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("DeleterId");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("DeletionTime");
-
                     b.Property<string>("Designation")
                         .HasColumnType("text");
 
@@ -1675,23 +1659,22 @@ namespace We.Louxor.Migrations
                         .HasColumnType("text")
                         .HasColumnName("ExtraProperties");
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false)
-                        .HasColumnName("IsDeleted");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("LastModificationTime");
-
-                    b.Property<Guid?>("LastModifierId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("LastModifierId");
+                    b.Property<string>("Societe")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Articles");
+                    b.HasIndex("Code")
+                        .IsDescending();
+
+                    b.HasIndex("Societe")
+                        .IsDescending();
+
+                    b.HasIndex("Societe", "Code")
+                        .IsUnique()
+                        .IsDescending();
+
+                    b.ToTable("LouxorInv_article", (string)null);
                 });
 
             modelBuilder.Entity("We.Louxor.InventaireArticle.LigneDeCommande", b =>
@@ -1724,9 +1707,25 @@ namespace We.Louxor.Migrations
                     b.Property<double>("QuantiteCommande")
                         .HasColumnType("double precision");
 
+                    b.Property<string>("Societe")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
-                    b.ToTable("LignesDeCommandes");
+                    b.HasIndex("CodeArticle")
+                        .IsDescending();
+
+                    b.HasIndex("NumeroDocument")
+                        .IsDescending();
+
+                    b.HasIndex("Societe")
+                        .IsDescending();
+
+                    b.HasIndex("Societe", "NumeroDocument")
+                        .IsUnique()
+                        .IsDescending();
+
+                    b.ToTable("LouxorInv_lignedecommande", (string)null);
                 });
 
             modelBuilder.Entity("We.Louxor.InventaireArticle.LigneInventaire", b =>

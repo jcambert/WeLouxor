@@ -8,4 +8,8 @@ namespace We.Louxor.InventaireArticle.Queries;
 public class LoadCommandeClientQuery : ILoadCommandeClientQuery
 {
     public string Filename { get; set; } = @"cmlign.dbf";
+
+    public int? LimitRecordCountTo { get; set; } = null;
+
+    public int LoadRecordStep { get; set; } = 100;
 }

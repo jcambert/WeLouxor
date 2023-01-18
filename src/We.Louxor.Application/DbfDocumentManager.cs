@@ -13,8 +13,8 @@ using We.Dbf;
 
 namespace We.Louxor;
 internal static class LoggerColor {
-    const string BACKGROUND_COLOR = @"\x1B[43m";
-    const string DEFAULT_COLOR = @"\x1B[39m\x1B[22m";
+    const string BACKGROUND_COLOR = "\x1B[43m";
+    const string DEFAULT_COLOR = "\x1B[39m\x1B[22m";
     public static string FormatColor(this string s)
         => $"{BACKGROUND_COLOR}{s}{DEFAULT_COLOR}";
 }
@@ -25,11 +25,15 @@ public sealed class DbfDocumentManager:DomainService
     private DbfDocument Doc=>LazyServiceProvider.LazyGetRequiredService<DbfDocument>();
     public IObservable<List<RecordData>> RecordsLoaded => _onRecordsLoaded.AsObservable();
     public IObservable<bool> AllRecordsLoaded => _onAllRecordsloaded.AsObservable();
+
+    public int TotalRecord { get; private set; }
+
     private void Initialize()
     {
         //List<RecordData> _records = new();
         Doc.HeaderLoaded.Subscribe(h => {
             Logger.LogDebug("Header is loaded");
+            TotalRecord = h.NumberOfRecord;
         });
         Doc.FieldsDescriptorLoaded.Subscribe(fields => {
             Logger.LogDebug("Field Descriptor loaded".FormatColor());
@@ -52,6 +56,7 @@ public sealed class DbfDocumentManager:DomainService
             _onRecordsLoaded.OnNext(records);
 
         });
+        
     }
     public async Task LoadAsync(string filename,int loadRecordStep=100,int? limitRecordCountTo=null, CancellationToken cancellationToken=default)
     {

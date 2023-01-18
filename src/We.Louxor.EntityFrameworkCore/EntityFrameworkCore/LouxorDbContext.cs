@@ -84,5 +84,20 @@ public class LouxorDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
+        builder.Entity<Article>(b =>
+        {
+            b.ToTable($"{LouxorConsts.DBTablePrefix_Inventaire}_{nameof(Article).ToLower()}");
+            b.HasIndex("Societe", "Code").IsUnique().IsDescending();
+            b.HasIndex(a => a.Societe).IsDescending();
+            b.HasIndex( a => a.Code ).IsDescending();
+        });
+        builder.Entity<LigneDeCommande>(b =>
+        {
+            b.ToTable($"{LouxorConsts.DBTablePrefix_Inventaire}_{nameof(LigneDeCommande).ToLower()}");
+            b.HasIndex("Societe", "NumeroDocument").IsUnique().IsDescending();
+            b.HasIndex(a => a.Societe).IsDescending();
+            b.HasIndex(a => a.NumeroDocument).IsDescending();
+            b.HasIndex(a => a.CodeArticle).IsDescending();
+        });
     }
 }

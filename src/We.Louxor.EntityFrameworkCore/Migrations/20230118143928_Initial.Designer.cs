@@ -13,8 +13,8 @@ using We.Louxor.EntityFrameworkCore;
 namespace We.Louxor.Migrations
 {
     [DbContext(typeof(LouxorDbContext))]
-    [Migration("20230114103329_AddLigneInventaire")]
-    partial class AddLigneInventaire
+    [Migration("20230118143928_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1655,22 +1655,6 @@ namespace We.Louxor.Migrations
                     b.Property<double>("CoutMatiereDirect")
                         .HasColumnType("double precision");
 
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("CreationTime");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("CreatorId");
-
-                    b.Property<Guid?>("DeleterId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("DeleterId");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("DeletionTime");
-
                     b.Property<string>("Designation")
                         .HasColumnType("text");
 
@@ -1678,23 +1662,73 @@ namespace We.Louxor.Migrations
                         .HasColumnType("text")
                         .HasColumnName("ExtraProperties");
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false)
-                        .HasColumnName("IsDeleted");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("LastModificationTime");
-
-                    b.Property<Guid?>("LastModifierId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("LastModifierId");
+                    b.Property<string>("Societe")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Articles");
+                    b.HasIndex("Code")
+                        .IsDescending();
+
+                    b.HasIndex("Societe")
+                        .IsDescending();
+
+                    b.HasIndex("Societe", "Code")
+                        .IsUnique()
+                        .IsDescending();
+
+                    b.ToTable("LouxorInv_article", (string)null);
+                });
+
+            modelBuilder.Entity("We.Louxor.InventaireArticle.LigneDeCommande", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CodeArticle")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateOnly>("DelaiDemande")
+                        .HasColumnType("date");
+
+                    b.Property<string>("ExtraProperties")
+                        .HasColumnType("text")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<int>("NumeroDocument")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("PrixUnitaire")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("QuantiteCommande")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Societe")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CodeArticle")
+                        .IsDescending();
+
+                    b.HasIndex("NumeroDocument")
+                        .IsDescending();
+
+                    b.HasIndex("Societe")
+                        .IsDescending();
+
+                    b.HasIndex("Societe", "NumeroDocument")
+                        .IsUnique()
+                        .IsDescending();
+
+                    b.ToTable("LouxorInv_lignedecommande", (string)null);
                 });
 
             modelBuilder.Entity("We.Louxor.InventaireArticle.LigneInventaire", b =>
@@ -1702,17 +1736,26 @@ namespace We.Louxor.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Ar")
-                        .HasColumnType("text");
-
                     b.Property<Guid>("Article")
                         .HasColumnType("uuid");
+
+                    b.Property<Guid>("ArticleDeTete")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("CodeOperationFinie")
+                        .HasColumnType("integer");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)")
                         .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<double>("CoutMachineDirect")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("CoutMatiereDirect")
+                        .HasColumnType("double precision");
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp without time zone")
@@ -1748,8 +1791,11 @@ namespace We.Louxor.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("LastModifierId");
 
-                    b.Property<string>("Of")
-                        .HasColumnType("text");
+                    b.Property<int>("NumeroCommandeClient")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("OrdreDeFabication")
+                        .HasColumnType("integer");
 
                     b.Property<int>("Page")
                         .HasColumnType("integer");

@@ -7,4 +7,6 @@ namespace We.Louxor.InventaireArticle.Queries;
 public class LoadOrdreDeFabricationQuery : ILoadOrdreDeFabricationQuery
 {
     public string Filename { get; set; }
+    public int? LimitRecordCountTo { get; set; }
+    public int LoadRecordStep { get; set; }
 }
