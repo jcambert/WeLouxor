@@ -15,8 +15,11 @@ namespace We.Louxor;
 internal static class LoggerColor {
     const string BACKGROUND_COLOR = "\x1B[43m";
     const string DEFAULT_COLOR = "\x1B[39m\x1B[22m";
+    const string BACKGROUND_WARNING= "\x1B[41m";
     public static string FormatColor(this string s)
         => $"{BACKGROUND_COLOR}{s}{DEFAULT_COLOR}";
+    public static string FormatWarning(this string s)
+    => $"{BACKGROUND_WARNING}{s}{DEFAULT_COLOR}";
 }
 public sealed class DbfDocumentManager:DomainService
 {
@@ -52,28 +55,31 @@ public sealed class DbfDocumentManager:DomainService
         });
         Doc.RecordsLoaded.Subscribe(records =>
         {
-            Logger.LogDebug($"{records.Count} are been loaded".FormatColor());
-            _onRecordsLoaded.OnNext(records);
+            var filtered=records.Where(x => !x.IsMarkAsDeleted).ToList();
+            Logger.LogDebug($"{filtered.Count} are been loaded".FormatColor());
+            _onRecordsLoaded.OnNext(filtered);
 
         });
         
     }
-    public async Task LoadAsync(string filename,int loadRecordStep=100,int? limitRecordCountTo=null, CancellationToken cancellationToken=default)
+    public async Task LoadAsync(string filename,int loadRecordStep=100,int from=0,int? to=null, CancellationToken cancellationToken=default)
     {
        
         Doc.Filename= filename;
-        Doc.LimitRecordCountTo = limitRecordCountTo;
+        Doc.From= from;
+        Doc.To = to;
         
         Initialize();
         await Doc.LoadRecords(loadRecordStep,cancellationToken);
         
     }
 
-    internal async Task LoadAsync(byte[] bytes, string filename, int loadRecordStep = 100, int? limitRecordCountTo = null, CancellationToken cancellationToken=default)
+    internal async Task LoadAsync(byte[] bytes, string filename, int loadRecordStep = 100,int from=0, int? to = null, CancellationToken cancellationToken=default)
     {
         Doc.Filename = filename;
         Doc.Datas = bytes;
-        Doc.LimitRecordCountTo = limitRecordCountTo;
+        Doc.From= from;
+        Doc.To = to;
         Initialize();
         await Doc.LoadRecords(loadRecordStep, cancellationToken);
     }

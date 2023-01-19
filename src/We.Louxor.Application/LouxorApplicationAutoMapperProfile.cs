@@ -19,7 +19,19 @@ public class LouxorApplicationAutoMapperProfile : Profile
 
         CreateMap<RecordData, Article>()
             .ConstructUsing(record =>
-                new Article() { Societe = (string)record["sigsoc"], Code = (string)record["codart"], Designation = (string)record["libart"], CoutMachineDirect =(double)record["ecoumac"], CoutMatiereDirect = (double)record["ecoumat"] }
+                new Article() { Societe = ((string)record["sigsoc"]).Trim(), Code = ((string)record["codart"]).Trim(), Designation = (string)record["libart"], CoutMachineDirect =(double)record["ecoumac"], CoutMatiereDirect = (double)record["ecoumat"] }
+
+            );
+
+        CreateMap<RecordData, OrdreDeFabication>()
+            .ConstructUsing(record =>
+                new OrdreDeFabication() { Societe = ((string)record["sigsoc"]).Trim(), Numero = Convert.ToInt32((double)record["ordfab"]), CodeOperation = Convert.ToInt32((double)record["codope"]), NumeroAR = Convert.ToInt32((double)record["numdoc"]), CodeClient = ((string)record["codcli"]).Trim(), CodeArticle = ((string)record["codart"]).Trim(), Quantite = (double)record["qtepre"] }
+                
+            );
+
+        CreateMap<RecordData, Client>()
+            .ConstructUsing(record =>
+                new Client() { Societe = ((string)record["sigsoc"]).Trim(), Code  = ((string)record["codfou"]).Trim(), Libelle= ((string)record["libfou"]).Trim() }
 
             );
     }

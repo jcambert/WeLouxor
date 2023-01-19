@@ -28,6 +28,10 @@ public class InventaireExtractLouxorController : LouxorController, IInventaireEx
     public Task<LoadOrdreDeFabricationResponse> Load(LoadOrdreDeFabricationQuery query)
     => Service.Load(query);
 
+    [HttpGet, Route("LoadClient")]
+    public Task<LoadClientResponse> Load(LoadClientQuery query)
+    => Service.Load(query);
+
     [HttpDelete, Route("ClearArticle")]
     public Task<ClearArticleResponse> Clear(ClearArticleQuery query)
     => Service.Clear(query);
@@ -38,5 +42,9 @@ public class InventaireExtractLouxorController : LouxorController, IInventaireEx
 
     [HttpDelete, Route("ClearOrdresDeFabrication")]
     public Task<ClearOrdreDeFabricationResponse> Clear(ClearOrdreDeFabricationQuery query)
+    => Service.Clear(query);
+
+    [HttpDelete, Route("ClearClient")]
+    public Task<ClearClientResponse> Clear(ClearClientQuery query)
     => Service.Clear(query);
 }

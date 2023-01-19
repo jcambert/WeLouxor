@@ -27,7 +27,8 @@ public class DbfDocument
     //private byte[] _datas;
     public string Filename { get; set; }
     public bool StoreRecords { get; set; }
-    public int? LimitRecordCountTo { get; set; } = null;
+    public int From { get; set; } = 0;
+    public int? To { get; set; } = null;
     public DbfDocument() : this(string.Empty)
     {
 
@@ -51,11 +52,11 @@ public class DbfDocument
                 Records.AddRange(records);
 
         });
-        AllRecordsLoaded.Subscribe(v =>
+        /*AllRecordsLoaded.Subscribe(v =>
         {
-            if (v && StoreRecords && (Records.Count != LimitRecordCountTo))
+            if (v && StoreRecords && (Records.Count != To))
                 throw new InvalidProgramException($"Records Count {Records.Count} != Header Record Count {_header.NumberOfRecord}");
-        });
+        });*/
     }
     public IObservable<Header> HeaderLoaded => _onHeaderLoaded.AsObservable();
     public IObservable<List<FieldDescriptor>> FieldsDescriptorLoaded => _onFieldsDescriptorLoaded.AsObservable();
@@ -88,13 +89,14 @@ public class DbfDocument
     {
         if (!_headerloaded)
             await Load(false, null, cancellationToken);
+        loadRecordSteps = (loadRecordSteps??1) <= 0 ? 1 : loadRecordSteps;
         await Task.Run(() =>
         {
             int countRecord = 0;
-            LimitRecordCountTo = LimitRecordCountTo ?? _header.NumberOfRecord;
-            int maxRecord = (LimitRecordCountTo ?? _header.NumberOfRecord);
+            To = To ?? _header.NumberOfRecord;
+            int maxRecord = (To ?? _header.NumberOfRecord);
             DbfRecordReader _reader = new DbfRecordReader(_header);
-            for (int i = 0; i < _header.NumberOfRecord; i += (loadRecordSteps ?? _header.NumberOfRecord))
+            for (int i = From; i < _header.NumberOfRecord; i += (loadRecordSteps ?? _header.NumberOfRecord))
             {
                 if (cancellationToken.IsCancellationRequested) { break; }
                 _reader.From = i;
@@ -201,7 +203,10 @@ internal class DbfRecordReader : IDbfReader<List<RecordData>>
     private RecordData ReadRecordArray(byte[] datas)
     {
         var rec = new RecordData();
-        bool is_deleted = Convert.ToBoolean(datas[0]);
+        char c =Convert.ToChar( datas[0]);
+        bool is_deleted = c != ' ';// Convert.ToBoolean(datas[0]);
+       // if (is_deleted)
+        //    Debugger.Break();
         int start = 1;
         rec.IsMarkAsDeleted = is_deleted;
         foreach (var field in _header.Fields)
@@ -213,6 +218,8 @@ internal class DbfRecordReader : IDbfReader<List<RecordData>>
             //Console.WriteLine(field.Name);
             var data = datas.Skip(start).Take(field.Length).ToArray().ConvertToTheGoodType(field.Type);
             rec[field.Name] = data;
+            /*if(field.Name.ToLower()=="codart" && ((string)data).Trim().Length==0)
+                Debugger.Break();  */ 
             //}
             /*else
             {

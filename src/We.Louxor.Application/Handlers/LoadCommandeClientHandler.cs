@@ -11,10 +11,8 @@ public class LoadCommandeClientHandler : BaseLoadHandler<LoadCommandeClientQuery
     {
     }
 
-    protected override LoadCommandeClientResponse GetResponse()
-    {
-        return new LoadCommandeClientResponse();
-    }
+
+    
 }
 /*
 public class LoadCommandeClientHandler : BaseHandler<LoadCommandeClientQuery, LoadCommandeClientResponse>

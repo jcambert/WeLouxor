@@ -1677,6 +1677,45 @@ namespace We.Louxor.Migrations
                     b.ToTable("LouxorInv_article", (string)null);
                 });
 
+            modelBuilder.Entity("We.Louxor.InventaireArticle.Client", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<string>("ExtraProperties")
+                        .HasColumnType("text")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<string>("Libelle")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Societe")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsDescending();
+
+                    b.HasIndex("Societe")
+                        .IsDescending();
+
+                    b.HasIndex("Societe", "Code")
+                        .IsUnique()
+                        .IsDescending();
+
+                    b.ToTable("LouxorInv_client", (string)null);
+                });
+
             modelBuilder.Entity("We.Louxor.InventaireArticle.LigneDeCommande", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1803,6 +1842,66 @@ namespace We.Louxor.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LignesInventaires");
+                });
+
+            modelBuilder.Entity("We.Louxor.InventaireArticle.OrdreDeFabication", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CodeArticle")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CodeClient")
+                        .HasColumnType("text");
+
+                    b.Property<int>("CodeOperation")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<string>("ExtraProperties")
+                        .HasColumnType("text")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<int>("Numero")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("NumeroAR")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("Quantite")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Societe")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CodeArticle")
+                        .IsDescending();
+
+                    b.HasIndex("CodeClient")
+                        .IsDescending();
+
+                    b.HasIndex("Numero")
+                        .IsDescending();
+
+                    b.HasIndex("NumeroAR")
+                        .IsDescending();
+
+                    b.HasIndex("Societe")
+                        .IsDescending();
+
+                    b.HasIndex("Societe", "Numero", "CodeOperation")
+                        .IsUnique()
+                        .IsDescending();
+
+                    b.ToTable("LouxorInv_ordredefabication", (string)null);
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogAction", b =>

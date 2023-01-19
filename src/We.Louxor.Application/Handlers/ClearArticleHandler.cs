@@ -11,6 +11,5 @@ public class ClearArticleHandler : ClearBaseHandler<ClearArticleQuery, ClearArti
     {
     }
 
-    protected override ClearArticleResponse GetResponse()
-    => new();
+
 }

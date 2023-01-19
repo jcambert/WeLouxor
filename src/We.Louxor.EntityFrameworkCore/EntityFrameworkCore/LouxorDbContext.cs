@@ -28,6 +28,8 @@ public class LouxorDbContext :
     public DbSet<Article> Articles { get; set; }
     public DbSet<LigneInventaire> LignesInventaires { get; set; }
     public DbSet<LigneDeCommande> LignesDeCommandes { get; set; }
+    public DbSet<OrdreDeFabication> OrdresDeFabrication { get;set; }
+    public DbSet<Client> Clients { get; set; }
     #region Entities from the modules
 
     /* Notice: We only implemented IIdentityDbContext and ITenantManagementDbContext
@@ -98,6 +100,24 @@ public class LouxorDbContext :
             b.HasIndex(a => a.Societe).IsDescending();
             b.HasIndex(a => a.NumeroDocument).IsDescending();
             b.HasIndex(a => a.CodeArticle).IsDescending();
+        });
+        builder.Entity<OrdreDeFabication>(b =>
+        {
+            b.ToTable($"{LouxorConsts.DBTablePrefix_Inventaire}_{nameof(OrdreDeFabication).ToLower()}");
+            b.HasIndex("Societe", "Numero", "CodeOperation").IsUnique().IsDescending();
+            b.HasIndex(a => a.Societe).IsDescending();
+            b.HasIndex(a => a.Numero).IsDescending();
+            b.HasIndex(a => a.CodeArticle).IsDescending();
+            b.HasIndex(a => a.CodeClient).IsDescending();
+            b.HasIndex(a => a.NumeroAR).IsDescending();
+        });
+
+        builder.Entity<Client>(b =>
+        {
+            b.ToTable($"{LouxorConsts.DBTablePrefix_Inventaire}_{nameof(Client).ToLower()}");
+            b.HasIndex("Societe", "Code").IsUnique().IsDescending();
+            b.HasIndex(a => a.Societe).IsDescending();
+            b.HasIndex(a => a.Code).IsDescending();
         });
     }
 }

@@ -15,6 +15,9 @@ public class InventaireExtractLouxorAppService : LouxorAppService, IInventaireEx
     public Task<ClearOrdreDeFabricationResponse> Clear(ClearOrdreDeFabricationQuery query)
     => Mediator.Send(query);
 
+    public Task<ClearClientResponse> Clear(ClearClientQuery query)
+    => Mediator.Send(query);
+
     public Task<LoadCommandeClientResponse> Load(LoadCommandeClientQuery query)
     => Mediator.Send(query);
 
@@ -24,5 +27,6 @@ public class InventaireExtractLouxorAppService : LouxorAppService, IInventaireEx
     public Task<LoadOrdreDeFabricationResponse> Load(LoadOrdreDeFabricationQuery query)
     => Mediator.Send(query);
 
-
+    public Task<LoadClientResponse> Load(LoadClientQuery query)
+    => Mediator.Send(query);
 }

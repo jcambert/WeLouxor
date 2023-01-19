@@ -10,10 +10,13 @@ public interface IInventaireExtractLouxorAppService
     Task<LoadArticleResponse> Load(LoadArticleQuery query);
 
     Task<LoadOrdreDeFabricationResponse> Load(LoadOrdreDeFabricationQuery query);
+    Task<LoadClientResponse> Load(LoadClientQuery query);
 
     Task<ClearArticleResponse> Clear(ClearArticleQuery query);
 
     Task<ClearCommandeClientResponse> Clear(ClearCommandeClientQuery query);
 
     Task<ClearOrdreDeFabricationResponse> Clear(ClearOrdreDeFabricationQuery query);
+
+    Task<ClearClientResponse> Clear(ClearClientQuery query);
 }

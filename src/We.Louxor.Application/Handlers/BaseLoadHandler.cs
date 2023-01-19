@@ -18,7 +18,8 @@ namespace We.Louxor.Handlers;
 
 public abstract class BaseLoadHandler<TQuery, TResponse,TEntity,TKey> : BaseHandler<TQuery, TResponse>
      where TQuery : ILoadBaseQuery, IRequest<TResponse>
-    where TEntity : class, IEntity<TKey>
+    where TEntity : class, IEntityLouxor, IEntity<TKey>
+    where TResponse:new()
 {
     IServiceProvider _serviceProvider => LazyServiceProvider.GetRequiredService<IServiceProvider>();
     IRepository<TEntity,TKey> Repository => LazyServiceProvider.GetRequiredService<IRepository<TEntity, TKey>>();
@@ -42,20 +43,33 @@ public abstract class BaseLoadHandler<TQuery, TResponse,TEntity,TKey> : BaseHand
                 byte[] bytes = reader.ReadBytes((int)stream.Length);
                 Dbf.AllRecordsLoaded.Subscribe(b =>
                 {
-                    Logger.LogDebug($"\x1B[43m{Path.GetFileNameWithoutExtension(request.Filename)} All records Loaded successfully\x1B[43m");
+                    Logger.LogDebug($"{Path.GetFileNameWithoutExtension(request.Filename)} All records Loaded successfully".FormatColor());
                 });
                 Dbf.RecordsLoaded.Subscribe(records =>
                 {
-                    Logger.LogDebug($"\x1B[43m{records.Count} where loaded\x1B[43m");
+                    Logger.LogDebug($"{records.Count} where loaded".FormatColor());
                     List<TEntity> lignes = ObjectMapper.Map<List<RecordData>, List<TEntity>>(records);
-                    counter += records.Count;
-                    Task.Run(async () => {
-                        await Repository.InsertManyAsync(lignes, true, cancellationToken);
-                        Logger.LogDebug($"\x1B[43m{lignes.Count} lines were inserted in database. Total:{counter}/{Dbf.TotalRecord}\x1B[43m");
-                    }).GetAwaiter().GetResult();
-                    Task.Delay(500).GetAwaiter().GetResult();
+                    if (request.TestForDuplicate)
+                    {
+                        if (!CheckForDuplicate(lignes))
+                        {
+                            Logger.LogWarning("It seem there are duplicates values!!".FormatWarning());
+                        }
+                    }
+                    else
+                    {
+
+                        lignes = Filter(lignes,true);
+                        counter += lignes.Count;
+                        Task.Run(async () =>
+                        {
+                            await Repository.InsertManyAsync(lignes, true, cancellationToken);
+                            Logger.LogDebug($"{lignes.Count} lines were inserted in database. Total:{counter}/{Dbf.TotalRecord}".FormatColor());
+                        }).GetAwaiter().GetResult();
+                        Task.Delay(500).GetAwaiter().GetResult();
+                    }
                 });
-                await Dbf.LoadAsync(bytes, request.Filename, request.LoadRecordStep, request.LimitRecordCountTo, cancellationToken);
+                await Dbf.LoadAsync(bytes, request.Filename, request.LoadRecordStep,request.From, request.To, cancellationToken);
             }
 
 
@@ -64,7 +78,13 @@ public abstract class BaseLoadHandler<TQuery, TResponse,TEntity,TKey> : BaseHand
         return GetResponse();
     }
 
-    protected abstract TResponse GetResponse();
+    protected virtual bool CheckForDuplicate(List<TEntity> lignes)
+    => true;
+
+    protected virtual TResponse GetResponse() 
+        => new();
+
+    protected virtual List<TEntity> Filter(List<TEntity> records,bool removeDuplicates=false) => records;
 }
 /*
 public class LoadCommandeClientHandler : BaseHandler<LoadCommandeClientQuery, LoadCommandeClientResponse>

@@ -1,4 +1,8 @@
-﻿namespace We.Louxor.InventaireArticle;
+﻿using System.Diagnostics;
+
+namespace We.Louxor.InventaireArticle;
+
+[DebuggerDisplay("{Societe}-{Code}")]
 public class Article : AggregateRoot<Guid>, IArticle
 {
     public string Societe { get; set; }
