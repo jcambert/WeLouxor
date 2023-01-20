@@ -11,6 +11,7 @@
     <ProjectReference Include="..\..\Utilities\We.Dbf\We.Dbf.csproj" />
     <ProjectReference Include="..\We.Louxor.Domain\We.Louxor.Domain.csproj" />
     <ProjectReference Include="..\We.Louxor.Application.Contracts\We.Louxor.Application.Contracts.csproj" />
+    <PackageReference Include="ClosedXML" Version="0.100.3" />
   
     <PackageReference Include="Volo.Abp.Account.Application" Version="7.0.0" />
     <PackageReference Include="Volo.Abp.Identity.Application" Version="7.0.0" />

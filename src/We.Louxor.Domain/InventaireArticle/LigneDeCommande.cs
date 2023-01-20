@@ -1,7 +1,10 @@
 ﻿
 
+using System.Diagnostics;
+
 namespace We.Louxor.InventaireArticle;
 
+[DebuggerDisplay("{Societe}-{NumeroDocument}-{CodeArticle}")]
 public class LigneDeCommande : AggregateRoot<Guid>, ILigneDeCommande
 {
 
@@ -31,6 +34,15 @@ public class LigneDeCommande : AggregateRoot<Guid>, ILigneDeCommande
     /// datdem
     /// </summary>
     public DateOnly DelaiDemande { get; set; }
+
+    /// <summary>
+    /// sigsoc
+    /// </summary>
     public string Societe { get; set; }
+
+    /// <summary>
+    /// codcli
+    /// </summary>
+    public string CodeClient { get; set; }
 }
 

@@ -1,5 +1,9 @@
-﻿namespace We.Louxor.InventaireArticle;
+﻿using System.Diagnostics;
 
+namespace We.Louxor.InventaireArticle;
+
+
+[DebuggerDisplay("{Societe}-{Numero}-{CodeOperation}-{NumeroAR}")]
 public class OrdreDeFabication:AggregateRoot<Guid>, IOrdreDeFabication
 {
     public string Societe { get; set; }

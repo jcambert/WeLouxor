@@ -14,7 +14,7 @@ namespace We.Louxor.Controllers;
 public class LigneInventaireController : LouxorController//, ILigneInventaireAppService
 {
 
-    ILigneInventaireAppService Service => LazyServiceProvider.GetRequiredService<ILigneInventaireAppService>();
+    IInventaireAppService Service => LazyServiceProvider.GetRequiredService<IInventaireAppService>();
 
     [HttpPost(),Route("add")]
     public Task<AddLigneInventaireResponse> AddAsync([FromQuery] AddLigneInventaireQuery query)

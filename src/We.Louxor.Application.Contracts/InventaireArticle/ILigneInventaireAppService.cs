@@ -5,7 +5,7 @@ using We.Louxor.InventaireArticle.Queries;
 
 namespace We.Louxor.InventaireArticle;
 
-public interface ILigneInventaireAppService:IApplicationService
+public interface IInventaireAppService:IApplicationService
 {
     Task<AddLigneInventaireResponse> AddAsync(AddLigneInventaireQuery query);
 

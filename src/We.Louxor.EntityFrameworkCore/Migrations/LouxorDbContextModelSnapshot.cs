@@ -1724,6 +1724,9 @@ namespace We.Louxor.Migrations
                     b.Property<string>("CodeArticle")
                         .HasColumnType("text");
 
+                    b.Property<string>("CodeClient")
+                        .HasColumnType("text");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasMaxLength(40)
@@ -1772,11 +1775,20 @@ namespace We.Louxor.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("Article")
+                    b.Property<string>("Article")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ArticleDeTete")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ArticleDeTeteId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ArticleDeTete")
+                    b.Property<Guid>("ArticleId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("Client")
+                        .HasColumnType("text");
 
                     b.Property<int>("CodeOperationFinie")
                         .HasColumnType("integer");
@@ -1786,12 +1798,6 @@ namespace We.Louxor.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)")
                         .HasColumnName("ConcurrencyStamp");
-
-                    b.Property<double>("CoutMachineDirect")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("CoutMatiereDirect")
-                        .HasColumnType("double precision");
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp without time zone")
@@ -1836,8 +1842,20 @@ namespace We.Louxor.Migrations
                     b.Property<int>("Page")
                         .HasColumnType("integer");
 
+                    b.Property<double>("PuGamme")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("PuNomenclature")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("PvArticleDeTete")
+                        .HasColumnType("double precision");
+
                     b.Property<double>("Quantite")
                         .HasColumnType("double precision");
+
+                    b.Property<string>("Societe")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

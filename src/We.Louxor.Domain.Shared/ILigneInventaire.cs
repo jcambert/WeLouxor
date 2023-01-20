@@ -11,6 +11,7 @@ public interface IBaseLigneInventaire
     Guid ArticleDeTete { get; set; }
     double Quantite { get; set; }
 }
+
 public class BaseLigneInventaire : IBaseLigneInventaire
 {
     public int Page { get; set; }
@@ -23,5 +24,21 @@ public class BaseLigneInventaire : IBaseLigneInventaire
 }
 public interface ILigneInventaire: IFullAuditedObject
 {
-   
+     int Page { get; set; }
+     int OrdreDeFabication { get; set; }
+     int CodeOperationFinie { get; set; }
+     int NumeroCommandeClient { get; set; }
+     Guid ArticleId { get; set; }
+     string Article { get; set; }
+     Guid ArticleDeTeteId { get; set; }
+     string ArticleDeTete { get; set; }
+     double Quantite { get; set; }
+     double PvArticleDeTete { get; set; }
+     double PuGamme { get; set; }
+     double PuNomenclature { get; set; }
+     double CtRevient { get; }
+     double ValoFinale { get; }
+    string Client { get; set; }
+    string Societe { get; set; }
+
 }

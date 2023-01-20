@@ -14,7 +14,7 @@ public class LouxorApplicationAutoMapperProfile : Profile
          * into multiple profile classes for a better organization. */
         CreateMap<RecordData, LigneDeCommande>()
             .ConstructUsing(record =>
-                 new LigneDeCommande() {Societe=(string)record["sigsoc" ], NumeroDocument = Convert.ToInt32( (double)record["numdoc"]), CodeArticle = (string)record["codart"], PrixUnitaire = (double)record["tprixun"], QuantiteCommande = (double)record["quanti"], DelaiDemande = (DateOnly)record["datdem"] }
+                 new LigneDeCommande() {Societe=((string)record["sigsoc"]).Trim(), NumeroDocument = Convert.ToInt32( (double)record["numdoc"]), CodeArticle = ((string)record["codart"]).Trim(), PrixUnitaire = (double)record["tprixun"], QuantiteCommande = (double)record["quanti"], DelaiDemande = (DateOnly)record["datdem"], CodeClient = ((string)record["codcli"]).Trim() }
             );
 
         CreateMap<RecordData, Article>()
