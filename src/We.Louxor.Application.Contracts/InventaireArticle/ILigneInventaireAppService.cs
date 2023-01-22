@@ -17,4 +17,9 @@ public interface IInventaireAppService:IApplicationService
 
     Task<RemoveLigneInventaireResponse> RemoveAsync(RemoveLigneInventaireQuery query);
 
+    Task<GetArticleResponse> Get(GetArticleQuery query);
+
+    Task<BrowseArticleResponse> Browse(BrowseArticleQuery query);
+
+    Task<BrowseOrdreDeFabricationResponse> Browse(BrowseOrdreDeFabricationQuery query);
 }

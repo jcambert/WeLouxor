@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using Volo.Abp.DependencyInjection;
+﻿using System;
 
 namespace We.Louxor.InventaireArticle.Queries;
 
@@ -10,4 +8,5 @@ public class UpdateLigneInventaireQuery : IUpdateLigneInventaireQuery
 {
     public Guid Id { get; set; }
     public BaseLigneInventaire Ligne { get; set; }
+    public string Societe { get; set; } = LouxorAppConsts.LouxorDefaultSociete;
 }

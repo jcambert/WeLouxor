@@ -33,6 +33,26 @@ public class LouxorMenuContributor : IMenuContributor
                 order: 0
             )
         );
+        context.Menu.Items.Insert(
+            1,
+            new ApplicationMenuItem(
+                LouxorMenus.InventaireSaisie,
+                l["Menu:Swagger"],
+                "/swagger",
+                icon: "fas fa-list",
+                order: 1
+            )
+        );
+        context.Menu.Items.Insert(
+            2,
+            new ApplicationMenuItem(
+                LouxorMenus.InventaireSaisie,
+                l["Menu:Inventaire:Saisie"],
+                "/inventaire/saisie",
+                icon: "fas fa-pen-nib",
+                order: 2
+            )
+        );
 
         if (MultiTenancyConsts.IsEnabled)
         {

@@ -1,11 +1,5 @@
 ﻿using MediatR;
-using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Entities;
-using Volo.Abp.Domain.Repositories;
 using We.Louxor.InventaireArticle.Queries;
 
 namespace We.Louxor.Handlers;

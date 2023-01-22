@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using We.Louxor.InventaireArticle;
+﻿using We.Louxor.InventaireArticle;
 using We.Louxor.InventaireArticle.Queries;
 
 namespace We.Louxor;

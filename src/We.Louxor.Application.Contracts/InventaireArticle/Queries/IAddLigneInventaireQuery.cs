@@ -2,7 +2,7 @@
 
 namespace We.Louxor.InventaireArticle.Queries;
 
-public interface IAddLigneInventaireQuery: IInventaireQuery<AddLigneInventaireResponse>
+public interface IAddLigneInventaireQuery: IInventaireQuery<AddLigneInventaireResponse>, ISociete
 {
     // BaseLigneInventaire Ligne { get; set; }
     int Page { get; set; }

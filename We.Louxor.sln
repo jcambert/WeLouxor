@@ -37,9 +37,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "We.Louxor.Blazor", "src\We.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{E991D89D-3192-4B9B-BA9C-A242634B60F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "We.Dbf", "Utilities\We.Dbf\We.Dbf.csproj", "{B4870844-BC07-44CF-9A51-0EB5F07026E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "We.Dbf", "Utilities\We.Dbf\We.Dbf.csproj", "{B4870844-BC07-44CF-9A51-0EB5F07026E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "We.Dbf.Console", "Utilities\We.Dbf.Console\We.Dbf.Console.csproj", "{4B923F45-D562-4CCE-A18A-F16C5F9A09A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "We.Dbf.Console", "Utilities\We.Dbf.Console\We.Dbf.Console.csproj", "{4B923F45-D562-4CCE-A18A-F16C5F9A09A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

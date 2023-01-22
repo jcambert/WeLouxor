@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace We.Louxor.InventaireArticle.Queries;
 
-namespace We.Louxor.InventaireArticle.Queries;
-
-public interface IGetArticleQuery:IInventaireQuery<GetArticleResponse>
+public interface IGetArticleQuery:IInventaireQuery<GetArticleResponse>,ISociete
 {
     string Code { get; set; }
 

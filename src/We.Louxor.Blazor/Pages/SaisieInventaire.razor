@@ -1,0 +1,60 @@
+﻿@page "/inventaire/saisie"
+@using Blazorise.Components;
+@using We.Louxor.InventaireArticle;
+@using We.Louxor.InventaireArticle.Queries;
+@inject IInventaireAppService appService;
+@inherits LouxorComponentBase
+<div class="container">
+    @if (IsInitialized)
+    {
+        <div class="p-5 text-center">
+            <Autocomplete TItem="string"
+                      TValue="string"
+                      Data="@Articles"
+                      TextField="@(( item ) => item)"
+                      ValueField="@(( item ) => item)"
+                      @bind-SelectedValue="@article_selectedSearchValue"
+                      @bind-SelectedText="article_selectedAutoCompleteText"
+                      Placeholder="Code Article"
+                      Filter="AutocompleteFilter.StartsWith"
+                      FreeTyping=false
+                      CustomFilter="@(( item, searchValue ) => item.IndexOf( searchValue, 0, StringComparison.CurrentCultureIgnoreCase ) >= 0 )">
+                <NotFoundContent> Sorry... @context was not found! :( </NotFoundContent>
+            </Autocomplete>
+        </div>
+        <div class="p-5 text-center">
+            <Autocomplete TItem="string"
+                      TValue="string"
+                      Data="@OrdresDeFabrication"
+                      TextField="@(( item ) => item)"
+                      ValueField="@(( item ) => item)"
+                      @bind-SelectedValue="@of_selectedSearchValue"
+                      @bind-SelectedText="of_selectedAutoCompleteText"
+                      Placeholder="Ordre de Fabrication"
+                      Filter="AutocompleteFilter.StartsWith"
+                      FreeTyping=false
+                      CustomFilter="@(( item, searchValue ) => item.IndexOf( searchValue, 0, StringComparison.CurrentCultureIgnoreCase ) >= 0 )">
+                <NotFoundContent> Sorry... @context was not found! :( </NotFoundContent>
+            </Autocomplete>
+        </div>
+    }
+</div>
+
+@code {
+    private bool IsInitialized = false;
+    public IEnumerable<string> Articles;
+    public IEnumerable<string> OrdresDeFabrication;
+    protected override async Task OnInitializedAsync()
+    {
+        Articles = (await appService.Browse(new BrowseArticleQuery() { Societe = "001" })).Articles;
+        var tmp_ofs = (await appService.Browse(new BrowseOrdreDeFabricationQuery() { Societe = "001" })).Ofs;
+        OrdresDeFabrication = tmp_ofs.Select(x => x.ToString()).ToList();
+        await base.OnInitializedAsync();
+        IsInitialized = true;
+    }
+    public string article_selectedSearchValue { get; set; }
+    public string article_selectedAutoCompleteText { get; set; }
+
+    public string of_selectedSearchValue { get; set; }
+    public string of_selectedAutoCompleteText { get; set; }
+}

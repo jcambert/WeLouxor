@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Volo.Abp;
 using We.Louxor.InventaireArticle;
 using We.Louxor.InventaireArticle.Queries;
 
@@ -23,4 +22,13 @@ public class InventaireAppService : LouxorAppService, IInventaireAppService
 
     public Task<UpdateLigneInventaireResponse> UpdateAsync(UpdateLigneInventaireQuery query)
     => Mediator.Send(query);
+
+    public Task<GetArticleResponse> Get(GetArticleQuery query)
+    =>Mediator.Send(query);
+
+    public Task<BrowseArticleResponse> Browse(BrowseArticleQuery query)
+   => Mediator.Send(query);
+
+    public Task<BrowseOrdreDeFabricationResponse> Browse(BrowseOrdreDeFabricationQuery query)
+        => Mediator.Send(query);
 }

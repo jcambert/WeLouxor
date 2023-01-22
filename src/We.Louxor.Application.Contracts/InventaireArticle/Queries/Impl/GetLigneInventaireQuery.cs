@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using Volo.Abp.DependencyInjection;
+﻿using System;
 
 namespace We.Louxor.InventaireArticle.Queries;
 

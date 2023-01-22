@@ -1,6 +1,11 @@
 ﻿namespace We.Louxor;
 
-public interface IEntityLouxor
+public interface ISociete
 {
     string Societe { get; set; }
+
+}
+
+public interface IEntityLouxor:ISociete
+{
 }
