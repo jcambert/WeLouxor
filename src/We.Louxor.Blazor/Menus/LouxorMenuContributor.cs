@@ -46,6 +46,16 @@ public class LouxorMenuContributor : IMenuContributor
         context.Menu.Items.Insert(
             2,
             new ApplicationMenuItem(
+                LouxorMenus.InventaireSaisieProcedure,
+                l["Menu:Swagger"],
+                "/swagger",
+                icon: "fas fa-list",
+                order: 1
+            )
+        );
+        context.Menu.Items.Insert(
+            3,
+            new ApplicationMenuItem(
                 LouxorMenus.InventaireSaisie,
                 l["Menu:Inventaire:Saisie"],
                 "/inventaire/saisie",

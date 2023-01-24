@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Reactive.Linq;
@@ -13,21 +14,25 @@ using Volo.Abp.Domain.Repositories;
 using Volo.Abp.VirtualFileSystem;
 using We.Dbf;
 using We.Louxor.InventaireArticle.Queries;
+using JetBrains.Annotations;
 
 namespace We.Louxor.Handlers;
 
-public abstract class BaseLoadHandler<TQuery, TResponse,TEntity,TKey> : BaseHandler<TQuery, TResponse>
+public abstract class BaseLoadHandler<TQuery, TResponse, TEntity, TKey> : BaseHandler<TQuery, TResponse>
      where TQuery : ILoadBaseQuery, IRequest<TResponse>
     where TEntity : class, IEntityLouxor, IEntity<TKey>
-    where TResponse:new()
+    where TResponse : new()
 {
     IServiceProvider _serviceProvider => LazyServiceProvider.GetRequiredService<IServiceProvider>();
-    IRepository<TEntity,TKey> Repository => LazyServiceProvider.GetRequiredService<IRepository<TEntity, TKey>>();
+    IRepository<TEntity, TKey> Repository => LazyServiceProvider.GetRequiredService<IRepository<TEntity, TKey>>();
+    protected TQuery Request;
+
     protected BaseLoadHandler(IAbpLazyServiceProvider serviceProvider) : base(serviceProvider)
     {
     }
     public override async Task<TResponse> Handle(TQuery request, CancellationToken cancellationToken)
     {
+        this.Request= request;
         using (var scope = _serviceProvider.CreateScope())
         {
             DbfDocumentManager Dbf = scope.ServiceProvider.GetService<DbfDocumentManager>();
@@ -59,7 +64,7 @@ public abstract class BaseLoadHandler<TQuery, TResponse,TEntity,TKey> : BaseHand
                     else
                     {
 
-                        lignes = Filter(lignes,true);
+                        lignes = Filter( lignes, true);
                         counter += lignes.Count;
                         Task.Run(async () =>
                         {
@@ -69,7 +74,7 @@ public abstract class BaseLoadHandler<TQuery, TResponse,TEntity,TKey> : BaseHand
                         Task.Delay(500).GetAwaiter().GetResult();
                     }
                 });
-                await Dbf.LoadAsync(bytes, request.Filename, request.LoadRecordStep,request.From, request.To, cancellationToken);
+                await Dbf.LoadAsync(bytes, request.Filename, request.LoadRecordStep, request.From, request.To, cancellationToken);
             }
 
 
@@ -81,10 +86,26 @@ public abstract class BaseLoadHandler<TQuery, TResponse,TEntity,TKey> : BaseHand
     protected virtual bool CheckForDuplicate(List<TEntity> lignes)
     => true;
 
-    protected virtual TResponse GetResponse() 
+    protected virtual TResponse GetResponse()
         => new();
 
-    protected virtual List<TEntity> Filter(List<TEntity> records,bool removeDuplicates=false) => records;
+    protected  List<TEntity> Filter( List<TEntity> records, bool removeDuplicates = false)
+    {
+        if (removeDuplicates)
+        {
+            CheckForDuplicate(records);
+        }
+        Func< TEntity, bool> filter = GetPredicateFilter();
+        records = records.Where(filter).ToList();
+        return records;
+    }
+    protected virtual Func< TEntity, bool> GetPredicateFilter() => ( TEntity entity) =>
+        {
+            if(Request!=null)
+                return entity.Societe == Request.Societe ;
+            return true;
+        };
+
 }
 /*
 public class LoadCommandeClientHandler : BaseHandler<LoadCommandeClientQuery, LoadCommandeClientResponse>

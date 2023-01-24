@@ -47,7 +47,7 @@ public class PrintHandler : BaseHandler<PrintQuery, PrintResponse>
                 sheet.Cell(row, col++).Value = ligne.PuNomenclature;
                 sheet.Cell(row, col++).Value = ligne.CtRevient;
                 sheet.Cell(row, col++).Value = ligne.ValoFinale;
-
+                col = 1;
                 row++;
             }
             using (var stream = new MemoryStream())

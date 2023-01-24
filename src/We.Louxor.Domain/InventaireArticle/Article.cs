@@ -10,4 +10,6 @@ public class Article : AggregateRoot<Guid>, IArticle
     public string Designation { get; set; }
     public double CoutMatiereDirect { get; set; }
     public double CoutMachineDirect { get; set; }
+    public string Domaine { get; set; }
+    public bool IsDeleted { get; }
 }

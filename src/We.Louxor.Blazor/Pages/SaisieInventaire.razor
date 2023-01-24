@@ -4,51 +4,166 @@
 @using We.Louxor.InventaireArticle.Queries;
 @inject IInventaireAppService appService;
 @inherits LouxorComponentBase
-<div class="container">
+<div class="container-fluid">
     @if (IsInitialized)
     {
-        <div class="p-5 text-center">
-            <Autocomplete TItem="string"
-                      TValue="string"
-                      Data="@Articles"
-                      TextField="@(( item ) => item)"
-                      ValueField="@(( item ) => item)"
-                      @bind-SelectedValue="@article_selectedSearchValue"
-                      @bind-SelectedText="article_selectedAutoCompleteText"
-                      Placeholder="Code Article"
-                      Filter="AutocompleteFilter.StartsWith"
-                      FreeTyping=false
-                      CustomFilter="@(( item, searchValue ) => item.IndexOf( searchValue, 0, StringComparison.CurrentCultureIgnoreCase ) >= 0 )">
-                <NotFoundContent> Sorry... @context was not found! :( </NotFoundContent>
-            </Autocomplete>
+        <div class="row">
+            <div class="col-1">
+                <div class="mb-3">
+                    <label for="page" class="form-label">Page</label>
+                    <input type="number" min="1" class="form-control" id="page" placeholder="Page" @bind-value="Page">
+                </div>
+            </div>
         </div>
-        <div class="p-5 text-center">
-            <Autocomplete TItem="string"
-                      TValue="string"
-                      Data="@OrdresDeFabrication"
-                      TextField="@(( item ) => item)"
-                      ValueField="@(( item ) => item)"
-                      @bind-SelectedValue="@of_selectedSearchValue"
-                      @bind-SelectedText="of_selectedAutoCompleteText"
-                      Placeholder="Ordre de Fabrication"
-                      Filter="AutocompleteFilter.StartsWith"
-                      FreeTyping=false
-                      CustomFilter="@(( item, searchValue ) => item.IndexOf( searchValue, 0, StringComparison.CurrentCultureIgnoreCase ) >= 0 )">
-                <NotFoundContent> Sorry... @context was not found! :( </NotFoundContent>
-            </Autocomplete>
+        <div class="row">
+            <div class="col-4">
+                <div class="mb-3">
+                    <label class="form-label">Code Article</label>
+
+
+                    <Autocomplete TItem="string"
+                              TValue="string"
+                              Data="@Articles"
+                              TextField="@(( item ) => item)"
+                              ValueField="@(( item ) => item)"
+                              @bind-SelectedValue="@article_selectedSearchValue"
+                              @bind-SelectedText="article_selectedAutoCompleteText"
+                              Placeholder="Code Article"
+                              Filter="AutocompleteFilter.StartsWith"
+                              FreeTyping=false
+                              CustomFilter="@(( item, searchValue ) => item.IndexOf( searchValue, 0, StringComparison.CurrentCultureIgnoreCase ) >= 0 )">
+                        <NotFoundContent> Sorry... @context was not found! :( </NotFoundContent>
+                    </Autocomplete>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div class="mb-3">
+                    <label class="form-label">Ordre de fabrication</label>
+                    <Autocomplete TItem="string"
+                              TValue="string"
+                              Data="@OrdresDeFabrication"
+                              TextField="@(( item ) => item)"
+                              ValueField="@(( item ) => item)"
+                              @bind-SelectedText="of_selectedAutoCompleteText"
+                              Placeholder="Ordre de Fabrication"
+                              Filter="AutocompleteFilter.StartsWith"
+                              FreeTyping=false
+                              CustomFilter="@(( item, searchValue ) => item.IndexOf( searchValue, 0, StringComparison.CurrentCultureIgnoreCase ) >= 0 )"
+                              SelectedValueChanged="@OnOrdreDeFabricationChanged">
+
+                        <NotFoundContent> Sorry... @context was not found! :( </NotFoundContent>
+                    </Autocomplete>
+                    @if (Operations.Count() == 1)
+                    {
+                        <span>Operation Selectionnée: @operation_selectedSearchValue</span>
+                    }
+                    else if (Operations.Count() > 1)
+                    {
+                        @if (!string.IsNullOrEmpty(operation_selectedSearchValue))
+                        {
+                            <span>Operation Selectionnée: @operation_selectedSearchValue</span>
+
+                        }
+                        <table class="table table-hover table-bordered table-sm">
+                            <tbody>
+                                @foreach (var item in Operations)
+                                {
+                                    <tr @onclick="@(e=>@onSelectOperationClicked(e,item))"><td>@item</td><td class="text-start"><Button Color="Color.Primary" Clicked="@(e=>@onSelectOperationClicked(e,item))" Visibility="@(operation_selectedSearchValue==item?Visibility.Invisible:Visibility.Visible)">Select</Button></td></tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else if (!string.IsNullOrEmpty(operation_selectedSearchValue))
+                    {
+                        <span>Pas d'operation pour @operation_selectedSearchValue</span>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <div class="mb-3">
+                    <label for="client" class="form-label">Client</label>
+                    <input class="form-control" id="client" placeholder="Client" @bind-value="Client">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Quantité</label>
+                    <input type="number" min="0" class="form-control" id="quantity" placeholder="Quantité" @bind-value="Quantite">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <div class="">
+                    <Button Color="Color.Primary" Clicked="@OnAddLineClicked">Ajouter</Button>
+                </div>
+            </div>
+        </div>
+    }
+    @if (Inventaires != null)
+    {
+        <div class="row">
+            <div>
+                <span>
+                    Valo Totale:@(
+                Inventaires.Sum(x => x.ValoFinale)
+                )
+                </span>
+            </div>
+            <div class="p-5 text-center">
+                <DataGrid TItem="ILigneInventaire"
+                      Data="@Inventaires" Editable="true" ShowPager="true" PageSize="16">
+                    <DataGridColumns >
+                        <DataGridColumn Field="@nameof(ILigneInventaire.Page)" Caption="#" Sortable="true" />
+                        <DataGridColumn Field="@nameof(ILigneInventaire.Article)" Caption="Article" Sortable="true" />
+                        <DataGridColumn Field="@nameof(ILigneInventaire.Client)" Caption="Client" />
+                        <DataGridColumn Field="@nameof(ILigneInventaire.OrdreDeFabication)" Caption="Of" />
+                        <DataGridColumn Field="@nameof(ILigneInventaire.CodeOperationFinie)" Caption="Op" />
+                        <DataGridColumn Field="@nameof(ILigneInventaire.NumeroCommandeClient)" Caption="AR" />
+                        <DataGridColumn Field="@nameof(ILigneInventaire.Quantite)" Caption="Qté" />
+                        <DataGridColumn Field="@nameof(ILigneInventaire.PvArticleDeTete)" Caption="P.v tête" DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" />
+                        <DataGridColumn Field="@nameof(ILigneInventaire.PuGamme)" Caption="Pu Gam." DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" />
+                        <DataGridColumn Field="@nameof(ILigneInventaire.PuNomenclature)" Caption="Pu Nomenc." DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" />
+                        <DataGridColumn Field="@nameof(ILigneInventaire.CtRevient)" Caption="Ct Revient" DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" />
+                        <DataGridColumn Field="@nameof(ILigneInventaire.ValoFinale)" Caption="Valo" DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" />
+                        <DataGridCommandColumn DeleteCommandAllowed="true" NewCommandAllowed="false" EditCommandAllowed="false" Caption="Supprimer">
+                            <DeleteCommandTemplate >
+                                <Button Color="Color.Primary" Clicked="@(e=>RemoveLigneInventaire(context))" class="fa fa-trash"></Button>
+
+                            </DeleteCommandTemplate>
+                        </DataGridCommandColumn>
+                    </DataGridColumns>
+
+                </DataGrid>
+            </div>
         </div>
     }
 </div>
 
 @code {
+    const string SOCIETE = "001";
     private bool IsInitialized = false;
     public IEnumerable<string> Articles;
     public IEnumerable<string> OrdresDeFabrication;
+    public List<string> Operations;
+    public List<ILigneInventaire> Inventaires = new();
+    //LigneInventaire Ligne = new();
+    public string Client;
+    public int Quantite;
+    public int Page { get; set; } = 1;
     protected override async Task OnInitializedAsync()
     {
-        Articles = (await appService.Browse(new BrowseArticleQuery() { Societe = "001" })).Articles;
-        var tmp_ofs = (await appService.Browse(new BrowseOrdreDeFabricationQuery() { Societe = "001" })).Ofs;
+        Articles = (await appService.Browse(new BrowseArticleQuery() { Societe = SOCIETE })).Articles;
+        var tmp_ofs = (await appService.Browse(new BrowseOrdreDeFabricationQuery() { Societe = SOCIETE })).Ofs;
         OrdresDeFabrication = tmp_ofs.Select(x => x.ToString()).ToList();
+        Inventaires = (await appService.GetListAsync(new BrowseLigneInventaireQuery() { Societe = SOCIETE })).Lignes;
+        Operations = new List<string>();
         await base.OnInitializedAsync();
         IsInitialized = true;
     }
@@ -57,4 +172,54 @@
 
     public string of_selectedSearchValue { get; set; }
     public string of_selectedAutoCompleteText { get; set; }
+
+    public string operation_selectedSearchValue { get; set; }
+    public string operation_selectedAutoCompleteText { get; set; }
+
+    async Task OnAddLineClicked()
+    {
+        bool ok = Int32.TryParse(of_selectedSearchValue, out var of);
+        bool ok1 = Int32.TryParse(operation_selectedSearchValue, out var op);
+        double qte = Quantite * 1.0;
+        var resp = await appService.AddAsync(new AddLigneInventaireQuery() { Societe = SOCIETE, Article = article_selectedSearchValue, Client = Client, OrdreDeFabication = of, CodeOperationFinie = op, Quantite = qte, Page = Page });
+
+        Inventaires.Add(resp.Ligne);
+        //Ligne = new();
+        article_selectedAutoCompleteText = string.Empty;
+        article_selectedSearchValue = string.Empty;
+        of_selectedAutoCompleteText = string.Empty;
+        of_selectedSearchValue = string.Empty;
+        Client = string.Empty;
+        Quantite = 0;
+        Operations.Clear();
+        StateHasChanged();
+
+    }
+    Task onSelectOperationClicked(EventArgs args, string op)
+    {
+        operation_selectedSearchValue = op;
+        return Task.CompletedTask;
+    }
+    async Task OnOrdreDeFabricationChanged(string args)
+    {
+        of_selectedSearchValue = args ?? string.Empty;
+        operation_selectedSearchValue = string.Empty;
+        if (!string.IsNullOrEmpty(of_selectedSearchValue))
+        {
+            Operations.Clear();
+            Operations.AddRange((await appService.Browse(new BrowseOperationPourOrdreDeFabricationQuery() { Societe = SOCIETE, OrdreDeFabrication = args })).Operations);
+            if (Operations.Count() >= 0)
+            {
+                operation_selectedSearchValue = Operations.First();
+            }
+            StateHasChanged();
+        }
+    }
+
+    async Task RemoveLigneInventaire(DeleteCommandContext< ILigneInventaire> ctx)
+    {
+        var l = (LigneInventaire)ctx.Item;
+        await appService.RemoveAsync(new RemoveLigneInventaireQuery() { Id = l.Id });
+        Inventaires.Remove(l);
+    }
 }

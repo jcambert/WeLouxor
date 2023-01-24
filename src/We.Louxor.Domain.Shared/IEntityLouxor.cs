@@ -1,4 +1,6 @@
-﻿namespace We.Louxor;
+﻿using Volo.Abp;
+
+namespace We.Louxor;
 
 public interface ISociete
 {
@@ -6,6 +8,7 @@ public interface ISociete
 
 }
 
-public interface IEntityLouxor:ISociete
+public interface IEntityLouxor : ISociete,ISoftDelete
 {
+    
 }

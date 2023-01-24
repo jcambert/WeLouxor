@@ -19,7 +19,7 @@ public class LouxorApplicationAutoMapperProfile : Profile
 
         CreateMap<RecordData, Article>()
             .ConstructUsing(record =>
-                new Article() { Societe = ((string)record["sigsoc"]).Trim(), Code = ((string)record["codart"]).Trim(), Designation = (string)record["libart"], CoutMachineDirect =(double)record["ecoumac"], CoutMatiereDirect = (double)record["ecoumat"] }
+                new Article() { Societe = ((string)record["sigsoc"]).Trim(), Code = ((string)record["codart"]).Trim(), Designation = ((string)record["libart"]).Trim(), Domaine = ((string)record["coddom"]).Trim(), CoutMachineDirect =(double)record["etotmac"]+ (double)record["etotmod"], CoutMatiereDirect = (double)record["ecoumat"] }
 
             );
 

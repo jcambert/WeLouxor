@@ -13,4 +13,5 @@ public class OrdreDeFabication:AggregateRoot<Guid>, IOrdreDeFabication
     public string CodeClient { get; set; }
     public string CodeArticle { get; set; }
     public double Quantite { get; set; }
+    public bool IsDeleted { get; }
 }

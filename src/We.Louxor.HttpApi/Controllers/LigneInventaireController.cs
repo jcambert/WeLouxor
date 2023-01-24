@@ -25,12 +25,16 @@ public class LigneInventaireController : LouxorController//, ILigneInventaireApp
     =>Service.GetAsync(query);
 
     [HttpGet(), Route("getall")]
-    public Task<List<GetLigneInventaireResponse>> GetListAsync()
-    => Service.GetListAsync();
+    public Task<BrowseLigneInventaireResponse> GetListAsync([FromQuery] BrowseLigneInventaireQuery query)
+    => Service.GetListAsync(query);
 
     [HttpDelete(),Route("delete")]
     public Task<RemoveLigneInventaireResponse> RemoveAsync( [FromQuery] RemoveLigneInventaireQuery query)
     => Service.RemoveAsync(query);
+
+    [HttpDelete(), Route("deleteall")]
+    public Task<RemoveLigneInventaireResponse> RemoveAllAsync([FromQuery] RemoveAllLigneInventaireQuery query)
+    => Service.RemoveAllAsync(query);
 
     [HttpPut(), Route("update")]
     public Task<UpdateLigneInventaireResponse> UpdateAsync([FromQuery] UpdateLigneInventaireQuery query)

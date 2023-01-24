@@ -12,13 +12,14 @@ public class InventaireAppService : LouxorAppService, IInventaireAppService
     public Task<GetLigneInventaireResponse> GetAsync(GetLigneInventaireQuery query)
     => Mediator.Send(query);
 
-    public Task<List<GetLigneInventaireResponse>> GetListAsync()
-    {
-        throw new System.NotImplementedException();
-    }
+    public Task<BrowseLigneInventaireResponse> GetListAsync(BrowseLigneInventaireQuery query)
+     => Mediator.Send(query);
 
     public Task<RemoveLigneInventaireResponse> RemoveAsync(RemoveLigneInventaireQuery query)
     => Mediator.Send(query);
+
+    public Task<RemoveLigneInventaireResponse> RemoveAllAsync(RemoveAllLigneInventaireQuery query)
+   => Mediator.Send(query);
 
     public Task<UpdateLigneInventaireResponse> UpdateAsync(UpdateLigneInventaireQuery query)
     => Mediator.Send(query);
@@ -30,5 +31,8 @@ public class InventaireAppService : LouxorAppService, IInventaireAppService
    => Mediator.Send(query);
 
     public Task<BrowseOrdreDeFabricationResponse> Browse(BrowseOrdreDeFabricationQuery query)
+        => Mediator.Send(query);
+
+    public Task<BrowseOperationPourOrdreDeFabricationResponse> Browse(BrowseOperationPourOrdreDeFabricationQuery query)
         => Mediator.Send(query);
 }

@@ -7,4 +7,6 @@ public interface ILoadBaseQuery
     int? To { get; set; }
     int LoadRecordStep { get; set; }
     bool TestForDuplicate { get; set; }
+    string Societe { get;set; }
+    bool ProduitVenduSeul { get; set; }
 }

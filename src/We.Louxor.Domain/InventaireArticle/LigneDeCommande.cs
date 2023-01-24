@@ -44,5 +44,6 @@ public class LigneDeCommande : AggregateRoot<Guid>, ILigneDeCommande
     /// codcli
     /// </summary>
     public string CodeClient { get; set; }
+    public bool IsDeleted { get; }
 }
 

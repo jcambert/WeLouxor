@@ -40,5 +40,5 @@ public interface ILigneInventaire: IFullAuditedObject
      double ValoFinale { get; }
     string Client { get; set; }
     string Societe { get; set; }
-
+    public string Type { get; }
 }

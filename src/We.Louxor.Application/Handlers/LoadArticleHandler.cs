@@ -62,16 +62,21 @@ public class LoadArticleHandler : BaseLoadHandler<LoadArticleQuery, LoadArticleR
 
         return result;
     }
-    protected override List<Article> Filter(List<Article> records, bool removeDuplicates = false)
+   /* protected override List<Article> Filter(List<Article> records, bool removeDuplicates = false)
+    => base.Filter( records.Where(x => !string.IsNullOrEmpty(x.Societe) && !string.IsNullOrEmpty(x.Code)).ToList());*/
+
+    protected override Func<Article, bool> GetPredicateFilter()
+    => (Article entity) =>
     {
-        if(removeDuplicates)
+        var result = true;
+        if (Request != null)
         {
-            CheckForDuplicate(records);
+            result= entity.Societe == Request.Societe && !string.IsNullOrEmpty(entity.Code);
+            if (Request.ProduitVenduSeul)
+                result = result && entity.Domaine == "V";
         }
-            
-        return records.Where(x => !string.IsNullOrEmpty(x.Societe) && !string.IsNullOrEmpty(x.Code)).ToList();
-    }
-    
+        return result;
+    };
 
 }
 /*

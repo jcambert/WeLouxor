@@ -1655,9 +1655,18 @@ namespace We.Louxor.Migrations
                     b.Property<string>("Designation")
                         .HasColumnType("text");
 
+                    b.Property<string>("Domaine")
+                        .HasColumnType("text");
+
                     b.Property<string>("ExtraProperties")
                         .HasColumnType("text")
                         .HasColumnName("ExtraProperties");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
 
                     b.Property<string>("Societe")
                         .HasColumnType("text");
@@ -1694,6 +1703,12 @@ namespace We.Louxor.Migrations
                     b.Property<string>("ExtraProperties")
                         .HasColumnType("text")
                         .HasColumnName("ExtraProperties");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
 
                     b.Property<string>("Libelle")
                         .HasColumnType("text");
@@ -1739,6 +1754,12 @@ namespace We.Louxor.Migrations
                     b.Property<string>("ExtraProperties")
                         .HasColumnType("text")
                         .HasColumnName("ExtraProperties");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
 
                     b.Property<int>("NumeroDocument")
                         .HasColumnType("integer");
@@ -1885,6 +1906,12 @@ namespace We.Louxor.Migrations
                     b.Property<string>("ExtraProperties")
                         .HasColumnType("text")
                         .HasColumnName("ExtraProperties");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
 
                     b.Property<int>("Numero")
                         .HasColumnType("integer");

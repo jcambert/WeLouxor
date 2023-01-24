@@ -10,3 +10,11 @@ public class RemoveLigneInventaireQuery : IRemoveLigneInventaireQuery
 {
     public Guid Id { get; set; }
 }
+
+
+[Dependency(ServiceLifetime.Transient, ReplaceServices = true)]
+[ExposeServices(typeof(IRemoveAllLigneInventaireQuery))]
+public class RemoveAllLigneInventaireQuery : IRemoveAllLigneInventaireQuery
+{
+    public string Societe { get; set; }
+}

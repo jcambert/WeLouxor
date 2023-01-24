@@ -6,4 +6,8 @@ public interface IRemoveLigneInventaireQuery:IInventaireQuery<RemoveLigneInventa
 {
     Guid Id { get; set; }
 }
+public interface IRemoveAllLigneInventaireQuery : IInventaireQuery<RemoveLigneInventaireResponse>,ISociete
+{
+}
 public sealed record RemoveLigneInventaireResponse():InventaireResponse;
+

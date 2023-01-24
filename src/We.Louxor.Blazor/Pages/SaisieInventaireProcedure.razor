@@ -1,0 +1,32 @@
+﻿@page "/inventaire/procedure"
+<h3>SaisieInventaireProcedure</h3>
+<h4>Dans Superviseur Louxor, taper les requetes SQL ci-dessous<br />Attention: changer les dates par celles adequates</h4>
+<ul>
+    <li>
+        Mise a jour de la sous-famille en PF (Produit fini) pour tous les articles Vendus
+        <code>update pparti set codsfa='PF' where sigsoc='001' and gessto='O' and coddom='V' and codfam='01' and codsfa='' and codart in (select distinct codart from cmlign where sigsoc='001')</code>
+    </li>
+    <li>
+        Mise à jour de tous les produits vendu
+        <ul>
+            <li>
+                Reset
+                <code>update pparti set class3='' where sigsoc='001'</code>
+            </li>
+            <li>
+                Mise a jour du champs analytique 3
+                <code>
+                    update a set a.class3='VEN' from pparti a where a.sigsoc='001' and a.codart in (select distinct m.codart from cmlign m where m.sigsoc='001' and m.credat>={01/01/2021})
+                </code>
+            </li>
+
+        </ul>
+    </li>
+    <li>
+        MISE A JOUR Lot Appro en fonction de la commande
+        <code>update a set  a.lotapp=(select d.quanti from cmlign d where d.sigsoc='001' and d.codart=a.codart and d.numdoc in (select min(c.numdoc) as numdoc from cmlign c where c.sigsoc='001' and c.codart=d.codart and c.credat>={01/01/2021})  ) from pparti a where a.sigsoc='001' and a.coddom='V' and a.codfam='01' and a.codsfa='PF' and a.class3='VEN'</code>
+    </li>
+</ul>
+@code {
+
+}

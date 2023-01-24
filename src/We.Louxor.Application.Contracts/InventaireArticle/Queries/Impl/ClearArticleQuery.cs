@@ -2,6 +2,6 @@
 
 [Dependency(ServiceLifetime.Transient, ReplaceServices = true)]
 [ExposeServices(typeof(IClearArticleQuery))]
-public class ClearArticleQuery: IClearArticleQuery
+public class ClearArticleQuery: ClearBaseQuery, IClearArticleQuery
 {
 }
