@@ -1,5 +1,6 @@
 ﻿@page "/inventaire/saisie"
 @using Blazorise.Components;
+@using System.Globalization;
 @using We.Louxor.InventaireArticle;
 @using We.Louxor.InventaireArticle.Queries;
 @inject IInventaireAppService appService;
@@ -41,43 +42,43 @@
             <div class="col-4">
                 <div class="mb-3">
                     <label class="form-label">Ordre de fabrication</label>
-                    <Autocomplete TItem="string"
-                              TValue="string"
+                    <Autocomplete @ref="OfAutocomplete"
+                              TItem="BrowseOrdreDeFabricationForCompletion"
+                              TValue="int"
                               Data="@OrdresDeFabrication"
-                              TextField="@(( item ) => item)"
-                              ValueField="@(( item ) => item)"
-                              @bind-SelectedText="of_selectedAutoCompleteText"
+                              TextField="@(( item ) => item.Repr)"
+                              ValueField="@(( item ) => item.Numero)"
                               Placeholder="Ordre de Fabrication"
                               Filter="AutocompleteFilter.StartsWith"
                               FreeTyping=false
-                              CustomFilter="@(( item, searchValue ) => item.IndexOf( searchValue, 0, StringComparison.CurrentCultureIgnoreCase ) >= 0 )"
+                              CustomFilter="@(( item, searchValue ) => item.Numero.ToString().IndexOf( searchValue, 0, StringComparison.CurrentCultureIgnoreCase ) >= 0 )"
                               SelectedValueChanged="@OnOrdreDeFabricationChanged">
 
                         <NotFoundContent> Sorry... @context was not found! :( </NotFoundContent>
                     </Autocomplete>
                     @if (Operations.Count() == 1)
                     {
-                        <span>Operation Selectionnée: @operation_selectedSearchValue</span>
+                        <span>Operation Selectionnée: @Selected_Op</span>
                     }
                     else if (Operations.Count() > 1)
                     {
-                        @if (!string.IsNullOrEmpty(operation_selectedSearchValue))
+                        @if (Selected_Op != null)
                         {
-                            <span>Operation Selectionnée: @operation_selectedSearchValue</span>
+                            <span>Operation Selectionnée: @Selected_Op</span>
 
                         }
                         <table class="table table-hover table-bordered table-sm">
                             <tbody>
                                 @foreach (var item in Operations)
                                 {
-                                    <tr @onclick="@(e=>@onSelectOperationClicked(e,item))"><td>@item</td><td class="text-start"><Button Color="Color.Primary" Clicked="@(e=>@onSelectOperationClicked(e,item))" Visibility="@(operation_selectedSearchValue==item?Visibility.Invisible:Visibility.Visible)">Select</Button></td></tr>
+                                    <tr @onclick="@(e=>@onSelectOperationClicked(e,item))"><td>@item</td><td class="text-start"><Button Color="Color.Primary" Clicked="@(e=>@onSelectOperationClicked(e,item))" Visibility="@(Selected_Op==item?Visibility.Invisible:Visibility.Visible)">Select</Button></td></tr>
                                 }
                             </tbody>
                         </table>
                     }
-                    else if (!string.IsNullOrEmpty(operation_selectedSearchValue))
+                    else if (Selected_Op != null)
                     {
-                        <span>Pas d'operation pour @operation_selectedSearchValue</span>
+                        <span>Pas d'operation pour @Selected_Op</span>
                     }
                 </div>
             </div>
@@ -111,15 +112,13 @@
         <div class="row">
             <div>
                 <span>
-                    Valo Totale:@(
-                Inventaires.Sum(x => x.ValoFinale)
-                )
+                    Valo Totale:@String.Format(new CultureInfo("fr-fr"), "{0:C}", Inventaires.Sum(x => x.ValoFinale))
                 </span>
             </div>
             <div class="p-5 text-center">
                 <DataGrid TItem="ILigneInventaire"
                       Data="@Inventaires" Editable="true" ShowPager="true" PageSize="16">
-                    <DataGridColumns >
+                    <DataGridColumns>
                         <DataGridColumn Field="@nameof(ILigneInventaire.Page)" Caption="#" Sortable="true" />
                         <DataGridColumn Field="@nameof(ILigneInventaire.Article)" Caption="Article" Sortable="true" />
                         <DataGridColumn Field="@nameof(ILigneInventaire.Client)" Caption="Client" />
@@ -133,7 +132,8 @@
                         <DataGridColumn Field="@nameof(ILigneInventaire.CtRevient)" Caption="Ct Revient" DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" />
                         <DataGridColumn Field="@nameof(ILigneInventaire.ValoFinale)" Caption="Valo" DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" />
                         <DataGridCommandColumn DeleteCommandAllowed="true" NewCommandAllowed="false" EditCommandAllowed="false" Caption="Supprimer">
-                            <DeleteCommandTemplate >
+                            <DeleteCommandTemplate>
+                                
                                 <Button Color="Color.Primary" Clicked="@(e=>RemoveLigneInventaire(context))" class="fa fa-trash"></Button>
 
                             </DeleteCommandTemplate>
@@ -150,73 +150,86 @@
     const string SOCIETE = "001";
     private bool IsInitialized = false;
     public IEnumerable<string> Articles;
-    public IEnumerable<string> OrdresDeFabrication;
-    public List<string> Operations;
+    public List<BrowseOrdreDeFabricationForCompletion> OrdresDeFabrication = new();
+    public List<int> Operations = new();
     public List<ILigneInventaire> Inventaires = new();
     //LigneInventaire Ligne = new();
     public string Client;
     public int Quantite;
     public int Page { get; set; } = 1;
+
+    Autocomplete<BrowseOrdreDeFabricationForCompletion, int> OfAutocomplete;
     protected override async Task OnInitializedAsync()
     {
         Articles = (await appService.Browse(new BrowseArticleQuery() { Societe = SOCIETE })).Articles;
         var tmp_ofs = (await appService.Browse(new BrowseOrdreDeFabricationQuery() { Societe = SOCIETE })).Ofs;
-        OrdresDeFabrication = tmp_ofs.Select(x => x.ToString()).ToList();
+        OrdresDeFabrication.AddRange(tmp_ofs);
+        //OrdresDeFabrication = tmp_ofs.Select(x => x.ToString()).ToList();
         Inventaires = (await appService.GetListAsync(new BrowseLigneInventaireQuery() { Societe = SOCIETE })).Lignes;
-        Operations = new List<string>();
+
         await base.OnInitializedAsync();
         IsInitialized = true;
     }
     public string article_selectedSearchValue { get; set; }
     public string article_selectedAutoCompleteText { get; set; }
 
-    public string of_selectedSearchValue { get; set; }
-    public string of_selectedAutoCompleteText { get; set; }
+    //public string of_selectedSearchValue { get; set; }
+    //public string of_selectedAutoCompleteText { get; set; }
 
-    public string operation_selectedSearchValue { get; set; }
-    public string operation_selectedAutoCompleteText { get; set; }
+    //public string operation_selectedSearchValue { get; set; }
+    //public string operation_selectedAutoCompleteText { get; set; }
+
+
+    protected int? Selected_Of = null;
+    protected int? Selected_Op = null;
 
     async Task OnAddLineClicked()
     {
-        bool ok = Int32.TryParse(of_selectedSearchValue, out var of);
-        bool ok1 = Int32.TryParse(operation_selectedSearchValue, out var op);
+        // bool ok = Int32.TryParse(of_selectedSearchValue, out var of);
+        // bool ok1 = Int32.TryParse(operation_selectedSearchValue, out var op);
         double qte = Quantite * 1.0;
-        var resp = await appService.AddAsync(new AddLigneInventaireQuery() { Societe = SOCIETE, Article = article_selectedSearchValue, Client = Client, OrdreDeFabication = of, CodeOperationFinie = op, Quantite = qte, Page = Page });
+        var resp = await appService.AddAsync(new AddLigneInventaireQuery() { Societe = SOCIETE, Article = article_selectedSearchValue, Client = Client, OrdreDeFabication = Selected_Of??0, CodeOperationFinie = Selected_Op ?? 0, Quantite = qte, Page = Page });
 
         Inventaires.Add(resp.Ligne);
         //Ligne = new();
         article_selectedAutoCompleteText = string.Empty;
         article_selectedSearchValue = string.Empty;
-        of_selectedAutoCompleteText = string.Empty;
-        of_selectedSearchValue = string.Empty;
+        //of_selectedAutoCompleteText = string.Empty;
+        //of_selectedSearchValue = string.Empty;
+        Selected_Of = null;
+        Selected_Op = null;
+        await OfAutocomplete.ResetSelected();
         Client = string.Empty;
         Quantite = 0;
         Operations.Clear();
         StateHasChanged();
 
     }
-    Task onSelectOperationClicked(EventArgs args, string op)
+    Task onSelectOperationClicked(EventArgs args, int op)
     {
-        operation_selectedSearchValue = op;
+        //operation_selectedSearchValue = op;
+        Selected_Op = op;
         return Task.CompletedTask;
     }
-    async Task OnOrdreDeFabricationChanged(string args)
+    async Task OnOrdreDeFabricationChanged(int of)
     {
-        of_selectedSearchValue = args ?? string.Empty;
-        operation_selectedSearchValue = string.Empty;
-        if (!string.IsNullOrEmpty(of_selectedSearchValue))
+        Selected_Of = of;
+        //of_selectedSearchValue = args ?? string.Empty;
+        //operation_selectedSearchValue = string.Empty;
+        //if (!string.IsNullOrEmpty(of_selectedSearchValue))
+        //{
+        Operations.Clear();
+        Operations.AddRange((await appService.Browse(new BrowseOperationPourOrdreDeFabricationQuery() { Societe = SOCIETE, OrdreDeFabrication = of })).Operations);
+        if (Operations.Count() >= 0)
         {
-            Operations.Clear();
-            Operations.AddRange((await appService.Browse(new BrowseOperationPourOrdreDeFabricationQuery() { Societe = SOCIETE, OrdreDeFabrication = args })).Operations);
-            if (Operations.Count() >= 0)
-            {
-                operation_selectedSearchValue = Operations.First();
-            }
-            StateHasChanged();
+            // operation_selectedSearchValue = Operations.First();
+            Selected_Op = Operations.First();
         }
+        StateHasChanged();
+        //}
     }
 
-    async Task RemoveLigneInventaire(DeleteCommandContext< ILigneInventaire> ctx)
+    async Task RemoveLigneInventaire(DeleteCommandContext<ILigneInventaire> ctx)
     {
         var l = (LigneInventaire)ctx.Item;
         await appService.RemoveAsync(new RemoveLigneInventaireQuery() { Id = l.Id });

@@ -47,9 +47,9 @@ public class LouxorMenuContributor : IMenuContributor
             2,
             new ApplicationMenuItem(
                 LouxorMenus.InventaireSaisieProcedure,
-                l["Menu:Swagger"],
-                "/swagger",
-                icon: "fas fa-list",
+                l["Menu:Inventaire:Procedure"],
+                "/inventaire/procedure",
+                icon: "fas fa-book",
                 order: 1
             )
         );

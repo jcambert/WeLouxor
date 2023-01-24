@@ -5,5 +5,5 @@
 public class BrowseOperationPourOrdreDeFabricationQuery : IBrowseOperationPourOrdreDeFabricationQuery
 {
     public string Societe { get; set; } = LouxorAppConsts.LouxorDefaultSociete;
-    public string OrdreDeFabrication { get; set; }
+    public int OrdreDeFabrication { get; set; }
 }

@@ -14,10 +14,10 @@ public class BrowseOrdreDeFabricationHandler : BaseHandler<BrowseOrdreDeFabricat
     {
         var query = await repository.GetQueryableAsync();
         query = from q in query where q.Societe == request.Societe  select q;
-        var res = await AsyncExecuter.ToListAsync(query, cancellationToken);
-
-        List<int> ress = new();
-        ress.AddRange(res.Select(x=>x.Numero).Distinct().OrderBy(x=>x));
+        var res = await AsyncExecuter.ToListAsync<IOrdreDeFabication>(query, cancellationToken);
+        var ress=res.Select(x=>(x.Numero,x.CodeArticle)).Distinct().Select(x => new BrowseOrdreDeFabricationForCompletion() {Numero=x.Numero,CodeArticle=x.CodeArticle }).ToList();
+        //List<int> ress = new();
+        //ress.AddRange(res.Select(x=>x.Numero).Distinct().OrderBy(x=>x));
         return new BrowseOrdreDeFabricationResponse(ress);
     }
 }

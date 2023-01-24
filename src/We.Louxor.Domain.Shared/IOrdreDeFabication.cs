@@ -13,4 +13,8 @@ public interface IOrdreDeFabication:IEntityLouxor
     string CodeArticle { get; set; }
 
     double Quantite { get; set; }
+
+    //string Repr { get; }
+
+//    string Repr_Autocompletion { get; }
 }

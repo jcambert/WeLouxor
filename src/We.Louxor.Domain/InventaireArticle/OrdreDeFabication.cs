@@ -14,4 +14,6 @@ public class OrdreDeFabication:AggregateRoot<Guid>, IOrdreDeFabication
     public string CodeArticle { get; set; }
     public double Quantite { get; set; }
     public bool IsDeleted { get; }
+    //public string Repr => $"{Numero}";
+    //public string Repr_Autocompletion => $"{Numero}-{CodeArticle}";
 }

@@ -2,7 +2,7 @@
 
 public interface IBrowseOperationPourOrdreDeFabricationQuery : IInventaireQuery<BrowseOperationPourOrdreDeFabricationResponse>, ISociete
 {
-    string OrdreDeFabrication { get; set; }
+    int OrdreDeFabrication { get; set; }
 }
 
-public sealed record BrowseOperationPourOrdreDeFabricationResponse(List<string> Operations) : InventaireResponse;
+public sealed record BrowseOperationPourOrdreDeFabricationResponse(List<int> Operations) : InventaireResponse;

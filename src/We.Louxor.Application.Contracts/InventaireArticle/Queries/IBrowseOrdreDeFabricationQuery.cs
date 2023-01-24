@@ -4,4 +4,12 @@ public interface IBrowseOrdreDeFabricationQuery:IInventaireQuery<BrowseOrdreDeFa
 {
 }
 
-public sealed record BrowseOrdreDeFabricationResponse(List<int> Ofs);
+public sealed record BrowseOrdreDeFabricationResponse(List<BrowseOrdreDeFabricationForCompletion> Ofs);
+
+public sealed record BrowseOrdreDeFabricationForCompletion
+{
+    public int Numero { get; init; }
+    public string CodeArticle { get; init; }
+
+    public string Repr => $"{Numero}-{CodeArticle}";
+}
