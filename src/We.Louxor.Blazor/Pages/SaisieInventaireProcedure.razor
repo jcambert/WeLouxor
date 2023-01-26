@@ -1,30 +1,71 @@
 ﻿@page "/inventaire/procedure"
-<h3>SaisieInventaireProcedure</h3>
+<h3>Saisie Inventaire Procedure</h3>
 <h4>Dans Superviseur Louxor, taper les requetes SQL ci-dessous<br />Attention: changer les dates par celles adequates</h4>
+<Divider />
 <ul>
+
     <li>
-        Mise a jour de la sous-famille en PF (Produit fini) pour tous les articles Vendus
-        <code>update pparti set codsfa='PF' where sigsoc='001' and gessto='O' and coddom='V' and codfam='01' and codsfa='' and codart in (select distinct codart from cmlign where sigsoc='001')</code>
-    </li>
-    <li>
-        Mise à jour de tous les produits vendu
+        <Paragraph>
+            Mise a jour de la sous-famille en PF (Produit fini) pour tous les articles Vendus
+        </Paragraph>
         <ul>
             <li>
-                Reset
-                <code>update pparti set class3='' where sigsoc='001'</code>
+                <Paragraph>
+                    Reset
+                </Paragraph>
+                <code>update pparti set codsfa='' where sigsoc='001'</code>
+                <Divider />
+
             </li>
             <li>
-                Mise a jour du champs analytique 3
+
+                <Paragraph>
+                    <code>update pparti set codsfa='PF' where sigsoc='001' and gessto='O' and coddom='V' and codfam='01' and codsfa='' and codart in (select distinct codart from cmlign where sigsoc='001')</code>
+                </Paragraph>
+            </li>
+        </ul>
+        <Divider />
+    </li>
+    <li>
+        <Paragraph>
+            Mise à jour de tous les produits vendu
+        </Paragraph>
+
+        <ul>
+            <li>
+                <Paragraph>
+                    Reset
+                </Paragraph>
+                <code>update pparti set class3='' where sigsoc='001'</code>
+                <Divider />
+            </li>
+            <li>
+                <Paragraph>
+                    Mise a jour du champs analytique 3
+                </Paragraph>
                 <code>
                     update a set a.class3='VEN' from pparti a where a.sigsoc='001' and a.codart in (select distinct m.codart from cmlign m where m.sigsoc='001' and m.credat>={01/01/2021})
                 </code>
             </li>
 
         </ul>
+        <Divider />
     </li>
     <li>
-        MISE A JOUR Lot Appro en fonction de la commande
+        <Paragraph>
+            MISE A JOUR Lot Appro en fonction de la commande
+        </Paragraph>
         <code>update a set  a.lotapp=(select d.quanti from cmlign d where d.sigsoc='001' and d.codart=a.codart and d.numdoc in (select min(c.numdoc) as numdoc from cmlign c where c.sigsoc='001' and c.codart=d.codart and c.credat>={01/01/2021})  ) from pparti a where a.sigsoc='001' and a.coddom='V' and a.codfam='01' and a.codsfa='PF' and a.class3='VEN'</code>
+        <Divider />
+    </li>
+    <li>
+        <Paragraph>
+            Dans une fiche Article de Louxor, lancer le calcul de mise à jour des couts suivant le modele ci-dessous
+        </Paragraph>
+        <Figure Size="FigureSize.Is512x512">
+            <FigureImage Source="images/calculcout.jpg" AlternateText="empty-256x256" Rounded />
+            <FigureCaption>Exemple a suivre pour le calcul des couts.</FigureCaption>
+        </Figure>
     </li>
 </ul>
 @code {

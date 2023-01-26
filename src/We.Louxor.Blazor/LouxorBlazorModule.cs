@@ -93,7 +93,7 @@ public class LouxorBlazorModule : AbpModule
         context.Services.AddMediatR(typeof(LouxorApplicationModule).Assembly);
         
         
-        ConfigureAuthentication(context);
+        //ConfigureAuthentication(context);
         ConfigureUrls(configuration);
         ConfigureBundles();
         ConfigureAutoMapper();
@@ -237,7 +237,7 @@ public class LouxorBlazorModule : AbpModule
         app.UseCorrelationId();
         app.UseStaticFiles();
         app.UseRouting();
-        app.UseAuthentication();
+        //app.UseAuthentication();
         app.UseAbpOpenIddictValidation();
 
         if (MultiTenancyConsts.IsEnabled)
@@ -246,7 +246,7 @@ public class LouxorBlazorModule : AbpModule
         }
 
         app.UseUnitOfWork();
-        app.UseAuthorization();
+        //app.UseAuthorization();
         app.UseSwagger();
         app.UseAbpSwaggerUI(options =>
         {

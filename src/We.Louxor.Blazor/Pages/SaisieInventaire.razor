@@ -8,114 +8,114 @@
 <div class="container-fluid">
     @if (IsInitialized)
     {
-        <div class="row">
-            <div class="col-1">
-                <div class="mb-3">
-                    <label for="page" class="form-label">Page</label>
-                    <input type="number" min="1" class="form-control" id="page" placeholder="Page" @bind-value="Page">
-                </div>
+        <div class="row mb-3">
+            <div class="col-2">
+                <label for="page" class="form-label">Page</label>
+                <input type="number" min="1" class="form-control" id="page" placeholder="Page" @bind-value="Page">
+
             </div>
+            <Divider Class="mt-2" />
         </div>
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-4">
-                <div class="mb-3">
-                    <label class="form-label">Code Article</label>
+                <label class="form-label">Code Article</label>
 
 
-                    <Autocomplete TItem="string"
-                              TValue="string"
-                              Data="@Articles"
-                              TextField="@(( item ) => item)"
-                              ValueField="@(( item ) => item)"
-                              @bind-SelectedValue="@article_selectedSearchValue"
-                              @bind-SelectedText="article_selectedAutoCompleteText"
-                              Placeholder="Code Article"
-                              Filter="AutocompleteFilter.StartsWith"
-                              FreeTyping=false
-                              CustomFilter="@(( item, searchValue ) => item.IndexOf( searchValue, 0, StringComparison.CurrentCultureIgnoreCase ) >= 0 )">
-                        <NotFoundContent> Sorry... @context was not found! :( </NotFoundContent>
-                    </Autocomplete>
-                </div>
+                <Autocomplete TItem="string"
+                          TValue="string"
+                          Data="@Articles"
+                          DebounceInterval=500
+                          TextField="@(( item ) => item)"
+                          ValueField="@(( item ) => item)"
+                          @bind-SelectedValue="@article_selectedSearchValue"
+                          @bind-SelectedText="article_selectedAutoCompleteText"
+                          Placeholder="Code Article"
+                          Filter="AutocompleteFilter.StartsWith"
+                          FreeTyping=false
+                          CustomFilter="@(( item, searchValue ) => item.IndexOf( searchValue, 0, StringComparison.CurrentCultureIgnoreCase ) >= 0 )">
+                    <NotFoundContent> Sorry... @context was not found! :( </NotFoundContent>
+                </Autocomplete>
+
             </div>
-        </div>
-        <div class="row">
             <div class="col-4">
-                <div class="mb-3">
-                    <label class="form-label">Ordre de fabrication</label>
-                    <Autocomplete @ref="OfAutocomplete"
-                              TItem="BrowseOrdreDeFabricationForCompletion"
-                              TValue="int"
-                              Data="@OrdresDeFabrication"
-                              TextField="@(( item ) => item.Repr)"
-                              ValueField="@(( item ) => item.Numero)"
-                              Placeholder="Ordre de Fabrication"
-                              Filter="AutocompleteFilter.StartsWith"
-                              FreeTyping=false
-                              CustomFilter="@(( item, searchValue ) => item.Numero.ToString().IndexOf( searchValue, 0, StringComparison.CurrentCultureIgnoreCase ) >= 0 )"
-                              SelectedValueChanged="@OnOrdreDeFabricationChanged">
+                <label for="client" class="form-label">Client</label>
+                <input class="form-control" id="client" placeholder="Client" @bind-value="Client">
 
-                        <NotFoundContent> Sorry... @context was not found! :( </NotFoundContent>
-                    </Autocomplete>
-                    @if (Operations.Count() == 1)
+            </div>
+            <Divider Class="mt-2" />
+        </div>
+        <div class="row mb-3">
+            <div class="col-4">
+                <label class="form-label">Ordre de fabrication</label>
+                <Autocomplete @ref="OfAutocomplete"
+                          TItem="BrowseOrdreDeFabricationForCompletion"
+                          TValue="int"
+                          Data="@OrdresDeFabrication"
+                          DebounceInterval=500
+                          TextField="@(( item ) => item.Repr)"
+                          ValueField="@(( item ) => item.Numero)"
+                          Placeholder="Ordre de Fabrication"
+                          Filter="AutocompleteFilter.StartsWith"
+                          FreeTyping=false
+                          CustomFilter="@(( item, searchValue ) => item.Numero.ToString().IndexOf( searchValue.Split('-')[0], 0, StringComparison.CurrentCultureIgnoreCase ) >= 0 )"
+                          SelectedValueChanged="@OnOrdreDeFabricationChanged">
+
+                    <NotFoundContent> Sorry... @context was not found! :( </NotFoundContent>
+                </Autocomplete>
+                @if (Operations.Count() == 1)
+                {
+                    <span>Operation Selectionnée: @Selected_Op</span>
+                }
+                else if (Operations.Count() > 1)
+                {
+                    @if (Selected_Op != null)
                     {
                         <span>Operation Selectionnée: @Selected_Op</span>
-                    }
-                    else if (Operations.Count() > 1)
-                    {
-                        @if (Selected_Op != null)
-                        {
-                            <span>Operation Selectionnée: @Selected_Op</span>
 
-                        }
-                        <table class="table table-hover table-bordered table-sm">
-                            <tbody>
-                                @foreach (var item in Operations)
-                                {
-                                    <tr @onclick="@(e=>@onSelectOperationClicked(e,item))"><td>@item</td><td class="text-start"><Button Color="Color.Primary" Clicked="@(e=>@onSelectOperationClicked(e,item))" Visibility="@(Selected_Op==item?Visibility.Invisible:Visibility.Visible)">Select</Button></td></tr>
-                                }
-                            </tbody>
-                        </table>
                     }
-                    else if (Selected_Op != null)
-                    {
-                        <span>Pas d'operation pour @Selected_Op</span>
-                    }
-                </div>
+                    <table class="table table-hover table-bordered table-sm">
+                        <tbody>
+                            @foreach (var item in Operations)
+                            {
+                                <tr @onclick="@(e=>@onSelectOperationClicked(e,item))"><td>@item</td><td class="text-start"><Button Color="Color.Primary" Clicked="@(e=>@onSelectOperationClicked(e,item))" Visibility="@(Selected_Op==item?Visibility.Invisible:Visibility.Visible)">Select</Button></td></tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else if (Selected_Op != null)
+                {
+                    <span>Pas d'operation pour @Selected_Op</span>
+                }
+
             </div>
         </div>
-        <div class="row">
-            <div class="col-3">
-                <div class="mb-3">
-                    <label for="client" class="form-label">Client</label>
-                    <input class="form-control" id="client" placeholder="Client" @bind-value="Client">
-                </div>
+
+        <div class="row mb-3">
+            <div class="col-2">
+                <label for="quantity" class="form-label">Quantité</label>
+                <input type="number" min="0" class="form-control" id="quantity" placeholder="Quantité" @bind-value="Quantite">
+
             </div>
         </div>
-        <div class="row">
-            <div class="col-3">
-                <div class="mb-3">
-                    <label for="quantity" class="form-label">Quantité</label>
-                    <input type="number" min="0" class="form-control" id="quantity" placeholder="Quantité" @bind-value="Quantite">
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-3">
-                <div class="">
-                    <Button Color="Color.Primary" Clicked="@OnAddLineClicked">Ajouter</Button>
-                </div>
+        <div class="row mt-3 mb-3">
+            <div class="col-12">
+                <Button Block Outline Size="Size.Large" Color="Color.Primary" Clicked="@OnAddLineClicked">Ajouter</Button>
             </div>
         </div>
     }
     @if (Inventaires != null)
     {
-        <div class="row">
-            <div>
-                <span>
-                    Valo Totale:@String.Format(new CultureInfo("fr-fr"), "{0:C}", Inventaires.Sum(x => x.ValoFinale))
-                </span>
+        <div class="row mb-4">
+            <div class="col-12 text-end ">
+                <Paragraph>
+                    <b>Valo Totale: @String.Format(new CultureInfo("fr-fr"), "{0:C}", Inventaires.Sum(x => x.ValoFinale))</b>
+                </Paragraph>
+
             </div>
-            <div class="p-5 text-center">
+        </div>
+        <div class="row mb-4">
+            <Divider Class="mt-2" />
+            <div class="col-12 text-center">
                 <DataGrid TItem="ILigneInventaire"
                       Data="@Inventaires" Editable="true" ShowPager="true" PageSize="16">
                     <DataGridColumns>
@@ -133,7 +133,7 @@
                         <DataGridColumn Field="@nameof(ILigneInventaire.ValoFinale)" Caption="Valo" DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" />
                         <DataGridCommandColumn DeleteCommandAllowed="true" NewCommandAllowed="false" EditCommandAllowed="false" Caption="Supprimer">
                             <DeleteCommandTemplate>
-                                
+
                                 <Button Color="Color.Primary" Clicked="@(e=>RemoveLigneInventaire(context))" class="fa fa-trash"></Button>
 
                             </DeleteCommandTemplate>
@@ -174,7 +174,7 @@
     public string article_selectedAutoCompleteText { get; set; }
 
     //public string of_selectedSearchValue { get; set; }
-    //public string of_selectedAutoCompleteText { get; set; }
+    public string of_selectedAutoCompleteText { get; set; }
 
     //public string operation_selectedSearchValue { get; set; }
     //public string operation_selectedAutoCompleteText { get; set; }
@@ -188,7 +188,7 @@
         // bool ok = Int32.TryParse(of_selectedSearchValue, out var of);
         // bool ok1 = Int32.TryParse(operation_selectedSearchValue, out var op);
         double qte = Quantite * 1.0;
-        var resp = await appService.AddAsync(new AddLigneInventaireQuery() { Societe = SOCIETE, Article = article_selectedSearchValue, Client = Client, OrdreDeFabication = Selected_Of??0, CodeOperationFinie = Selected_Op ?? 0, Quantite = qte, Page = Page });
+        var resp = await appService.AddAsync(new AddLigneInventaireQuery() { Societe = SOCIETE, Article = article_selectedSearchValue, Client = Client, OrdreDeFabication = Selected_Of ?? 0, CodeOperationFinie = Selected_Op ?? 0, Quantite = qte, Page = Page });
 
         Inventaires.Add(resp.Ligne);
         //Ligne = new();
@@ -198,11 +198,12 @@
         //of_selectedSearchValue = string.Empty;
         Selected_Of = null;
         Selected_Op = null;
-        await OfAutocomplete.ResetSelected();
+        //await OfAutocomplete.ResetSelected();
+        of_selectedAutoCompleteText = "";
         Client = string.Empty;
         Quantite = 0;
         Operations.Clear();
-        StateHasChanged();
+        // StateHasChanged();
 
     }
     Task onSelectOperationClicked(EventArgs args, int op)
@@ -213,19 +214,23 @@
     }
     async Task OnOrdreDeFabricationChanged(int of)
     {
-        Selected_Of = of;
         //of_selectedSearchValue = args ?? string.Empty;
         //operation_selectedSearchValue = string.Empty;
         //if (!string.IsNullOrEmpty(of_selectedSearchValue))
         //{
-        Operations.Clear();
-        Operations.AddRange((await appService.Browse(new BrowseOperationPourOrdreDeFabricationQuery() { Societe = SOCIETE, OrdreDeFabrication = of })).Operations);
-        if (Operations.Count() >= 0)
+        if (of > 0)
         {
-            // operation_selectedSearchValue = Operations.First();
-            Selected_Op = Operations.First();
+            Operations.Clear();
+            Operations.AddRange((await appService.Browse(new BrowseOperationPourOrdreDeFabricationQuery() { Societe = SOCIETE, OrdreDeFabrication = of })).Operations);
+            if (Operations.Count() > 0)
+            {
+                Selected_Of = of;
+                // operation_selectedSearchValue = Operations.First();
+                Selected_Op = Operations.First();
+            }
+
+            // StateHasChanged();
         }
-        StateHasChanged();
         //}
     }
 

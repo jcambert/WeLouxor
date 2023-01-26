@@ -4,8 +4,9 @@
     "Menu:Home": "Accueil",
     "Welcome": "Bienvenue",
     "LongWelcomeMessage": "Bienvenue dans l'application. Il s'agit d'un projet de démarrage basé sur le framework ABP. Pour plus d'informations, visitez abp.io.",
+    "Menu:Inventaire": "Inventaire",
     "Menu:Inventaire:Saisie": "Saisie",
-    "Menu:Inventaire:Procedure": "Procedure Inventaire",
+    "Menu:Inventaire:Procedure": "Procedure ",
     "Menu:Swagger": "Api"
   }
 }
