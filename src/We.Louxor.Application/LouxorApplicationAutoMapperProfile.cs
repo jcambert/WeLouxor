@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System;
+using Volo.Abp.AutoMapper;
 using We.Dbf;
 using We.Louxor.InventaireArticle;
 
@@ -34,5 +35,11 @@ public class LouxorApplicationAutoMapperProfile : Profile
                 new Client() { Societe = ((string)record["sigsoc"]).Trim(), Code  = ((string)record["codfou"]).Trim(), Libelle= ((string)record["libfou"]).Trim() }
 
             );
+
+        CreateMap<LigneInventaire, LigneInventaireDto>();
+
+        CreateMap<LigneInventaireDto, LigneInventaire>()
+              .IgnoreFullAuditedObjectProperties();
+            
     }
 }

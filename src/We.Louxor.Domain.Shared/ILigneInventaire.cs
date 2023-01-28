@@ -24,6 +24,7 @@ public class BaseLigneInventaire : IBaseLigneInventaire
 }
 public interface ILigneInventaire: IFullAuditedObject
 {
+     Guid Id { get; }
      int Page { get; set; }
      int OrdreDeFabication { get; set; }
      int CodeOperationFinie { get; set; }

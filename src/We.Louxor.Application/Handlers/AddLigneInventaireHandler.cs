@@ -1,11 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Threading;
-using System.Threading.Tasks;
-using Volo.Abp.DependencyInjection;
-using Volo.Abp.Domain.Entities;
-using Volo.Abp.Domain.Repositories;
+﻿using Volo.Abp.Domain.Entities;
 using We.Louxor.InventaireArticle;
 using We.Louxor.InventaireArticle.Queries;
 
@@ -230,6 +223,7 @@ public class AddLigneInventaireHandler : BaseHandler<AddLigneInventaireQuery, Ad
             Societe=request.Societe,
         };
         await _inv_repository.InsertAsync(inventaire);
-        return new AddLigneInventaireResponse(inventaire);
+        LigneInventaireDto res = ObjectMapper.Map<LigneInventaire,LigneInventaireDto>(inventaire);
+        return new AddLigneInventaireResponse(res);
     }
 }

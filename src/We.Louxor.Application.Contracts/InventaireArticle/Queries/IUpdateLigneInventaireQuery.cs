@@ -5,7 +5,7 @@ namespace We.Louxor.InventaireArticle.Queries;
 public interface IUpdateLigneInventaireQuery : IInventaireQuery<UpdateLigneInventaireResponse>
 {
     Guid Id { get; set; }
-    BaseLigneInventaire Ligne { get; set; }
+    LigneInventaireDto Ligne { get; set; }
 }
-public sealed record UpdateLigneInventaireResponse(ILigneInventaire Ligne):InventaireResponse;
+public sealed record UpdateLigneInventaireResponse(LigneInventaireDto Ligne):InventaireResponse;
 

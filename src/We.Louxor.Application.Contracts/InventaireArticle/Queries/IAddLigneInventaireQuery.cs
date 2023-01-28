@@ -15,4 +15,4 @@ public interface IAddLigneInventaireQuery: IInventaireQuery<AddLigneInventaireRe
     string Client { get; set; }
 }
 
-public sealed record AddLigneInventaireResponse(ILigneInventaire Ligne):InventaireResponse;
+public sealed record AddLigneInventaireResponse(LigneInventaireDto Ligne):InventaireResponse;

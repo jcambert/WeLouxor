@@ -1,4 +1,5 @@
-﻿using We.Louxor.InventaireArticle;
+﻿using System.Collections.Generic;
+using We.Louxor.InventaireArticle;
 using We.Louxor.InventaireArticle.Queries;
 
 namespace We.Louxor.Handlers;
@@ -14,7 +15,7 @@ public class BrowseLigneInventaireHandler : BaseHandler<BrowseLigneInventaireQue
     {
         var query=await repository.GetQueryableAsync();
         List<ILigneInventaire> res =await AsyncExecuter.ToListAsync<ILigneInventaire>(query, cancellationToken);
-        
-        return new BrowseLigneInventaireResponse(res);
+        var res1 = ObjectMapper.Map< List < ILigneInventaire > ,List <LigneInventaireDto>>(res);
+        return new BrowseLigneInventaireResponse(res1);
     }
 }

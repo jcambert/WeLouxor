@@ -4,4 +4,4 @@ public interface IBrowseLigneInventaireQuery : IInventaireQuery<BrowseLigneInven
 {
 }
 
-public sealed record BrowseLigneInventaireResponse(List<ILigneInventaire> Lignes) : InventaireResponse;
+public sealed record BrowseLigneInventaireResponse(List<LigneInventaireDto> Lignes) : InventaireResponse;

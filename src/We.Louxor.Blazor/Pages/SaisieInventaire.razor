@@ -1,6 +1,9 @@
 ﻿@page "/inventaire/saisie"
 @using Blazorise.Components;
 @using System.Globalization;
+@using System.Diagnostics;
+@using System.Text.Json;
+@using System.Reflection;
 @using We.Louxor.InventaireArticle;
 @using We.Louxor.InventaireArticle.Queries;
 @inject IInventaireAppService appService;
@@ -116,27 +119,77 @@
         <div class="row mb-4">
             <Divider Class="mt-2" />
             <div class="col-12 text-center">
-                <DataGrid TItem="ILigneInventaire"
-                      Data="@Inventaires" Editable="true" ShowPager="true" PageSize="16">
+                <DataGrid TItem="LigneInventaireDto"
+                      Data="@Inventaires" 
+                      Editable 
+                      Filterable
+                      FilterMethod="DataGridFilterMethod.StartsWith" 
+                      
+                      ShowPager="true" 
+                      PageSize="16" 
+                      RowUpdating="InventaireUpdating">
                     <DataGridColumns>
-                        <DataGridColumn Field="@nameof(ILigneInventaire.Page)" Caption="#" Sortable="true" />
-                        <DataGridColumn Field="@nameof(ILigneInventaire.Article)" Caption="Article" Sortable="true" />
-                        <DataGridColumn Field="@nameof(ILigneInventaire.Client)" Caption="Client" />
-                        <DataGridColumn Field="@nameof(ILigneInventaire.OrdreDeFabication)" Caption="Of" />
-                        <DataGridColumn Field="@nameof(ILigneInventaire.CodeOperationFinie)" Caption="Op" />
-                        <DataGridColumn Field="@nameof(ILigneInventaire.NumeroCommandeClient)" Caption="AR" />
-                        <DataGridColumn Field="@nameof(ILigneInventaire.Quantite)" Caption="Qté" />
-                        <DataGridColumn Field="@nameof(ILigneInventaire.PvArticleDeTete)" Caption="P.v tête" DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" />
-                        <DataGridColumn Field="@nameof(ILigneInventaire.PuGamme)" Caption="Pu Gam." DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" />
-                        <DataGridColumn Field="@nameof(ILigneInventaire.PuNomenclature)" Caption="Pu Nomenc." DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" />
-                        <DataGridColumn Field="@nameof(ILigneInventaire.CtRevient)" Caption="Ct Revient" DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" />
-                        <DataGridColumn Field="@nameof(ILigneInventaire.ValoFinale)" Caption="Valo" DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" />
-                        <DataGridCommandColumn DeleteCommandAllowed="true" NewCommandAllowed="false" EditCommandAllowed="false" Caption="Supprimer">
+                        <DataGridColumn Field="@nameof(LigneInventaire.Page)" Caption="#" Sortable Filterable Editable>
+                            <EditTemplate>
+                                <NumericEdit TValue="int" Value="@((int)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
+                            </EditTemplate>
+                        </DataGridColumn>
+                        <DataGridColumn Field="@nameof(LigneInventaire.Article)" Caption="Article" Sortable Filterable Editable />
+                        <DataGridColumn Field="@nameof(LigneInventaire.Client)" Caption="Client" Sortable Filterable Editable />
+                        <DataGridColumn Field="@nameof(LigneInventaire.OrdreDeFabication)" Caption="Of" Editable>
+                            <EditTemplate>
+                                <NumericEdit TValue="int" Value="@((int)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
+                            </EditTemplate>
+                        </DataGridColumn>
+                        <DataGridColumn Field="@nameof(LigneInventaire.CodeOperationFinie)" Caption="Op" Editable >
+                            <EditTemplate>
+                                <NumericEdit TValue="int" Value="@((int)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
+                            </EditTemplate>
+                        </DataGridColumn>
+                        <DataGridColumn Field="@nameof(LigneInventaire.NumeroCommandeClient)" Caption="AR" Filterable Editable>
+                            <EditTemplate>
+                                <NumericEdit TValue="int" Value="@((int)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
+                            </EditTemplate>
+                        </DataGridColumn>
+                        <DataGridColumn Field="@nameof(LigneInventaire.Quantite)" Caption="Qté" Editable Filterable="false">
+                            <EditTemplate>
+                                <NumericEdit TValue="double" Value="@((double)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
+                            </EditTemplate>
+
+                        </DataGridColumn>
+                        <DataGridColumn Field="@nameof(LigneInventaire.PvArticleDeTete)" Caption="P.v tête" DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" Editable Filterable="false">
+                            <EditTemplate>
+                                <NumericEdit TValue="double" Value="@((double)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
+                            </EditTemplate>
+                        </DataGridColumn>
+                        <DataGridColumn Field="@nameof(LigneInventaire.PuGamme)" Caption="Pu Gam." DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" Editable Filterable="false">
+                            <EditTemplate>
+                                <NumericEdit TValue="double" Value="@((double)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
+                            </EditTemplate>
+                            </DataGridColumn>
+                        <DataGridColumn Field="@nameof(LigneInventaire.PuNomenclature)" Caption="Pu Nomenc." DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" Editable Filterable="false">
+                            <EditTemplate>
+                                <NumericEdit  TValue="double" Value="@((double)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
+                            </EditTemplate>
+                            </DataGridColumn>
+                        <DataGridColumn Field="@nameof(LigneInventaire.CtRevient)" Caption="Ct Revient" DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" Filterable="false" />
+                        <DataGridColumn Field="@nameof(LigneInventaire.ValoFinale)" Caption="Valo" DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" Filterable="false"/>
+                        <DataGridCommandColumn DeleteCommandAllowed="true" NewCommandAllowed="false" EditCommandAllowed="true" Caption="Supprimer">
                             <DeleteCommandTemplate>
-
                                 <Button Color="Color.Primary" Clicked="@(e=>RemoveLigneInventaire(context))" class="fa fa-trash"></Button>
-
                             </DeleteCommandTemplate>
+                            <EditCommandTemplate>
+                                <Button Color="Color.Primary" Clicked="@context.Clicked" class="fa fa-pen"></Button>
+                            </EditCommandTemplate>
+                            <SaveCommandTemplate>
+                                <Button ElementId="btnSave" Type="ButtonType.Submit" PreventDefaultOnSubmit Color="Color.Primary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+                            </SaveCommandTemplate>
+                            <CancelCommandTemplate>
+                                <Button ElementId="btnCancel" Color="Color.Secondary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+                            </CancelCommandTemplate>
+                            <ClearFilterCommandTemplate>
+                                <Button Color="Color.Primary" Clicked="@context.Clicked" class="fa fa-trash"></Button>
+                            </ClearFilterCommandTemplate>
                         </DataGridCommandColumn>
                     </DataGridColumns>
 
@@ -152,7 +205,7 @@
     public IEnumerable<string> Articles;
     public List<BrowseOrdreDeFabricationForCompletion> OrdresDeFabrication = new();
     public List<int> Operations = new();
-    public List<ILigneInventaire> Inventaires = new();
+    public List<LigneInventaireDto> Inventaires = new();
     //LigneInventaire Ligne = new();
     public string Client;
     public int Quantite;
@@ -234,10 +287,33 @@
         //}
     }
 
-    async Task RemoveLigneInventaire(DeleteCommandContext<ILigneInventaire> ctx)
+    async Task RemoveLigneInventaire(DeleteCommandContext<LigneInventaireDto> ctx)
     {
-        var l = (LigneInventaire)ctx.Item;
+        var l = ctx.Item;
         await appService.RemoveAsync(new RemoveLigneInventaireQuery() { Id = l.Id });
         Inventaires.Remove(l);
+    }
+
+    protected async Task InventaireUpdating(CancellableRowChange<LigneInventaireDto, Dictionary<string, object>> row)
+    {
+        var ligne = GetCurrentScreen(row.Item, row.Values);
+
+        var result = await appService.UpdateAsync(new UpdateLigneInventaireQuery() { Id = row.Item.Id, Ligne = ligne });
+        if (result.Ligne == null)
+        {
+            Debugger.Break();
+
+        }
+    }
+    protected T GetCurrentScreen<T>(T currentObj, Dictionary<string, object> EditedValues)
+    {
+        object obj = JsonSerializer.Deserialize<T>(JsonSerializer.Serialize(currentObj));
+        PropertyInfo[] prop = obj.GetType().GetProperties();
+        foreach (KeyValuePair<string, object> kv in EditedValues)
+        {
+            PropertyInfo pi = (from p in prop where p.Name == kv.Key select p).FirstOrDefault<PropertyInfo>();
+            pi.SetValue(obj, kv.Value);
+        }
+        return (T)obj;
     }
 }

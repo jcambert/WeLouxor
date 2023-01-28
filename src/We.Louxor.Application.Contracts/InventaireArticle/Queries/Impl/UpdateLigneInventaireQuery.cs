@@ -7,6 +7,6 @@ namespace We.Louxor.InventaireArticle.Queries;
 public class UpdateLigneInventaireQuery : IUpdateLigneInventaireQuery
 {
     public Guid Id { get; set; }
-    public BaseLigneInventaire Ligne { get; set; }
+    public LigneInventaireDto Ligne { get; set; }
     public string Societe { get; set; } = LouxorAppConsts.LouxorDefaultSociete;
 }
