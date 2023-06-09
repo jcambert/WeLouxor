@@ -5,11 +5,8 @@ using We.Louxor.InventaireArticle.Queries;
 
 namespace We.Louxor.Handlers;
 
-public class ClearArticleHandler : ClearBaseHandler<ClearArticleQuery, ClearArticleResponse, Article, Guid>
+public class ClearArticleHandler
+    : ClearBaseHandler<ClearArticleQuery, ClearArticleResponse, Article, Guid>
 {
-    public ClearArticleHandler(IAbpLazyServiceProvider serviceProvider) : base(serviceProvider)
-    {
-    }
-
-
+    public ClearArticleHandler(IAbpLazyServiceProvider serviceProvider) : base(serviceProvider) { }
 }

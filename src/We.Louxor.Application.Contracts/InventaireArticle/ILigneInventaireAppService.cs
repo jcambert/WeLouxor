@@ -5,7 +5,7 @@ using We.Louxor.InventaireArticle.Queries;
 
 namespace We.Louxor.InventaireArticle;
 
-public interface IInventaireAppService:IApplicationService
+public interface IInventaireAppService : IApplicationService
 {
     Task<AddLigneInventaireResponse> AddAsync(AddLigneInventaireQuery query);
 
@@ -25,6 +25,7 @@ public interface IInventaireAppService:IApplicationService
 
     Task<BrowseOrdreDeFabricationResponse> Browse(BrowseOrdreDeFabricationQuery query);
 
-    Task<BrowseOperationPourOrdreDeFabricationResponse> Browse(BrowseOperationPourOrdreDeFabricationQuery query);
-    
+    Task<BrowseOperationPourOrdreDeFabricationResponse> Browse(
+        BrowseOperationPourOrdreDeFabricationQuery query
+    );
 }

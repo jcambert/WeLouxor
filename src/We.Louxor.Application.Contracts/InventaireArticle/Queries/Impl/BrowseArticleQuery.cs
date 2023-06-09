@@ -4,5 +4,5 @@
 [ExposeServices(typeof(IBrowseArticleQuery))]
 public class BrowseArticleQuery : IBrowseArticleQuery
 {
-    public string Societe { get; set; }= LouxorAppConsts.LouxorDefaultSociete;
+    public string Societe { get; set; } = LouxorAppConsts.LouxorDefaultSociete;
 }

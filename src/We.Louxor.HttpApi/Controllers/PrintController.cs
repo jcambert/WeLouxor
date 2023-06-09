@@ -5,6 +5,7 @@ using We.Louxor.InventaireArticle;
 using We.Louxor.InventaireArticle.Queries;
 
 namespace We.Louxor.Controllers;
+
 [Area("Inventaire")]
 //[RemoteService(IsEnabled = false, IsMetadataEnabled = false, Name = AccountRemoteServiceConsts.RemoteServiceName)]
 [Route("api/printinventaire")]
@@ -16,7 +17,7 @@ public class PrintController : LouxorController
     public async Task<IActionResult> PrintAsync([FromQuery] PrintQuery query)
     {
         var response = await Service.PrintAsync(query);
-        var result = File(response.Content,response.ContentType,response.Filename);
+        var result = File(response.Content, response.ContentType, response.Filename);
         return result;
     }
 }

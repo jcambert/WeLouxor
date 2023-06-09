@@ -8,21 +8,45 @@ namespace We.Louxor.Handlers;
 public class PrintHandler : BaseHandler<PrintQuery, PrintResponse>
 {
     const string CONTENT_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-    List<string> HEADER=new List<string>() { "Page", "TYPE", "NUMERO \nOF", "NUM OP.\nTERMINEE", "CLIENT", "ARTICLE", "QUANTITE", "AR \nCOMMANDE", "ARTICLE\nBASE", "P.V \nART. BASE", "P.U\nGamme", "P.U Nomenclat.", "Ct\nrevient", "Valo\nFinale" };
-    protected IRepository<LigneInventaire, Guid> _repo => LazyServiceProvider.LazyGetRequiredService<IRepository<LigneInventaire, Guid>>();
-    public PrintHandler(IAbpLazyServiceProvider serviceProvider) : base(serviceProvider)
+    List<string> HEADER = new List<string>()
     {
-    }
+        "Page",
+        "TYPE",
+        "NUMERO \nOF",
+        "NUM OP.\nTERMINEE",
+        "CLIENT",
+        "ARTICLE",
+        "QUANTITE",
+        "AR \nCOMMANDE",
+        "ARTICLE\nBASE",
+        "P.V \nART. BASE",
+        "P.U\nGamme",
+        "P.U Nomenclat.",
+        "Ct\nrevient",
+        "Valo\nFinale"
+    };
+    protected IRepository<LigneInventaire, Guid> _repo =>
+        LazyServiceProvider.LazyGetRequiredService<IRepository<LigneInventaire, Guid>>();
 
-    public override async Task<PrintResponse> Handle(PrintQuery request, CancellationToken cancellationToken)
+    public PrintHandler(IAbpLazyServiceProvider serviceProvider) : base(serviceProvider) { }
+
+    public override async Task<PrintResponse> Handle(
+        PrintQuery request,
+        CancellationToken cancellationToken
+    )
     {
-
         if (string.IsNullOrEmpty(request.Filename))
             throw new ArgumentException("Le parametre Filename doit etre rempli");
-        request.SheetName = string.IsNullOrEmpty(request.SheetName) ? "Inventaire" : request.SheetName;
+        request.SheetName = string.IsNullOrEmpty(request.SheetName)
+          ? "Inventaire"
+          : request.SheetName;
 
         var query = await _repo.GetQueryableAsync();
-        query = from q in query where q.Societe == request.Societe orderby q.Page, q.Article select q;
+        query =
+            from q in query
+            where q.Societe == request.Societe
+            orderby q.Page ,q.Article
+            select q;
 
         var lignes = await AsyncExecuter.ToListAsync(query, cancellationToken);
         using (var workbook = new XLWorkbook())
@@ -66,7 +90,6 @@ public class PrintHandler : BaseHandler<PrintQuery, PrintResponse>
         foreach (var h in HEADER)
         {
             sheet.Cell(row, col++).Value = h;
-
         }
     }
 }

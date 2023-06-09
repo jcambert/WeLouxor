@@ -1,6 +1,3 @@
 ﻿namespace We.Louxor.InventaireArticle.Queries;
 
-public interface IClearBaseQuery:ISociete
-{
-    
-}
+public interface IClearBaseQuery : ISociete { }

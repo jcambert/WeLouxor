@@ -14,15 +14,14 @@ namespace We.Louxor.Migrations
                 name: "Domaine",
                 table: "LouxorInv_article",
                 type: "text",
-                nullable: true);
+                nullable: true
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Domaine",
-                table: "LouxorInv_article");
+            migrationBuilder.DropColumn(name: "Domaine", table: "LouxorInv_article");
         }
     }
 }

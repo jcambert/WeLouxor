@@ -1,6 +1,6 @@
 ﻿namespace We.Louxor.InventaireArticle;
 
-public interface IArticle: IEntityLouxor
+public interface IArticle : IEntityLouxor
 {
     string Code { get; set; }
 
@@ -9,5 +9,4 @@ public interface IArticle: IEntityLouxor
     double CoutMatiereDirect { get; set; }
 
     double CoutMachineDirect { get; set; }
-
 }

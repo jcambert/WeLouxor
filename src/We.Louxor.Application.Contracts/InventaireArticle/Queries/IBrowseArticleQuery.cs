@@ -2,8 +2,6 @@
 
 namespace We.Louxor.InventaireArticle.Queries;
 
-public interface IBrowseArticleQuery:IInventaireQuery<BrowseArticleResponse>,ISociete
-{
-}
+public interface IBrowseArticleQuery : IInventaireQuery<BrowseArticleResponse>, ISociete { }
 
-public sealed record BrowseArticleResponse(List<string> Articles):InventaireResponse;
+public sealed record BrowseArticleResponse(List<string> Articles) : InventaireResponse;

@@ -26,7 +26,7 @@ namespace We.Louxor.EntityFrameworkCore;
     typeof(AbpAuditLoggingEntityFrameworkCoreModule),
     typeof(AbpTenantManagementEntityFrameworkCoreModule),
     typeof(AbpFeatureManagementEntityFrameworkCoreModule)
-    )]
+)]
 public class LouxorEntityFrameworkCoreModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
@@ -39,19 +39,22 @@ public class LouxorEntityFrameworkCoreModule : AbpModule
 
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
-        context.Services.AddAbpDbContext<LouxorDbContext>(options =>
-        {
+        context.Services.AddAbpDbContext<LouxorDbContext>(
+            options =>
+            {
                 /* Remove "includeAllEntities: true" to create
                  * default repositories only for aggregate roots */
-            options.AddDefaultRepositories(includeAllEntities: true);
-        });
+                options.AddDefaultRepositories(includeAllEntities: true);
+            }
+        );
 
-        Configure<AbpDbContextOptions>(options =>
-        {
+        Configure<AbpDbContextOptions>(
+            options =>
+            {
                 /* The main point to change your DBMS.
                  * See also LouxorMigrationsDbContextFactory for EF Core tooling. */
-            options.UseNpgsql();
-        });
-
+                options.UseNpgsql();
+            }
+        );
     }
 }

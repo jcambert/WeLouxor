@@ -19,8 +19,9 @@ public class LouxorDbContextFactory : IDesignTimeDbContextFactory<LouxorDbContex
 
         var configuration = BuildConfiguration();
 
-        var builder = new DbContextOptionsBuilder<LouxorDbContext>()
-            .UseNpgsql(configuration.GetConnectionString("Default"));
+        var builder = new DbContextOptionsBuilder<LouxorDbContext>().UseNpgsql(
+            configuration.GetConnectionString("Default")
+        );
 
         return new LouxorDbContext(builder.Options);
     }

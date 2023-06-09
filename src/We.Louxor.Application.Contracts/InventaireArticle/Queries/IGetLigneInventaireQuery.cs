@@ -2,8 +2,9 @@
 
 namespace We.Louxor.InventaireArticle.Queries;
 
-public interface IGetLigneInventaireQuery:IInventaireQuery<GetLigneInventaireResponse>
+public interface IGetLigneInventaireQuery : IInventaireQuery<GetLigneInventaireResponse>
 {
     Guid Id { get; set; }
 }
-public sealed record GetLigneInventaireResponse(ILigneInventaire Ligne):InventaireResponse;
+
+public sealed record GetLigneInventaireResponse(ILigneInventaire Ligne) : InventaireResponse;

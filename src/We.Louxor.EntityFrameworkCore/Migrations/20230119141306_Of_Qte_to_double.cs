@@ -16,7 +16,8 @@ namespace We.Louxor.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(int),
-                oldType: "integer");
+                oldType: "integer"
+            );
         }
 
         /// <inheritdoc />
@@ -28,7 +29,8 @@ namespace We.Louxor.Migrations
                 type: "integer",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
         }
     }
 }

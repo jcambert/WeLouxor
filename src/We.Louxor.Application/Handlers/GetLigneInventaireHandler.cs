@@ -6,13 +6,16 @@ using We.Louxor.InventaireArticle.Queries;
 
 namespace We.Louxor.Handlers;
 
-public class GetLigneInventaireHandler : BaseHandler<GetLigneInventaireQuery, GetLigneInventaireResponse>
+public class GetLigneInventaireHandler
+    : BaseHandler<GetLigneInventaireQuery, GetLigneInventaireResponse>
 {
-    public GetLigneInventaireHandler(IAbpLazyServiceProvider serviceProvider) : base(serviceProvider)
-    {
-    }
+    public GetLigneInventaireHandler(IAbpLazyServiceProvider serviceProvider)
+        : base(serviceProvider) { }
 
-    public override Task<GetLigneInventaireResponse> Handle(GetLigneInventaireQuery request, CancellationToken cancellationToken)
+    public override Task<GetLigneInventaireResponse> Handle(
+        GetLigneInventaireQuery request,
+        CancellationToken cancellationToken
+    )
     {
         throw new NotImplementedException();
     }

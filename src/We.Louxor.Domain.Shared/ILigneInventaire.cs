@@ -1,6 +1,7 @@
 ﻿using System;
 
 namespace We.Louxor;
+
 public interface IBaseLigneInventaire
 {
     int Page { get; set; }
@@ -22,23 +23,24 @@ public class BaseLigneInventaire : IBaseLigneInventaire
     public Guid ArticleDeTete { get; set; }
     public double Quantite { get; set; }
 }
-public interface ILigneInventaire: IFullAuditedObject
+
+public interface ILigneInventaire : IFullAuditedObject
 {
-     Guid Id { get; }
-     int Page { get; set; }
-     int OrdreDeFabication { get; set; }
-     int CodeOperationFinie { get; set; }
-     int NumeroCommandeClient { get; set; }
-     Guid ArticleId { get; set; }
-     string Article { get; set; }
-     Guid ArticleDeTeteId { get; set; }
-     string ArticleDeTete { get; set; }
-     double Quantite { get; set; }
-     double PvArticleDeTete { get; set; }
-     double PuGamme { get; set; }
-     double PuNomenclature { get; set; }
-     double CtRevient { get; }
-     double ValoFinale { get; }
+    Guid Id { get; }
+    int Page { get; set; }
+    int OrdreDeFabication { get; set; }
+    int CodeOperationFinie { get; set; }
+    int NumeroCommandeClient { get; set; }
+    Guid ArticleId { get; set; }
+    string Article { get; set; }
+    Guid ArticleDeTeteId { get; set; }
+    string ArticleDeTete { get; set; }
+    double Quantite { get; set; }
+    double PvArticleDeTete { get; set; }
+    double PuGamme { get; set; }
+    double PuNomenclature { get; set; }
+    double CtRevient { get; }
+    double ValoFinale { get; }
     string Client { get; set; }
     string Societe { get; set; }
     public string Type { get; }

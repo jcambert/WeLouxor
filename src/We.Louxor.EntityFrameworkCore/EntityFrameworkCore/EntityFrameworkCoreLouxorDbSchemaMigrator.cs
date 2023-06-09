@@ -8,12 +8,12 @@ using Volo.Abp.DependencyInjection;
 namespace We.Louxor.EntityFrameworkCore;
 
 public class EntityFrameworkCoreLouxorDbSchemaMigrator
-    : ILouxorDbSchemaMigrator, ITransientDependency
+    : ILouxorDbSchemaMigrator,
+      ITransientDependency
 {
     private readonly IServiceProvider _serviceProvider;
 
-    public EntityFrameworkCoreLouxorDbSchemaMigrator(
-        IServiceProvider serviceProvider)
+    public EntityFrameworkCoreLouxorDbSchemaMigrator(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
     }
@@ -26,9 +26,6 @@ public class EntityFrameworkCoreLouxorDbSchemaMigrator
          * current scope.
          */
 
-        await _serviceProvider
-            .GetRequiredService<LouxorDbContext>()
-            .Database
-            .MigrateAsync();
+        await _serviceProvider.GetRequiredService<LouxorDbContext>().Database.MigrateAsync();
     }
 }

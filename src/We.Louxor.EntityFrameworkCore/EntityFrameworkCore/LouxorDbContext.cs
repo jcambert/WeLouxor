@@ -19,17 +19,18 @@ namespace We.Louxor.EntityFrameworkCore;
 [ReplaceDbContext(typeof(IIdentityDbContext))]
 [ReplaceDbContext(typeof(ITenantManagementDbContext))]
 [ConnectionStringName("Default")]
-public class LouxorDbContext :
-    AbpDbContext<LouxorDbContext>,
-    IIdentityDbContext,
-    ITenantManagementDbContext
+public class LouxorDbContext
+    : AbpDbContext<LouxorDbContext>,
+      IIdentityDbContext,
+      ITenantManagementDbContext
 {
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
     public DbSet<Article> Articles { get; set; }
     public DbSet<LigneInventaire> LignesInventaires { get; set; }
     public DbSet<LigneDeCommande> LignesDeCommandes { get; set; }
-    public DbSet<OrdreDeFabication> OrdresDeFabrication { get;set; }
+    public DbSet<OrdreDeFabication> OrdresDeFabrication { get; set; }
     public DbSet<Client> Clients { get; set; }
+
     #region Entities from the modules
 
     /* Notice: We only implemented IIdentityDbContext and ITenantManagementDbContext
@@ -57,11 +58,7 @@ public class LouxorDbContext :
 
     #endregion
 
-    public LouxorDbContext(DbContextOptions<LouxorDbContext> options)
-        : base(options)
-    {
-
-    }
+    public LouxorDbContext(DbContextOptions<LouxorDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -86,38 +83,50 @@ public class LouxorDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
-        builder.Entity<Article>(b =>
-        {
-            b.ToTable($"{LouxorConsts.DBTablePrefix_Inventaire}_{nameof(Article).ToLower()}");
-            b.HasIndex("Societe", "Code").IsUnique().IsDescending();
-            b.HasIndex(a => a.Societe).IsDescending();
-            b.HasIndex( a => a.Code ).IsDescending();
-        });
-        builder.Entity<LigneDeCommande>(b =>
-        {
-            b.ToTable($"{LouxorConsts.DBTablePrefix_Inventaire}_{nameof(LigneDeCommande).ToLower()}");
-            b.HasIndex("Societe", "NumeroDocument").IsUnique().IsDescending();
-            b.HasIndex(a => a.Societe).IsDescending();
-            b.HasIndex(a => a.NumeroDocument).IsDescending();
-            b.HasIndex(a => a.CodeArticle).IsDescending();
-        });
-        builder.Entity<OrdreDeFabication>(b =>
-        {
-            b.ToTable($"{LouxorConsts.DBTablePrefix_Inventaire}_{nameof(OrdreDeFabication).ToLower()}");
-            b.HasIndex("Societe", "Numero", "CodeOperation").IsUnique().IsDescending();
-            b.HasIndex(a => a.Societe).IsDescending();
-            b.HasIndex(a => a.Numero).IsDescending();
-            b.HasIndex(a => a.CodeArticle).IsDescending();
-            b.HasIndex(a => a.CodeClient).IsDescending();
-            b.HasIndex(a => a.NumeroAR).IsDescending();
-        });
+        builder.Entity<Article>(
+            b =>
+            {
+                b.ToTable($"{LouxorConsts.DBTablePrefix_Inventaire}_{nameof(Article).ToLower()}");
+                b.HasIndex("Societe", "Code").IsUnique().IsDescending();
+                b.HasIndex(a => a.Societe).IsDescending();
+                b.HasIndex(a => a.Code).IsDescending();
+            }
+        );
+        builder.Entity<LigneDeCommande>(
+            b =>
+            {
+                b.ToTable(
+                    $"{LouxorConsts.DBTablePrefix_Inventaire}_{nameof(LigneDeCommande).ToLower()}"
+                );
+                b.HasIndex("Societe", "NumeroDocument").IsUnique().IsDescending();
+                b.HasIndex(a => a.Societe).IsDescending();
+                b.HasIndex(a => a.NumeroDocument).IsDescending();
+                b.HasIndex(a => a.CodeArticle).IsDescending();
+            }
+        );
+        builder.Entity<OrdreDeFabication>(
+            b =>
+            {
+                b.ToTable(
+                    $"{LouxorConsts.DBTablePrefix_Inventaire}_{nameof(OrdreDeFabication).ToLower()}"
+                );
+                b.HasIndex("Societe", "Numero", "CodeOperation").IsUnique().IsDescending();
+                b.HasIndex(a => a.Societe).IsDescending();
+                b.HasIndex(a => a.Numero).IsDescending();
+                b.HasIndex(a => a.CodeArticle).IsDescending();
+                b.HasIndex(a => a.CodeClient).IsDescending();
+                b.HasIndex(a => a.NumeroAR).IsDescending();
+            }
+        );
 
-        builder.Entity<Client>(b =>
-        {
-            b.ToTable($"{LouxorConsts.DBTablePrefix_Inventaire}_{nameof(Client).ToLower()}");
-            b.HasIndex("Societe", "Code").IsUnique().IsDescending();
-            b.HasIndex(a => a.Societe).IsDescending();
-            b.HasIndex(a => a.Code).IsDescending();
-        });
+        builder.Entity<Client>(
+            b =>
+            {
+                b.ToTable($"{LouxorConsts.DBTablePrefix_Inventaire}_{nameof(Client).ToLower()}");
+                b.HasIndex("Societe", "Code").IsUnique().IsDescending();
+                b.HasIndex(a => a.Societe).IsDescending();
+                b.HasIndex(a => a.Code).IsDescending();
+            }
+        );
     }
 }

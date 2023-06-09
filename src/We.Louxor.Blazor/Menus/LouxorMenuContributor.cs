@@ -22,29 +22,36 @@ public class LouxorMenuContributor : IMenuContributor
     {
         var administration = context.Menu.GetAdministration();
         var l = context.GetLocalizer<LouxorResource>();
-        context.Menu.AddItem(new ApplicationMenuItem(
-                LouxorMenus.Home,
-                l["Menu:Home"],
-                "/",
-                icon: "fas fa-home",
-                order: 0
-            ))
+        context.Menu
+            .AddItem(
+                new ApplicationMenuItem(
+                    LouxorMenus.Home,
+                    l["Menu:Home"],
+                    "/",
+                    icon: "fas fa-home",
+                    order: 0
+                )
+            )
             .AddItem(
                 new ApplicationMenuItem(LouxorMenus.Application, l["Menu:Inventaire"])
-                .AddItem(new ApplicationMenuItem(
-                    LouxorMenus.InventaireSaisieProcedure,
-                    l["Menu:Inventaire:Procedure"],
-                    "/inventaire/procedure",
-                    icon: "fas fa-book",
-                    order: 1
-                ))
-                .AddItem(new ApplicationMenuItem(
-                    LouxorMenus.InventaireSaisie,
-                    l["Menu:Inventaire:Saisie"],
-                    "/inventaire/saisie",
-                    icon: "fas fa-pen-nib",
-                    order: 2
-                ))
+                    .AddItem(
+                        new ApplicationMenuItem(
+                            LouxorMenus.InventaireSaisieProcedure,
+                            l["Menu:Inventaire:Procedure"],
+                            "/inventaire/procedure",
+                            icon: "fas fa-book",
+                            order: 1
+                        )
+                    )
+                    .AddItem(
+                        new ApplicationMenuItem(
+                            LouxorMenus.InventaireSaisie,
+                            l["Menu:Inventaire:Saisie"],
+                            "/inventaire/saisie",
+                            icon: "fas fa-pen-nib",
+                            order: 2
+                        )
+                    )
             );
 
         context.Menu.AddItem(
@@ -56,7 +63,6 @@ public class LouxorMenuContributor : IMenuContributor
                 order: 1
             )
         );
-
 
         if (MultiTenancyConsts.IsEnabled)
         {

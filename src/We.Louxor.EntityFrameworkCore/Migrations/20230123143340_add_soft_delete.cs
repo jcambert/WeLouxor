@@ -15,48 +15,44 @@ namespace We.Louxor.Migrations
                 table: "LouxorInv_ordredefabication",
                 type: "boolean",
                 nullable: false,
-                defaultValue: false);
+                defaultValue: false
+            );
 
             migrationBuilder.AddColumn<bool>(
                 name: "IsDeleted",
                 table: "LouxorInv_lignedecommande",
                 type: "boolean",
                 nullable: false,
-                defaultValue: false);
+                defaultValue: false
+            );
 
             migrationBuilder.AddColumn<bool>(
                 name: "IsDeleted",
                 table: "LouxorInv_client",
                 type: "boolean",
                 nullable: false,
-                defaultValue: false);
+                defaultValue: false
+            );
 
             migrationBuilder.AddColumn<bool>(
                 name: "IsDeleted",
                 table: "LouxorInv_article",
                 type: "boolean",
                 nullable: false,
-                defaultValue: false);
+                defaultValue: false
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "IsDeleted",
-                table: "LouxorInv_ordredefabication");
+            migrationBuilder.DropColumn(name: "IsDeleted", table: "LouxorInv_ordredefabication");
 
-            migrationBuilder.DropColumn(
-                name: "IsDeleted",
-                table: "LouxorInv_lignedecommande");
+            migrationBuilder.DropColumn(name: "IsDeleted", table: "LouxorInv_lignedecommande");
 
-            migrationBuilder.DropColumn(
-                name: "IsDeleted",
-                table: "LouxorInv_client");
+            migrationBuilder.DropColumn(name: "IsDeleted", table: "LouxorInv_client");
 
-            migrationBuilder.DropColumn(
-                name: "IsDeleted",
-                table: "LouxorInv_article");
+            migrationBuilder.DropColumn(name: "IsDeleted", table: "LouxorInv_article");
         }
     }
 }

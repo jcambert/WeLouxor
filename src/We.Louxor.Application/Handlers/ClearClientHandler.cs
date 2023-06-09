@@ -9,11 +9,8 @@ using We.Louxor.InventaireArticle.Queries;
 
 namespace We.Louxor.Handlers;
 
-public class ClearClientHandler : ClearBaseHandler<ClearClientQuery, ClearClientResponse, Client, Guid>
+public class ClearClientHandler
+    : ClearBaseHandler<ClearClientQuery, ClearClientResponse, Client, Guid>
 {
-    public ClearClientHandler(IAbpLazyServiceProvider serviceProvider) : base(serviceProvider)
-    {
-    }
-
-
+    public ClearClientHandler(IAbpLazyServiceProvider serviceProvider) : base(serviceProvider) { }
 }

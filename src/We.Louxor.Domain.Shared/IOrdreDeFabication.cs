@@ -1,10 +1,10 @@
 ﻿namespace We.Louxor.InventaireArticle;
 
-public interface IOrdreDeFabication:IEntityLouxor
+public interface IOrdreDeFabication : IEntityLouxor
 {
-    int Numero{ get; set; }
+    int Numero { get; set; }
 
-    int CodeOperation { get;set; }
+    int CodeOperation { get; set; }
 
     int NumeroAR { get; set; }
 
@@ -16,5 +16,5 @@ public interface IOrdreDeFabication:IEntityLouxor
 
     //string Repr { get; }
 
-//    string Repr_Autocompletion { get; }
+    //    string Repr_Autocompletion { get; }
 }

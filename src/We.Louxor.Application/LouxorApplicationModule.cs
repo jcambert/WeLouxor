@@ -23,18 +23,17 @@ namespace We.Louxor;
     typeof(AbpTenantManagementApplicationModule),
     typeof(AbpFeatureManagementApplicationModule),
     typeof(AbpSettingManagementApplicationModule)
-    )]
+)]
 public class LouxorApplicationModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
-
-        Configure<AbpAutoMapperOptions>(options =>
-        {
-            options.AddMaps<LouxorApplicationModule>();
-        });
-
-        
+        Configure<AbpAutoMapperOptions>(
+            options =>
+            {
+                options.AddMaps<LouxorApplicationModule>();
+            }
+        );
 
         context.Services.AddTransient<DbfDocument>();
     }

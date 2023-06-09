@@ -1,7 +1,8 @@
 ﻿using System;
+
 namespace We.Louxor;
 
-public interface ILigneDeCommande:IEntityLouxor
+public interface ILigneDeCommande : IEntityLouxor
 {
     int NumeroDocument { get; set; }
     int NumeroEntete { get; }

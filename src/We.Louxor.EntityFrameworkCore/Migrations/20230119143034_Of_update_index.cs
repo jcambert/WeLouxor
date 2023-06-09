@@ -12,14 +12,16 @@ namespace We.Louxor.Migrations
         {
             migrationBuilder.DropIndex(
                 name: "IX_LouxorInv_ordredefabication_Societe_Numero",
-                table: "LouxorInv_ordredefabication");
+                table: "LouxorInv_ordredefabication"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_LouxorInv_ordredefabication_Societe_Numero_CodeOperation",
                 table: "LouxorInv_ordredefabication",
                 columns: new[] { "Societe", "Numero", "CodeOperation" },
                 unique: true,
-                descending: new bool[0]);
+                descending: new bool[0]
+            );
         }
 
         /// <inheritdoc />
@@ -27,14 +29,16 @@ namespace We.Louxor.Migrations
         {
             migrationBuilder.DropIndex(
                 name: "IX_LouxorInv_ordredefabication_Societe_Numero_CodeOperation",
-                table: "LouxorInv_ordredefabication");
+                table: "LouxorInv_ordredefabication"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_LouxorInv_ordredefabication_Societe_Numero",
                 table: "LouxorInv_ordredefabication",
                 columns: new[] { "Societe", "Numero" },
                 unique: true,
-                descending: new bool[0]);
+                descending: new bool[0]
+            );
         }
     }
 }

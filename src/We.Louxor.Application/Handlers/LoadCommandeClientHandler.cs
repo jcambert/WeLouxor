@@ -5,14 +5,11 @@ using We.Louxor.InventaireArticle.Queries;
 
 namespace We.Louxor.Handlers;
 
-public class LoadCommandeClientHandler : BaseLoadHandler<LoadCommandeClientQuery, LoadCommandeClientResponse, LigneDeCommande, Guid>
+public class LoadCommandeClientHandler
+    : BaseLoadHandler<LoadCommandeClientQuery, LoadCommandeClientResponse, LigneDeCommande, Guid>
 {
-    public LoadCommandeClientHandler(IAbpLazyServiceProvider serviceProvider) : base(serviceProvider)
-    {
-    }
-
-
-    
+    public LoadCommandeClientHandler(IAbpLazyServiceProvider serviceProvider)
+        : base(serviceProvider) { }
 }
 /*
 public class LoadCommandeClientHandler : BaseHandler<LoadCommandeClientQuery, LoadCommandeClientResponse>

@@ -1,6 +1,3 @@
 ﻿namespace We.Louxor.Blazor.Pages;
 
-public partial class Index
-{
-
-}
+public partial class Index { }

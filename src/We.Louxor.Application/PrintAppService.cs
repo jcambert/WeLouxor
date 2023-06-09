@@ -5,6 +5,5 @@ namespace We.Louxor;
 
 public class PrintAppService : LouxorAppService, IPrintAppService
 {
-    public Task<PrintResponse> PrintAsync(PrintQuery query)
-    => Mediator.Send(query);
+    public Task<PrintResponse> PrintAsync(PrintQuery query) => Mediator.Send(query);
 }

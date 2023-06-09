@@ -4,8 +4,9 @@ public abstract class LoadBaseQuery : ILoadBaseQuery
 {
     public LoadBaseQuery()
     {
-        Filename=GetDefaultFilename();
+        Filename = GetDefaultFilename();
     }
+
     protected abstract string GetDefaultFilename();
     public virtual string Filename { get; set; }
     public virtual int From { get; set; } = 0;

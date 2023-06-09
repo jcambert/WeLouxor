@@ -19,7 +19,7 @@ namespace We.Louxor;
     typeof(AbpTenantManagementHttpApiModule),
     typeof(AbpFeatureManagementHttpApiModule),
     typeof(AbpSettingManagementHttpApiModule)
-    )]
+)]
 public class LouxorHttpApiModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
@@ -29,13 +29,11 @@ public class LouxorHttpApiModule : AbpModule
 
     private void ConfigureLocalization()
     {
-        Configure<AbpLocalizationOptions>(options =>
-        {
-            options.Resources
-                .Get<LouxorResource>()
-                .AddBaseTypes(
-                    typeof(AbpUiResource)
-                );
-        });
+        Configure<AbpLocalizationOptions>(
+            options =>
+            {
+                options.Resources.Get<LouxorResource>().AddBaseTypes(typeof(AbpUiResource));
+            }
+        );
     }
 }

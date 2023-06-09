@@ -23,8 +23,8 @@ namespace We.Louxor;
     typeof(AbpOpenIddictDomainSharedModule),
     typeof(AbpPermissionManagementDomainSharedModule),
     typeof(AbpSettingManagementDomainSharedModule),
-    typeof(AbpTenantManagementDomainSharedModule)    
-    )]
+    typeof(AbpTenantManagementDomainSharedModule)
+)]
 public class LouxorDomainSharedModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
@@ -35,24 +35,30 @@ public class LouxorDomainSharedModule : AbpModule
 
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
-        Configure<AbpVirtualFileSystemOptions>(options =>
-        {
-            options.FileSets.AddEmbedded<LouxorDomainSharedModule>();
-        });
+        Configure<AbpVirtualFileSystemOptions>(
+            options =>
+            {
+                options.FileSets.AddEmbedded<LouxorDomainSharedModule>();
+            }
+        );
 
-        Configure<AbpLocalizationOptions>(options =>
-        {
-            options.Resources
-                .Add<LouxorResource>("en")
-                .AddBaseTypes(typeof(AbpValidationResource))
-                .AddVirtualJson("/Localization/Louxor");
+        Configure<AbpLocalizationOptions>(
+            options =>
+            {
+                options.Resources
+                    .Add<LouxorResource>("en")
+                    .AddBaseTypes(typeof(AbpValidationResource))
+                    .AddVirtualJson("/Localization/Louxor");
 
-            options.DefaultResourceType = typeof(LouxorResource);
-        });
+                options.DefaultResourceType = typeof(LouxorResource);
+            }
+        );
 
-        Configure<AbpExceptionLocalizationOptions>(options =>
-        {
-            options.MapCodeNamespace("Louxor", typeof(LouxorResource));
-        });
+        Configure<AbpExceptionLocalizationOptions>(
+            options =>
+            {
+                options.MapCodeNamespace("Louxor", typeof(LouxorResource));
+            }
+        );
     }
 }

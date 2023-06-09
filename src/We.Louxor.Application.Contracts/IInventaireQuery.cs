@@ -2,14 +2,10 @@
 
 namespace We.Louxor;
 
-public interface IBaseInventaireQuery
-{
-}
+public interface IBaseInventaireQuery { }
 
 public interface IInventaireQuery<TResponse> : IBaseInventaireQuery, IRequest<TResponse>
-    where TResponse : class
-{
-}
+    where TResponse : class { }
 
 public abstract record InventaireResponse
 {

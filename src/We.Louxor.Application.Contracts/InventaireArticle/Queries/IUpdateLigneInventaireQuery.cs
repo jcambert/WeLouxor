@@ -7,5 +7,5 @@ public interface IUpdateLigneInventaireQuery : IInventaireQuery<UpdateLigneInven
     Guid Id { get; set; }
     LigneInventaireDto Ligne { get; set; }
 }
-public sealed record UpdateLigneInventaireResponse(LigneInventaireDto Ligne):InventaireResponse;
 
+public sealed record UpdateLigneInventaireResponse(LigneInventaireDto Ligne) : InventaireResponse;

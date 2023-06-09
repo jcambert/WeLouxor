@@ -14,25 +14,23 @@ namespace We.Louxor.Migrations
                 name: "Client",
                 table: "LignesInventaires",
                 type: "text",
-                nullable: true);
+                nullable: true
+            );
 
             migrationBuilder.AddColumn<string>(
                 name: "Societe",
                 table: "LignesInventaires",
                 type: "text",
-                nullable: true);
+                nullable: true
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Client",
-                table: "LignesInventaires");
+            migrationBuilder.DropColumn(name: "Client", table: "LignesInventaires");
 
-            migrationBuilder.DropColumn(
-                name: "Societe",
-                table: "LignesInventaires");
+            migrationBuilder.DropColumn(name: "Societe", table: "LignesInventaires");
         }
     }
 }

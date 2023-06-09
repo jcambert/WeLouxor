@@ -1,2 +1,3 @@
 ﻿using System.Runtime.CompilerServices;
-[assembly:InternalsVisibleToAttribute("We.Louxor.Application.Tests")]
+
+[assembly: InternalsVisibleToAttribute("We.Louxor.Application.Tests")]

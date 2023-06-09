@@ -3,7 +3,4 @@
 namespace We.Louxor.Localization;
 
 [LocalizationResourceName("Louxor")]
-public class LouxorResource
-{
-
-}
+public class LouxorResource { }

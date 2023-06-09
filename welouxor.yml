@@ -7,7 +7,7 @@ services:
       - ALLOW_EMPTY_PASSWORD=yes
       - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
     ports:
-      - '6379:6379'
+      - '6380:6379'
     volumes:
       - welouxor_cache_data:/bitnami/redis/data
       
@@ -20,7 +20,7 @@ services:
       - POSTGRESQL_PASSWORD=zy4fVNVu
 
     ports:
-      - '5432:5432'
+      - '5433:5432'
     volumes:
      - 'welouxor_db_data:/bitnami/postgresql'
     
