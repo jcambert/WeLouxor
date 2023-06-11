@@ -1,19 +1,19 @@
-﻿using MediatR;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using System.Reactive.Linq;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.VirtualFileSystem;
 using We.Dbf;
 using We.Louxor.InventaireArticle.Queries;
+using We.Mediatr;
 using We.Utilities;
 
 namespace We.Louxor.Handlers;
 
 public abstract class BaseLoadHandler<TQuery, TResponse, TEntity, TKey>
     : BaseHandler<TQuery, TResponse>
-    where TQuery : ILoadBaseQuery, IRequest<TResponse>
+    where TQuery :ILoadBaseQuery<TResponse>, IQuery<TResponse>
+    where TResponse : Response
     where TEntity : class, IEntityLouxor, IEntity<TKey>
-    where TResponse : new()
 {
     IServiceProvider _serviceProvider => LazyServiceProvider.GetRequiredService<IServiceProvider>();
     IRepository<TEntity, TKey> Repository =>
@@ -22,10 +22,7 @@ public abstract class BaseLoadHandler<TQuery, TResponse, TEntity, TKey>
 
     protected BaseLoadHandler(IAbpLazyServiceProvider serviceProvider) : base(serviceProvider) { }
 
-    public override async Task<TResponse> Handle(
-        TQuery request,
-        CancellationToken cancellationToken
-    )
+    protected override async Task<Results.Result<TResponse>> InternalHandle(TQuery request, CancellationToken cancellationToken)
     {
         this.Request = request;
         using (var scope = _serviceProvider.CreateScope())
@@ -103,10 +100,11 @@ public abstract class BaseLoadHandler<TQuery, TResponse, TEntity, TKey>
         }
         return GetResponse();
     }
+   
 
     protected virtual bool CheckForDuplicate(List<TEntity> lignes) => true;
 
-    protected virtual TResponse GetResponse() => new();
+    protected abstract TResponse GetResponse() ;
 
     protected List<TEntity> Filter(List<TEntity> records, bool removeDuplicates = false)
     {

@@ -2,7 +2,7 @@
 
 [Dependency(ServiceLifetime.Transient, ReplaceServices = true)]
 [ExposeServices(typeof(ILoadClientQuery))]
-public class LoadClientQuery : LoadBaseQuery, ILoadClientQuery
+public class LoadClientQuery : LoadBaseQuery<LoadClientResponse>, ILoadClientQuery
 {
     protected override string GetDefaultFilename() => @"ptfour.dbf";
 }

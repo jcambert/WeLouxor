@@ -1,6 +1,9 @@
-﻿namespace We.Louxor.InventaireArticle.Queries;
+﻿using We.Mediatr;
 
-public interface ILoadBaseQuery
+namespace We.Louxor.InventaireArticle.Queries;
+
+public interface ILoadBaseQuery<TResponse>:IQuery<TResponse>
+    where TResponse : Response
 {
     string Filename { get; set; }
     int From { get; set; }

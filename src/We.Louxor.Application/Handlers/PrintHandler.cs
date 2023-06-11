@@ -1,7 +1,7 @@
 ﻿using ClosedXML.Excel;
-using System.IO;
 using We.Louxor.InventaireArticle;
 using We.Louxor.InventaireArticle.Queries;
+using We.Results;
 
 namespace We.Louxor.Handlers;
 
@@ -30,10 +30,7 @@ public class PrintHandler : BaseHandler<PrintQuery, PrintResponse>
 
     public PrintHandler(IAbpLazyServiceProvider serviceProvider) : base(serviceProvider) { }
 
-    public override async Task<PrintResponse> Handle(
-        PrintQuery request,
-        CancellationToken cancellationToken
-    )
+    protected override async Task<Result<PrintResponse>> InternalHandle(PrintQuery request, CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(request.Filename))
             throw new ArgumentException("Le parametre Filename doit etre rempli");
@@ -45,7 +42,7 @@ public class PrintHandler : BaseHandler<PrintQuery, PrintResponse>
         query =
             from q in query
             where q.Societe == request.Societe
-            orderby q.Page ,q.Article
+            orderby q.Page, q.Article
             select q;
 
         var lignes = await AsyncExecuter.ToListAsync(query, cancellationToken);

@@ -7,4 +7,4 @@ public interface IGetLigneInventaireQuery : IInventaireQuery<GetLigneInventaireR
     Guid Id { get; set; }
 }
 
-public sealed record GetLigneInventaireResponse(ILigneInventaire Ligne) : InventaireResponse;
+public sealed record GetLigneInventaireResponse(LigneInventaireDto Ligne) : InventaireResponse;

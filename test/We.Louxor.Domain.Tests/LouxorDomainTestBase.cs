@@ -1,6 +1,3 @@
 ﻿namespace We.Louxor;
 
-public abstract class LouxorDomainTestBase : LouxorTestBase<LouxorDomainTestModule>
-{
-
-}
+public abstract class LouxorDomainTestBase : LouxorTestBase<LouxorDomainTestModule> { }

@@ -1,7 +1,9 @@
-﻿namespace We.Louxor.InventaireArticle.Queries;
+﻿using We.Mediatr;
+
+namespace We.Louxor.InventaireArticle.Queries;
 
 public interface ILoadOrdreDeFabricationQuery
-    : ILoadBaseQuery,
+    : ILoadBaseQuery<LoadOrdreDeFabricationResponse>,
       IInventaireQuery<LoadOrdreDeFabricationResponse> { }
 
-public sealed record LoadOrdreDeFabricationResponse();
+public sealed record LoadOrdreDeFabricationResponse():Response;

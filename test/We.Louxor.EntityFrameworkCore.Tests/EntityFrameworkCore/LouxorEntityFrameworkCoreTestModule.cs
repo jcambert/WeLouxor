@@ -14,7 +14,7 @@ namespace We.Louxor.EntityFrameworkCore;
     typeof(LouxorEntityFrameworkCoreModule),
     typeof(LouxorTestBaseModule),
     typeof(AbpEntityFrameworkCoreSqliteModule)
-    )]
+)]
 public class LouxorEntityFrameworkCoreTestModule : AbpModule
 {
     private SqliteConnection _sqliteConnection;
@@ -28,13 +28,17 @@ public class LouxorEntityFrameworkCoreTestModule : AbpModule
     {
         _sqliteConnection = CreateDatabaseAndGetConnection();
 
-        services.Configure<AbpDbContextOptions>(options =>
-        {
-            options.Configure(context =>
+        services.Configure<AbpDbContextOptions>(
+            options =>
             {
-                context.DbContextOptions.UseSqlite(_sqliteConnection);
-            });
-        });
+                options.Configure(
+                    context =>
+                    {
+                        context.DbContextOptions.UseSqlite(_sqliteConnection);
+                    }
+                );
+            }
+        );
     }
 
     public override void OnApplicationShutdown(ApplicationShutdownContext context)
@@ -47,9 +51,7 @@ public class LouxorEntityFrameworkCoreTestModule : AbpModule
         var connection = new SqliteConnection("Data Source=:memory:");
         connection.Open();
 
-        var options = new DbContextOptionsBuilder<LouxorDbContext>()
-            .UseSqlite(connection)
-            .Options;
+        var options = new DbContextOptionsBuilder<LouxorDbContext>().UseSqlite(connection).Options;
 
         using (var context = new LouxorDbContext(options))
         {

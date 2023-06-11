@@ -8,8 +8,5 @@ namespace We.Louxor.DbMigrator;
     typeof(AbpAutofacModule),
     typeof(LouxorEntityFrameworkCoreModule),
     typeof(LouxorApplicationContractsModule)
-    )]
-public class LouxorDbMigratorModule : AbpModule
-{
-
-}
+)]
+public class LouxorDbMigratorModule : AbpModule { }

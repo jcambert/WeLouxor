@@ -30,9 +30,11 @@ public class LouxorHttpApiClientModule : AbpModule
             RemoteServiceName
         );
 
-        Configure<AbpVirtualFileSystemOptions>(options =>
-        {
-            options.FileSets.AddEmbedded<LouxorHttpApiClientModule>();
-        });
+        Configure<AbpVirtualFileSystemOptions>(
+            options =>
+            {
+                options.FileSets.AddEmbedded<LouxorHttpApiClientModule>();
+            }
+        );
     }
 }

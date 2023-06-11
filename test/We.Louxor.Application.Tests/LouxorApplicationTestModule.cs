@@ -2,11 +2,5 @@
 
 namespace We.Louxor;
 
-[DependsOn(
-    typeof(LouxorApplicationModule),
-    typeof(LouxorDomainTestModule)
-    )]
-public class LouxorApplicationTestModule : AbpModule
-{
-
-}
+[DependsOn(typeof(LouxorApplicationModule), typeof(LouxorDomainTestModule))]
+public class LouxorApplicationTestModule : AbpModule { }

@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.Auditing" Version="7.0.0" />
+    <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="7.0.3" />
     <PackageReference Include="Volo.Abp.Identity.Domain.Shared" Version="7.0.0" />
     <PackageReference Include="Volo.Abp.BackgroundJobs.Domain.Shared" Version="7.0.0" />
     <PackageReference Include="Volo.Abp.AuditLogging.Domain.Shared" Version="7.0.0" />

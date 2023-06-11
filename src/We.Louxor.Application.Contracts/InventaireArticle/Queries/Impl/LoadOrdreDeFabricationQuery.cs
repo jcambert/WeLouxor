@@ -2,7 +2,7 @@
 
 [Dependency(ServiceLifetime.Transient, ReplaceServices = true)]
 [ExposeServices(typeof(ILoadOrdreDeFabricationQuery))]
-public class LoadOrdreDeFabricationQuery : LoadBaseQuery, ILoadOrdreDeFabricationQuery
+public class LoadOrdreDeFabricationQuery : LoadBaseQuery<LoadOrdreDeFabricationResponse>, ILoadOrdreDeFabricationQuery
 {
     protected override string GetDefaultFilename() => @"ppchar.dbf";
 }

@@ -1,5 +1,7 @@
-﻿namespace We.Louxor.InventaireArticle.Queries;
+﻿using We.Mediatr;
 
-public interface ILoadClientQuery : ILoadBaseQuery, IInventaireQuery<LoadClientResponse> { }
+namespace We.Louxor.InventaireArticle.Queries;
 
-public sealed record LoadClientResponse();
+public interface ILoadClientQuery : ILoadBaseQuery<LoadClientResponse>, IInventaireQuery<LoadClientResponse> { }
+
+public sealed record LoadClientResponse():Response;

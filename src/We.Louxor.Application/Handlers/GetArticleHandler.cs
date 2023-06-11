@@ -1,5 +1,6 @@
 ﻿using We.Louxor.InventaireArticle;
 using We.Louxor.InventaireArticle.Queries;
+using We.Results;
 
 namespace We.Louxor.Handlers;
 
@@ -10,10 +11,7 @@ public class GetArticleHandler : BaseHandler<GetArticleQuery, GetArticleResponse
 
     public GetArticleHandler(IAbpLazyServiceProvider serviceProvider) : base(serviceProvider) { }
 
-    public override async Task<GetArticleResponse> Handle(
-        GetArticleQuery request,
-        CancellationToken cancellationToken
-    )
+    protected override async Task<Result<GetArticleResponse>> InternalHandle(GetArticleQuery request, CancellationToken cancellationToken)
     {
         var query = await repository.GetQueryableAsync();
         query =
@@ -23,4 +21,5 @@ public class GetArticleHandler : BaseHandler<GetArticleQuery, GetArticleResponse
         var res = await AsyncExecuter.FirstOrDefaultAsync(query, cancellationToken);
         return new GetArticleResponse(res);
     }
+ 
 }

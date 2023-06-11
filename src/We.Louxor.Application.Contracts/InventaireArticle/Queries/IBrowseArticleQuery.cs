@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace We.Louxor.InventaireArticle.Queries;
+﻿namespace We.Louxor.InventaireArticle.Queries;
 
 public interface IBrowseArticleQuery : IInventaireQuery<BrowseArticleResponse>, ISociete { }
 

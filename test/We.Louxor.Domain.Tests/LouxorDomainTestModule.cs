@@ -3,10 +3,5 @@ using Volo.Abp.Modularity;
 
 namespace We.Louxor;
 
-[DependsOn(
-    typeof(LouxorEntityFrameworkCoreTestModule)
-    )]
-public class LouxorDomainTestModule : AbpModule
-{
-
-}
+[DependsOn(typeof(LouxorEntityFrameworkCoreTestModule))]
+public class LouxorDomainTestModule : AbpModule { }

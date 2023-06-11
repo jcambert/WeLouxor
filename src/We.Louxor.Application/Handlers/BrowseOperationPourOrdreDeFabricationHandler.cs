@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using We.Louxor.InventaireArticle;
 using We.Louxor.InventaireArticle.Queries;
+using We.Results;
 
 namespace We.Louxor.Handlers;
 
@@ -20,15 +21,9 @@ public class BrowseOperationPourOrdreDeFabricationHandler
     public BrowseOperationPourOrdreDeFabricationHandler(IAbpLazyServiceProvider serviceProvider)
         : base(serviceProvider) { }
 
-    public override async Task<BrowseOperationPourOrdreDeFabricationResponse> Handle(
-        BrowseOperationPourOrdreDeFabricationQuery request,
-        CancellationToken cancellationToken
-    )
+    protected override async Task<Result<BrowseOperationPourOrdreDeFabricationResponse>> InternalHandle(BrowseOperationPourOrdreDeFabricationQuery request, CancellationToken cancellationToken)
     {
         var query = await repository.GetQueryableAsync();
-        //var ok = Int32.TryParse(request.OrdreDeFabrication, out var of);
-        //if (!ok)
-        //    throw new ArgumentException($"Ordre de fabrication incorret:{request.OrdreDeFabrication}");
         var of = request.OrdreDeFabrication;
         var of1 = of * 1000;
         var of2 = of * 1000 + 999;
@@ -39,4 +34,6 @@ public class BrowseOperationPourOrdreDeFabricationHandler
         var res = list.Select(x => x.CodeOperation).Order().ToList();
         return new BrowseOperationPourOrdreDeFabricationResponse(res);
     }
+
+ 
 }

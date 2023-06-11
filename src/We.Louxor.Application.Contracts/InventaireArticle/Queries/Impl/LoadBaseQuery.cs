@@ -1,6 +1,9 @@
-﻿namespace We.Louxor.InventaireArticle.Queries;
+﻿using We.Mediatr;
 
-public abstract class LoadBaseQuery : ILoadBaseQuery
+namespace We.Louxor.InventaireArticle.Queries;
+
+public abstract class LoadBaseQuery<TResponse> : ILoadBaseQuery<TResponse>
+    where TResponse:Response
 {
     public LoadBaseQuery()
     {

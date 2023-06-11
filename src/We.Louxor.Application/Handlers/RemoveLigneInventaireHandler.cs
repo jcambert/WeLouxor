@@ -1,8 +1,6 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Volo.Abp.DependencyInjection;
-using We.Louxor.InventaireArticle;
+﻿using We.Louxor.InventaireArticle;
 using We.Louxor.InventaireArticle.Queries;
+using We.Results;
 
 namespace We.Louxor.Handlers;
 
@@ -15,14 +13,12 @@ public class RemoveLigneInventaireHandler
     public RemoveLigneInventaireHandler(IAbpLazyServiceProvider serviceProvider)
         : base(serviceProvider) { }
 
-    public override async Task<RemoveLigneInventaireResponse> Handle(
-        RemoveLigneInventaireQuery request,
-        CancellationToken cancellationToken
-    )
+    protected override async  Task<Result<RemoveLigneInventaireResponse>> InternalHandle(RemoveLigneInventaireQuery request, CancellationToken cancellationToken)
     {
         await repository.HardDeleteAsync(x => x.Id == request.Id, true, cancellationToken);
-        return new();
+        return new RemoveLigneInventaireResponse();
     }
+  
 }
 
 public class RemoveAllLigneInventaireHandler
@@ -34,16 +30,14 @@ public class RemoveAllLigneInventaireHandler
     public RemoveAllLigneInventaireHandler(IAbpLazyServiceProvider serviceProvider)
         : base(serviceProvider) { }
 
-    public override async Task<RemoveLigneInventaireResponse> Handle(
-        RemoveAllLigneInventaireQuery request,
-        CancellationToken cancellationToken
-    )
+    protected override async Task<Result<RemoveLigneInventaireResponse>> InternalHandle(RemoveAllLigneInventaireQuery request, CancellationToken cancellationToken)
     {
         await repository.HardDeleteAsync(
-            x => x.Societe == request.Societe,
-            true,
-            cancellationToken
-        );
-        return new();
+           x => x.Societe == request.Societe,
+           true,
+           cancellationToken
+       );
+        return new RemoveLigneInventaireResponse();
     }
+   
 }

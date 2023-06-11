@@ -1,4 +1,6 @@
-﻿namespace We.Louxor.InventaireArticle.Queries;
+﻿using We.Mediatr;
+
+namespace We.Louxor.InventaireArticle.Queries;
 
 public interface IPrintQuery : IInventaireQuery<PrintResponse>
 {
@@ -6,4 +8,4 @@ public interface IPrintQuery : IInventaireQuery<PrintResponse>
     string SheetName { get; set; }
 }
 
-public sealed record PrintResponse(byte[] Content, string ContentType, string Filename);
+public sealed record PrintResponse(byte[] Content, string ContentType, string Filename):Response;

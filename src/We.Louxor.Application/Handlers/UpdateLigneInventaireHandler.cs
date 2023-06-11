@@ -1,5 +1,6 @@
 ﻿using We.Louxor.InventaireArticle;
 using We.Louxor.InventaireArticle.Queries;
+using We.Results;
 
 namespace We.Louxor.Handlers;
 
@@ -12,10 +13,8 @@ public class UpdateLigneInventaireHandler
     public UpdateLigneInventaireHandler(IAbpLazyServiceProvider serviceProvider)
         : base(serviceProvider) { }
 
-    public override async Task<UpdateLigneInventaireResponse> Handle(
-        UpdateLigneInventaireQuery request,
-        CancellationToken cancellationToken
-    )
+
+    protected override async Task<Result<UpdateLigneInventaireResponse>> InternalHandle(UpdateLigneInventaireQuery request, CancellationToken cancellationToken)
     {
         //request.Ligne
         var row = await _inv_repository.SingleOrDefaultAsync(x => x.Id == request.Id);
@@ -27,6 +26,7 @@ public class UpdateLigneInventaireHandler
                 ObjectMapper.Map<LigneInventaire, LigneInventaireDto>(res)
             );
         }
-        return new UpdateLigneInventaireResponse(null);
+        return NotFound("Npt Founc",$"La ligne d'inventaire avec l'id {request.Id} n'existe pas");
     }
+    
 }

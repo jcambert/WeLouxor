@@ -1,6 +1,7 @@
 ﻿using Volo.Abp.Domain.Entities;
 using We.Louxor.InventaireArticle;
 using We.Louxor.InventaireArticle.Queries;
+using We.Results;
 
 namespace We.Louxor.Handlers;
 
@@ -21,10 +22,8 @@ public class AddLigneInventaireHandler
     public AddLigneInventaireHandler(IAbpLazyServiceProvider serviceProvider)
         : base(serviceProvider) { }
 
-    public override async Task<AddLigneInventaireResponse> Handle(
-        AddLigneInventaireQuery request,
-        CancellationToken cancellationToken
-    )
+
+    protected override async Task<Result<AddLigneInventaireResponse>> InternalHandle(AddLigneInventaireQuery request, CancellationToken cancellationToken)
     {
         Article article = null;
         Article articleTete = null;
@@ -203,13 +202,10 @@ public class AddLigneInventaireHandler
         {
             if (of == null)
             {
-                of = await FindOfByNumeroAr(cde.NumeroDocument, article.Code);
+                of = await FindOfByNumeroAr(cde.NumeroDocument, article?.Code ?? string.Empty);
                 request.OrdreDeFabication = of != null ? of.Numero : request.OrdreDeFabication;
             }
             //Recherche de l'article de tete
-            /* var query5 = await _article_repository.GetQueryableAsync();
-             query5 = from q in query5 where q.Societe == request.Societe && q.Code == cde.CodeArticle select q;
-             articleTete = await AsyncExecuter.FirstOrDefaultAsync(query5);*/
             articleTete = await FindArticleByCode(cde.CodeArticle);
             if (articleTete == null)
                 throw new EntityNotFoundException(
@@ -218,17 +214,11 @@ public class AddLigneInventaireHandler
             if (client == null)
             {
                 //Recherche du client a partir de la commande
-                /*var query11 = await _client_repository.GetQueryableAsync();
-                query11 = from q in query11 where q.Societe == request.Societe && q.Code == cde.CodeClient select q;
-                client = await AsyncExecuter.FirstOrDefaultAsync(query11);*/
                 client = await FindClientByCode(cde.CodeClient);
                 request.Client = client == null ? string.Empty : client.Libelle;
             }
 
             //Recherche des surcout
-            /*var query7 = await _commande_repository.GetQueryableAsync();
-            query7 = from q in query7 where q.Societe == request.Societe && q.NumeroDocument > (cde.NumeroEntete * 1000) && q.NumeroDocument < (cde.NumeroEntete * 1000 + 999) && q.CodeArticle.StartsWith($"{articleTete.Code}SURCOUT") select q;
-            cde_surcout = await AsyncExecuter.FirstOrDefaultAsync(query7, cancellationToken);*/
             cde_surcout = await FindCommandeSurcout(cde.NumeroEntete);
         }
 
@@ -238,19 +228,10 @@ public class AddLigneInventaireHandler
             if (client == null)
             {
                 //Recherche du client à partir de l'Of
-                /*var query6 = await _client_repository.GetQueryableAsync();
-                query6 = from q in query6 where q.Societe == request.Societe && q.Code == of.CodeClient select q;
-                client = await AsyncExecuter.FirstOrDefaultAsync(query6, cancellationToken);*/
                 client = await FindClientByCode(of.CodeClient);
                 request.Client = client == null ? string.Empty : client.Libelle;
             }
             //Recherche de toutes les operations sur l'of
-            /*var query8 = await _of_repository.GetQueryableAsync();
-            query8 = from q in query8 where q.Societe == request.Societe && q.Numero == request.OrdreDeFabication select q;
-            var operations = await AsyncExecuter.ToListAsync(query8);
-            int total_operation = operations.Count;
-            int current_operation = operations.Where(o => o.CodeOperation <= of.CodeOperation).Count();
-            coef = (1.0 * current_operation) / (1.0 * total_operation);*/
             coef = await FindCoeficientOperation(of.Numero, of.CodeOperation);
         }
         LigneInventaire inventaire =
@@ -260,19 +241,20 @@ public class AddLigneInventaireHandler
                 OrdreDeFabication = request.OrdreDeFabication,
                 CodeOperationFinie = request.CodeOperationFinie,
                 NumeroCommandeClient = request.NumeroCommandeClient,
-                ArticleId = article.Id,
-                Article = article.Code,
+                ArticleId = article?.Id ?? Guid.Empty,
+                Article = article?.Code ?? string.Empty,
                 ArticleDeTeteId = articleTete?.Id ?? Guid.Empty,
                 ArticleDeTete = articleTete?.Code ?? string.Empty,
                 Quantite = request.Quantite,
                 Client = request.Client ?? string.Empty,
                 PvArticleDeTete = (cde?.PrixUnitaire ?? 0.0) + (cde_surcout?.PrixUnitaire ?? 0.0),
-                PuGamme = article.CoutMachineDirect * coef,
-                PuNomenclature = article.CoutMatiereDirect * coef,
+                PuGamme = article?.CoutMachineDirect * coef ?? 0.0,
+                PuNomenclature = article?.CoutMatiereDirect * coef ?? 0.0,
                 Societe = request.Societe,
             };
         await _inv_repository.InsertAsync(inventaire);
         LigneInventaireDto res = ObjectMapper.Map<LigneInventaire, LigneInventaireDto>(inventaire);
         return new AddLigneInventaireResponse(res);
     }
+
 }

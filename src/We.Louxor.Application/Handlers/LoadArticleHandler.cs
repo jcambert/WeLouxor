@@ -34,9 +34,7 @@ public class LoadArticleHandler
             {
                 Logger.LogWarning($"{item} was duplicates in records".FormatWarning());
             }
-#if DEBUG
-            Debugger.Break();
-#endif
+
             records.RemoveAll(x => records.Any(p => p.Societe == x.Societe && p.Code == x.Code));
             result = false;
         }
@@ -53,9 +51,6 @@ public class LoadArticleHandler
                 );
             }
 
-#if DEBUG
-            Debugger.Break();
-#endif
 
             records.RemoveAll(x => articles.Any(p => p.Societe == x.Societe && p.Code == x.Code));
             result = false;
@@ -80,6 +75,9 @@ public class LoadArticleHandler
             }
             return result;
         };
+
+    protected override LoadArticleResponse GetResponse()
+    => new LoadArticleResponse();
 }
 /*
 public class LoadArticleHandler : BaseHandler<LoadArticleQuery, LoadArticleResponse>

@@ -2,7 +2,5 @@
 
 namespace We.Louxor.EntityFrameworkCore;
 
-public abstract class LouxorEntityFrameworkCoreTestBase : LouxorTestBase<LouxorEntityFrameworkCoreTestModule>
-{
-
-}
+public abstract class LouxorEntityFrameworkCoreTestBase
+    : LouxorTestBase<LouxorEntityFrameworkCoreTestModule> { }
