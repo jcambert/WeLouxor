@@ -2,7 +2,7 @@
 
 namespace We.Louxor.InventaireArticle;
 
-public class LigneInventaireDto:EntityDto<Guid>
+public class LigneInventaireDto : EntityDto<Guid>
 {
     public int Page { get; set; }
     public int OrdreDeFabication { get; set; }

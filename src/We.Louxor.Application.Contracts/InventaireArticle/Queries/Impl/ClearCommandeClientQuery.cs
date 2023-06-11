@@ -2,4 +2,6 @@
 
 [Dependency(ServiceLifetime.Transient, ReplaceServices = true)]
 [ExposeServices(typeof(IClearCommandeClientQuery))]
-public class ClearCommandeClientQuery : ClearBaseQuery, IClearCommandeClientQuery { }
+public class ClearCommandeClientQuery
+    : ClearBaseQuery<ClearCommandeClientResponse>,
+      IClearCommandeClientQuery { }

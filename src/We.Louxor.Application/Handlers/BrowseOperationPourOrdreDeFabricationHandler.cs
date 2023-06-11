@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using We.Louxor.InventaireArticle;
+﻿using We.Louxor.InventaireArticle;
 using We.Louxor.InventaireArticle.Queries;
 using We.Results;
 
@@ -21,7 +16,12 @@ public class BrowseOperationPourOrdreDeFabricationHandler
     public BrowseOperationPourOrdreDeFabricationHandler(IAbpLazyServiceProvider serviceProvider)
         : base(serviceProvider) { }
 
-    protected override async Task<Result<BrowseOperationPourOrdreDeFabricationResponse>> InternalHandle(BrowseOperationPourOrdreDeFabricationQuery request, CancellationToken cancellationToken)
+    protected override async Task<
+        Result<BrowseOperationPourOrdreDeFabricationResponse>
+    > InternalHandle(
+        BrowseOperationPourOrdreDeFabricationQuery request,
+        CancellationToken cancellationToken
+    )
     {
         var query = await repository.GetQueryableAsync();
         var of = request.OrdreDeFabrication;
@@ -34,6 +34,4 @@ public class BrowseOperationPourOrdreDeFabricationHandler
         var res = list.Select(x => x.CodeOperation).Order().ToList();
         return new BrowseOperationPourOrdreDeFabricationResponse(res);
     }
-
- 
 }

@@ -4,9 +4,12 @@
 @using System.Diagnostics;
 @using System.Text.Json;
 @using System.Reflection;
+@using Volo.Abp.AspNetCore.Components.Notifications;
 @using We.Louxor.InventaireArticle;
 @using We.Louxor.InventaireArticle.Queries;
+@using We.Results;
 @inject IInventaireAppService appService;
+@inject IUiNotificationService Notification
 @inherits LouxorComponentBase
 <div class="container-fluid">
     @if (IsInitialized)
@@ -25,17 +28,17 @@
 
 
                 <Autocomplete TItem="string"
-                          TValue="string"
-                          Data="@Articles"
-                          DebounceInterval=500
-                          TextField="@(( item ) => item)"
-                          ValueField="@(( item ) => item)"
-                          @bind-SelectedValue="@article_selectedSearchValue"
-                          @bind-SelectedText="article_selectedAutoCompleteText"
-                          Placeholder="Code Article"
-                          Filter="AutocompleteFilter.StartsWith"
-                          FreeTyping=false
-                          CustomFilter="@(( item, searchValue ) => item.IndexOf( searchValue, 0, StringComparison.CurrentCultureIgnoreCase ) >= 0 )">
+                              TValue="string"
+                              Data="@Articles"
+                              DebounceInterval=500
+                              TextField="@(( item ) => item)"
+                              ValueField="@(( item ) => item)"
+                @bind-SelectedValue="@article_selectedSearchValue"
+                @bind-SelectedText="article_selectedAutoCompleteText"
+                              Placeholder="Code Article"
+                              Filter="AutocompleteFilter.StartsWith"
+                              FreeTyping=false
+                              CustomFilter="@(( item, searchValue ) => item.IndexOf( searchValue, 0, StringComparison.CurrentCultureIgnoreCase ) >= 0 )">
                     <NotFoundContent> Sorry... @context was not found! :( </NotFoundContent>
                 </Autocomplete>
 
@@ -51,17 +54,17 @@
             <div class="col-4">
                 <label class="form-label">Ordre de fabrication</label>
                 <Autocomplete @ref="OfAutocomplete"
-                          TItem="BrowseOrdreDeFabricationForCompletion"
-                          TValue="int"
-                          Data="@OrdresDeFabrication"
-                          DebounceInterval=500
-                          TextField="@(( item ) => item.Repr)"
-                          ValueField="@(( item ) => item.Numero)"
-                          Placeholder="Ordre de Fabrication"
-                          Filter="AutocompleteFilter.StartsWith"
-                          FreeTyping=false
-                          CustomFilter="@(( item, searchValue ) => item.Numero.ToString().IndexOf( searchValue.Split('-')[0], 0, StringComparison.CurrentCultureIgnoreCase ) >= 0 )"
-                          SelectedValueChanged="@OnOrdreDeFabricationChanged">
+                              TItem="BrowseOrdreDeFabricationForCompletion"
+                              TValue="int"
+                              Data="@OrdresDeFabrication"
+                              DebounceInterval=500
+                              TextField="@(( item ) => item.Repr)"
+                              ValueField="@(( item ) => item.Numero)"
+                              Placeholder="Ordre de Fabrication"
+                              Filter="AutocompleteFilter.StartsWith"
+                              FreeTyping=false
+                              CustomFilter="@(( item, searchValue ) => item.Numero.ToString().IndexOf( searchValue.Split('-')[0], 0, StringComparison.CurrentCultureIgnoreCase ) >= 0 )"
+                              SelectedValueChanged="@OnOrdreDeFabricationChanged">
 
                     <NotFoundContent> Sorry... @context was not found! :( </NotFoundContent>
                 </Autocomplete>
@@ -120,38 +123,37 @@
             <Divider Class="mt-2" />
             <div class="col-12 text-center">
                 <DataGrid TItem="LigneInventaireDto"
-                      Data="@Inventaires" 
-                      Editable 
-                      Filterable
-                      FilterMethod="DataGridFilterMethod.StartsWith" 
-                      
-                      ShowPager="true" 
-                      PageSize="16" 
-                      RowUpdating="InventaireUpdating">
+                          Data="@Inventaires"
+                                    Editable
+                                    Filterable
+                          FilterMethod="DataGridFilterMethod.StartsWith"
+                          ShowPager="true"
+                          PageSize="16"
+                          RowUpdating="InventaireUpdating">
                     <DataGridColumns>
                         <DataGridColumn Field="@nameof(LigneInventaire.Page)" Caption="#" Sortable Filterable Editable>
-                            <EditTemplate>
-                                <NumericEdit TValue="int" Value="@((int)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
-                            </EditTemplate>
-                        </DataGridColumn>
-                        <DataGridColumn Field="@nameof(LigneInventaire.Article)" Caption="Article" Sortable Filterable Editable />
+                        <EditTemplate>
+                            <NumericEdit TValue="int" Value="@((int)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
+                        </EditTemplate>
+                    </DataGridColumn>
+                    <DataGridColumn Field="@nameof(LigneInventaire.Article)" Caption="Article" Sortable Filterable Editable />
                         <DataGridColumn Field="@nameof(LigneInventaire.Client)" Caption="Client" Sortable Filterable Editable />
                         <DataGridColumn Field="@nameof(LigneInventaire.OrdreDeFabication)" Caption="Of" Editable>
-                            <EditTemplate>
-                                <NumericEdit TValue="int" Value="@((int)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
-                            </EditTemplate>
-                        </DataGridColumn>
-                        <DataGridColumn Field="@nameof(LigneInventaire.CodeOperationFinie)" Caption="Op" Editable >
-                            <EditTemplate>
-                                <NumericEdit TValue="int" Value="@((int)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
-                            </EditTemplate>
-                        </DataGridColumn>
-                        <DataGridColumn Field="@nameof(LigneInventaire.NumeroCommandeClient)" Caption="AR" Filterable Editable>
-                            <EditTemplate>
-                                <NumericEdit TValue="int" Value="@((int)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
-                            </EditTemplate>
-                        </DataGridColumn>
-                        <DataGridColumn Field="@nameof(LigneInventaire.Quantite)" Caption="Qté" Editable Filterable="false">
+                        <EditTemplate>
+                            <NumericEdit TValue="int" Value="@((int)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
+                        </EditTemplate>
+                    </DataGridColumn>
+                    <DataGridColumn Field="@nameof(LigneInventaire.CodeOperationFinie)" Caption="Op" Editable>
+                        <EditTemplate>
+                            <NumericEdit TValue="int" Value="@((int)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
+                        </EditTemplate>
+                    </DataGridColumn>
+                    <DataGridColumn Field="@nameof(LigneInventaire.NumeroCommandeClient)" Caption="AR" Filterable Editable>
+                        <EditTemplate>
+                            <NumericEdit TValue="int" Value="@((int)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
+                        </EditTemplate>
+                    </DataGridColumn>
+                    <DataGridColumn Field="@nameof(LigneInventaire.Quantite)" Caption="Qté" Editable Filterable="false">
                             <EditTemplate>
                                 <NumericEdit TValue="double" Value="@((double)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
                             </EditTemplate>
@@ -166,14 +168,14 @@
                             <EditTemplate>
                                 <NumericEdit TValue="double" Value="@((double)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
                             </EditTemplate>
-                            </DataGridColumn>
+                        </DataGridColumn>
                         <DataGridColumn Field="@nameof(LigneInventaire.PuNomenclature)" Caption="Pu Nomenc." DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" Editable Filterable="false">
                             <EditTemplate>
-                                <NumericEdit  TValue="double" Value="@((double)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
+                                <NumericEdit TValue="double" Value="@((double)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
                             </EditTemplate>
-                            </DataGridColumn>
+                        </DataGridColumn>
                         <DataGridColumn Field="@nameof(LigneInventaire.CtRevient)" Caption="Ct Revient" DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" Filterable="false" />
-                        <DataGridColumn Field="@nameof(LigneInventaire.ValoFinale)" Caption="Valo" DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" Filterable="false"/>
+                        <DataGridColumn Field="@nameof(LigneInventaire.ValoFinale)" Caption="Valo" DisplayFormat="{0:C}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("fr-FR")" Filterable="false" />
                         <DataGridCommandColumn DeleteCommandAllowed="true" NewCommandAllowed="false" EditCommandAllowed="true" Caption="Supprimer">
                             <DeleteCommandTemplate>
                                 <Button Color="Color.Primary" Clicked="@(e=>RemoveLigneInventaire(context))" class="fa fa-trash"></Button>
@@ -202,7 +204,7 @@
 @code {
     const string SOCIETE = "001";
     private bool IsInitialized = false;
-    public IEnumerable<string> Articles;
+    public List<string> Articles = new();
     public List<BrowseOrdreDeFabricationForCompletion> OrdresDeFabrication = new();
     public List<int> Operations = new();
     public List<LigneInventaireDto> Inventaires = new();
@@ -214,20 +216,39 @@
     Autocomplete<BrowseOrdreDeFabricationForCompletion, int> OfAutocomplete;
     protected override async Task OnInitializedAsync()
     {
-        Articles = (await appService.Browse(new BrowseArticleQuery() { Societe = SOCIETE })).Articles;
-        var tmp_ofs = (await appService.Browse(new BrowseOrdreDeFabricationQuery() { Societe = SOCIETE })).Ofs;
-        OrdresDeFabrication.AddRange(tmp_ofs);
+        await Result.Create(new BrowseArticleQuery() { Societe = SOCIETE })
+        .Bind(q => appService.Browse(q))
+        .OnAsync(
+            r => Articles.AddRange(r.Articles),
+            fail => Notification.Warn(fail.Errors.AsString())
+        );
+        await Result.Create(new BrowseOrdreDeFabricationQuery() { Societe = SOCIETE })
+        .Bind(q => appService.Browse(q))
+        .OnAsync(
+            r => OrdresDeFabrication.AddRange(r.Ofs),
+            fail => Notification.Warn(fail.Errors.AsString())
+        );
+
+        await Result.Create(new BrowseLigneInventaireQuery() { Societe = SOCIETE })
+        .Bind(q => appService.GetListAsync(q))
+        .OnAsync(
+            r => Inventaires.AddRange(r.Lignes),
+            fail => Notification.Warn(fail.Errors.AsString())
+        );
+        //Articles = (await appService.Browse(new BrowseArticleQuery() { Societe = SOCIETE })).Articles;
+        //var tmp_ofs = (await appService.Browse(new BrowseOrdreDeFabricationQuery() { Societe = SOCIETE })).Ofs;
+        //OrdresDeFabrication.AddRange(tmp_ofs);
         //OrdresDeFabrication = tmp_ofs.Select(x => x.ToString()).ToList();
-        Inventaires = (await appService.GetListAsync(new BrowseLigneInventaireQuery() { Societe = SOCIETE })).Lignes;
+        // Inventaires = (await appService.GetListAsync(new BrowseLigneInventaireQuery() { Societe = SOCIETE })).Lignes;
 
         await base.OnInitializedAsync();
         IsInitialized = true;
     }
-    public string article_selectedSearchValue { get; set; }
-    public string article_selectedAutoCompleteText { get; set; }
+    public string article_selectedSearchValue { get; set; } = string.Empty;
+    public string article_selectedAutoCompleteText { get; set; } = string.Empty;
 
     //public string of_selectedSearchValue { get; set; }
-    public string of_selectedAutoCompleteText { get; set; }
+    public string of_selectedAutoCompleteText { get; set; } = string.Empty;
 
     //public string operation_selectedSearchValue { get; set; }
     //public string operation_selectedAutoCompleteText { get; set; }
@@ -241,50 +262,55 @@
         // bool ok = Int32.TryParse(of_selectedSearchValue, out var of);
         // bool ok1 = Int32.TryParse(operation_selectedSearchValue, out var op);
         double qte = Quantite * 1.0;
-        var resp = await appService.AddAsync(new AddLigneInventaireQuery() { Societe = SOCIETE, Article = article_selectedSearchValue, Client = Client, OrdreDeFabication = Selected_Of ?? 0, CodeOperationFinie = Selected_Op ?? 0, Quantite = qte, Page = Page });
 
-        Inventaires.Add(resp.Ligne);
-        //Ligne = new();
-        article_selectedAutoCompleteText = string.Empty;
-        article_selectedSearchValue = string.Empty;
-        //of_selectedAutoCompleteText = string.Empty;
-        //of_selectedSearchValue = string.Empty;
-        Selected_Of = null;
-        Selected_Op = null;
-        //await OfAutocomplete.ResetSelected();
-        of_selectedAutoCompleteText = "";
-        Client = string.Empty;
-        Quantite = 0;
-        Operations.Clear();
-        // StateHasChanged();
+        await Result.Create(new AddLigneInventaireQuery() { Societe = SOCIETE, Article = article_selectedSearchValue, Client = Client, OrdreDeFabication = Selected_Of ?? 0, CodeOperationFinie = Selected_Op ?? 0, Quantite = qte, Page = Page })
+        .Bind(q => appService.AddAsync(q))
+        .OnAsync(
+            r =>
+            {
+                Inventaires.Add(r.Ligne);
+                article_selectedAutoCompleteText = string.Empty;
+                article_selectedSearchValue = string.Empty;
+                Selected_Of = null;
+                Selected_Op = null;
+                of_selectedAutoCompleteText = "";
+                Client = string.Empty;
+                Quantite = 0;
+                Operations.Clear();
+                Notification.Info("Ligne d'inventaire creee");
+            },
+        fail => Notification.Warn(fail.Errors.AsString())
+        );
+
 
     }
     Task onSelectOperationClicked(EventArgs args, int op)
     {
-        //operation_selectedSearchValue = op;
         Selected_Op = op;
         return Task.CompletedTask;
     }
     async Task OnOrdreDeFabricationChanged(int of)
     {
-        //of_selectedSearchValue = args ?? string.Empty;
-        //operation_selectedSearchValue = string.Empty;
-        //if (!string.IsNullOrEmpty(of_selectedSearchValue))
-        //{
+
         if (of > 0)
         {
             Operations.Clear();
-            Operations.AddRange((await appService.Browse(new BrowseOperationPourOrdreDeFabricationQuery() { Societe = SOCIETE, OrdreDeFabrication = of })).Operations);
-            if (Operations.Count() > 0)
-            {
-                Selected_Of = of;
-                // operation_selectedSearchValue = Operations.First();
-                Selected_Op = Operations.First();
-            }
+            await Result.Create(new BrowseOperationPourOrdreDeFabricationQuery() { Societe = SOCIETE, OrdreDeFabrication = of })
+            .Bind(q => appService.Browse(q))
+            .OnAsync(
+                r =>
+                {
+                    Operations.AddRange(r.Operations);
+                    if (Operations.Count() > 0)
+                    {
+                        Selected_Of = of;
+                        Selected_Op = Operations.First();
+                    }
+                },
+            fail => Notification.Warn(fail.Errors.AsString())
+            );
 
-            // StateHasChanged();
         }
-        //}
     }
 
     async Task RemoveLigneInventaire(DeleteCommandContext<LigneInventaireDto> ctx)
@@ -298,12 +324,13 @@
     {
         var ligne = GetCurrentScreen(row.Item, row.Values);
 
-        var result = await appService.UpdateAsync(new UpdateLigneInventaireQuery() { Id = row.Item.Id, Ligne = ligne });
-        if (result.Ligne == null)
-        {
-            Debugger.Break();
-
-        }
+        await Result.Create(new UpdateLigneInventaireQuery() { Id = row.Item.Id, Ligne = ligne })
+        .Bind(q => appService.UpdateAsync(q))
+        .OnAsync(
+            r=>Notification.Info("Ligne d'inventaire mise à jour"),
+            fail=>Notification.Warn(fail.Errors.AsString())
+        );
+      
     }
     protected T GetCurrentScreen<T>(T currentObj, Dictionary<string, object> EditedValues)
     {

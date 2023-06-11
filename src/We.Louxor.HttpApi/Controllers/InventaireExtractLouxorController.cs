@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using We.Louxor.InventaireArticle;
 using We.Louxor.InventaireArticle.Queries;
+using We.Results;
 
 namespace We.Louxor.Controllers;
 
@@ -17,30 +18,32 @@ public class InventaireExtractLouxorController
         LazyServiceProvider.GetRequiredService<IInventaireExtractLouxorAppService>();
 
     [HttpGet, Route("LoadCommandeClient")]
-    public Task<LoadCommandeClientResponse> Load(LoadCommandeClientQuery query) =>
+    public Task<Result<LoadCommandeClientResponse>> Load(LoadCommandeClientQuery query) =>
         Service.Load(query);
 
     [HttpGet, Route("LoadArticle")]
-    public Task<LoadArticleResponse> Load(LoadArticleQuery query) => Service.Load(query);
+    public Task<Result<LoadArticleResponse>> Load(LoadArticleQuery query) => Service.Load(query);
 
     [HttpGet, Route("LoadOrdresDeFabrication")]
-    public Task<LoadOrdreDeFabricationResponse> Load(LoadOrdreDeFabricationQuery query) =>
+    public Task<Result<LoadOrdreDeFabricationResponse>> Load(LoadOrdreDeFabricationQuery query) =>
         Service.Load(query);
 
     [HttpGet, Route("LoadClient")]
-    public Task<LoadClientResponse> Load(LoadClientQuery query) => Service.Load(query);
+    public Task<Result<LoadClientResponse>> Load(LoadClientQuery query) => Service.Load(query);
 
     [HttpDelete, Route("ClearArticle")]
-    public Task<ClearArticleResponse> Clear(ClearArticleQuery query) => Service.Clear(query);
+    public Task<Result<ClearArticleResponse>> Clear(ClearArticleQuery query) =>
+        Service.Clear(query);
 
     [HttpDelete, Route("ClearCommandeClient")]
-    public Task<ClearCommandeClientResponse> Clear(ClearCommandeClientQuery query) =>
+    public Task<Result<ClearCommandeClientResponse>> Clear(ClearCommandeClientQuery query) =>
         Service.Clear(query);
 
     [HttpDelete, Route("ClearOrdresDeFabrication")]
-    public Task<ClearOrdreDeFabricationResponse> Clear(ClearOrdreDeFabricationQuery query) =>
-        Service.Clear(query);
+    public Task<Result<ClearOrdreDeFabricationResponse>> Clear(
+        ClearOrdreDeFabricationQuery query
+    ) => Service.Clear(query);
 
     [HttpDelete, Route("ClearClient")]
-    public Task<ClearClientResponse> Clear(ClearClientQuery query) => Service.Clear(query);
+    public Task<Result<ClearClientResponse>> Clear(ClearClientQuery query) => Service.Clear(query);
 }

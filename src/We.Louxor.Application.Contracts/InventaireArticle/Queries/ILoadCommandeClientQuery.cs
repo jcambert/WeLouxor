@@ -6,4 +6,4 @@ public interface ILoadCommandeClientQuery
     : ILoadBaseQuery<LoadCommandeClientResponse>,
       IInventaireQuery<LoadCommandeClientResponse> { }
 
-public sealed record LoadCommandeClientResponse():Response;
+public sealed record LoadCommandeClientResponse() : Response;

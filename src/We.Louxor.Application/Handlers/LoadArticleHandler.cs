@@ -1,12 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Polly;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Xml.Schema;
-using Volo.Abp.DependencyInjection;
 using We.Louxor.InventaireArticle;
 using We.Louxor.InventaireArticle.Queries;
 
@@ -51,7 +43,6 @@ public class LoadArticleHandler
                 );
             }
 
-
             records.RemoveAll(x => articles.Any(p => p.Societe == x.Societe && p.Code == x.Code));
             result = false;
         }
@@ -76,18 +67,5 @@ public class LoadArticleHandler
             return result;
         };
 
-    protected override LoadArticleResponse GetResponse()
-    => new LoadArticleResponse();
+    protected override LoadArticleResponse GetResponse() => new LoadArticleResponse();
 }
-/*
-public class LoadArticleHandler : BaseHandler<LoadArticleQuery, LoadArticleResponse>
-{
-    public LoadArticleHandler(IAbpLazyServiceProvider serviceProvider) : base(serviceProvider)
-    {
-    }
-
-    public override Task<LoadArticleResponse> Handle(LoadArticleQuery request, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-}*/

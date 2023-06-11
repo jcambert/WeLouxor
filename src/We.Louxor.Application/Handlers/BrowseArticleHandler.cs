@@ -11,10 +11,13 @@ public class BrowseArticleHandler : BaseHandler<BrowseArticleQuery, BrowseArticl
 
     public BrowseArticleHandler(IAbpLazyServiceProvider serviceProvider) : base(serviceProvider) { }
 
-    protected override async Task<Result<BrowseArticleResponse>> InternalHandle(BrowseArticleQuery request, CancellationToken cancellationToken)
+    protected override async Task<Result<BrowseArticleResponse>> InternalHandle(
+        BrowseArticleQuery request,
+        CancellationToken cancellationToken
+    )
     {
         var query = await repository.GetQueryableAsync();
-        query = from q in query where q.Societe == request.Societe orderby q.Code select q;
+        query = from q in query where q.Societe == request.Societe orderby q.Code  select q;
 
         var res = await AsyncExecuter.ToListAsync(query, cancellationToken);
 
@@ -22,6 +25,4 @@ public class BrowseArticleHandler : BaseHandler<BrowseArticleQuery, BrowseArticl
         ress.AddRange(res.Select(x => x.Code));
         return new BrowseArticleResponse(ress);
     }
-
-
 }

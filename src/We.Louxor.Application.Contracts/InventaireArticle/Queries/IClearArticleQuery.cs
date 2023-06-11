@@ -1,5 +1,9 @@
-﻿namespace We.Louxor.InventaireArticle.Queries;
+﻿using We.Mediatr;
 
-public interface IClearArticleQuery : IClearBaseQuery, IInventaireQuery<ClearArticleResponse> { }
+namespace We.Louxor.InventaireArticle.Queries;
 
-public sealed record ClearArticleResponse();
+public interface IClearArticleQuery
+    : IClearBaseQuery<ClearArticleResponse>,
+      IInventaireQuery<ClearArticleResponse> { }
+
+public sealed record ClearArticleResponse() : Response;

@@ -1,9 +1,8 @@
-﻿using System.Diagnostics;
+﻿using Volo.Abp.Application.Dtos;
 
-namespace We.Louxor.InventaireArticle;
+namespace We.Louxor;
 
-[DebuggerDisplay("{Societe}-{Numero}-{CodeOperation}-{NumeroAR}")]
-public class OrdreDeFabication : AggregateRoot<Guid>, IOrdreDeFabication
+public class OrdreDeFabicationDto : EntityDto
 {
     public string Societe { get; set; } = string.Empty;
     public int Numero { get; set; }
@@ -13,6 +12,4 @@ public class OrdreDeFabication : AggregateRoot<Guid>, IOrdreDeFabication
     public string CodeArticle { get; set; } = string.Empty;
     public double Quantite { get; set; }
     public bool IsDeleted { get; }
-    //public string Repr => $"{Numero}";
-    //public string Repr_Autocompletion => $"{Numero}-{CodeArticle}";
 }

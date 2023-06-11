@@ -43,11 +43,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "We.Dbf.Console", "Utilities
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_files", "_files", "{FDAEEFFB-30BC-4BC2-9E76-2F98D801FC34}"
 	ProjectSection(SolutionItems) = preProject
-		welouxor.yml=welouxor.yml
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		common.props = common.props
 		Directory.Build.props = Directory.Build.props
+		welouxor.yml = welouxor.yml
 	EndProjectSection
 EndProject
 Global

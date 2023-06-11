@@ -1,15 +1,13 @@
-﻿
-using We.Mediatr;
+﻿using We.Mediatr;
 
 namespace We.Louxor;
 
 public interface IBaseInventaireQuery { }
 
 public interface IInventaireQuery<TResponse> : IBaseInventaireQuery, IQuery<TResponse>
-    where TResponse : Response
-{ }
+    where TResponse : Response { }
 
-public abstract record InventaireResponse:Response
+public abstract record InventaireResponse : Response
 {
     public bool FromDatabase { get; set; }
     public bool FromCache { get; set; }

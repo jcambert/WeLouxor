@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using System.Threading.Tasks;
 using We.Louxor.InventaireArticle;
 using We.Louxor.InventaireArticle.Queries;
 
@@ -17,7 +16,15 @@ public class PrintController : LouxorController
     public async Task<IActionResult> PrintAsync([FromQuery] PrintQuery query)
     {
         var response = await Service.PrintAsync(query);
-        var result = File(response.Content, response.ContentType, response.Filename);
-        return result;
+        if (response)
+        {
+            var result = File(
+                response.Value.Content,
+                response.Value.ContentType,
+                response.Value.Filename
+            );
+            return result;
+        }
+        return NotFound();
     }
 }

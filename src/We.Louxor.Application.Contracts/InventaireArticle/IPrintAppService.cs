@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using Volo.Abp.Application.Services;
+﻿using Volo.Abp.Application.Services;
 using We.Louxor.InventaireArticle.Queries;
+using We.Results;
 
 namespace We.Louxor.InventaireArticle;
 
 public interface IPrintAppService : IApplicationService
 {
-    Task<PrintResponse> PrintAsync(PrintQuery query);
+    Task<Result<PrintResponse>> PrintAsync(PrintQuery query);
 }

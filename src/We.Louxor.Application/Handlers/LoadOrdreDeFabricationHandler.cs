@@ -13,6 +13,7 @@ public class LoadOrdreDeFabricationHandler
 {
     public LoadOrdreDeFabricationHandler(IAbpLazyServiceProvider serviceProvider)
         : base(serviceProvider) { }
-    /* protected override List<OrdreDeFabication> Filter(List<OrdreDeFabication> records, bool removeDuplicates = false)
-     =>records.Where(x => !string.IsNullOrEmpty(x.Societe) ).ToList();*/
+
+    protected override LoadOrdreDeFabricationResponse GetResponse() =>
+        new LoadOrdreDeFabricationResponse();
 }

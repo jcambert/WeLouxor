@@ -6,4 +6,4 @@ public interface ILoadOrdreDeFabricationQuery
     : ILoadBaseQuery<LoadOrdreDeFabricationResponse>,
       IInventaireQuery<LoadOrdreDeFabricationResponse> { }
 
-public sealed record LoadOrdreDeFabricationResponse():Response;
+public sealed record LoadOrdreDeFabricationResponse() : Response;

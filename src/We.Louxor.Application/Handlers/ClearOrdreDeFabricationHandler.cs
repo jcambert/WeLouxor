@@ -10,9 +10,12 @@ public class ClearOrdreDeFabricationHandler
           ClearOrdreDeFabricationQuery,
           ClearOrdreDeFabricationResponse,
           OrdreDeFabication,
-          Guid
+          OrdreDeFabicationDto
       >
 {
     public ClearOrdreDeFabricationHandler(IAbpLazyServiceProvider serviceProvider)
         : base(serviceProvider) { }
+
+    protected override ClearOrdreDeFabricationResponse GetResponse() =>
+        new ClearOrdreDeFabricationResponse();
 }

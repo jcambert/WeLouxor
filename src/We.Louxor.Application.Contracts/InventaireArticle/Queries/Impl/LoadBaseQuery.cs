@@ -3,7 +3,7 @@
 namespace We.Louxor.InventaireArticle.Queries;
 
 public abstract class LoadBaseQuery<TResponse> : ILoadBaseQuery<TResponse>
-    where TResponse:Response
+    where TResponse : Response
 {
     public LoadBaseQuery()
     {

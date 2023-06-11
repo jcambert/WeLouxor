@@ -2,4 +2,6 @@
 
 [Dependency(ServiceLifetime.Transient, ReplaceServices = true)]
 [ExposeServices(typeof(IClearOrdreDeFabricationQuery))]
-public class ClearOrdreDeFabricationQuery : ClearBaseQuery, IClearOrdreDeFabricationQuery { }
+public class ClearOrdreDeFabricationQuery
+    : ClearBaseQuery<ClearOrdreDeFabricationResponse>,
+      IClearOrdreDeFabricationQuery { }

@@ -2,6 +2,8 @@
 
 namespace We.Louxor.InventaireArticle.Queries;
 
-public interface ILoadClientQuery : ILoadBaseQuery<LoadClientResponse>, IInventaireQuery<LoadClientResponse> { }
+public interface ILoadClientQuery
+    : ILoadBaseQuery<LoadClientResponse>,
+      IInventaireQuery<LoadClientResponse> { }
 
-public sealed record LoadClientResponse():Response;
+public sealed record LoadClientResponse() : Response;

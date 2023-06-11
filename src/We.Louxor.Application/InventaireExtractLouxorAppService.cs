@@ -1,5 +1,7 @@
 ﻿using We.Louxor.InventaireArticle;
 using We.Louxor.InventaireArticle.Queries;
+using We.Mediatr;
+using We.Results;
 
 namespace We.Louxor;
 
@@ -7,23 +9,28 @@ public class InventaireExtractLouxorAppService
     : LouxorAppService,
       IInventaireExtractLouxorAppService
 {
-    public Task<ClearArticleResponse> Clear(ClearArticleQuery query) => Mediator.Send(query);
+    public Task<Result<ClearArticleResponse>> Clear(ClearArticleQuery query) =>
+        Mediator.Send(query).AsTaskWrap();
 
-    public Task<ClearCommandeClientResponse> Clear(ClearCommandeClientQuery query) =>
-        Mediator.Send(query);
+    public Task<Result<ClearCommandeClientResponse>> Clear(ClearCommandeClientQuery query) =>
+        Mediator.Send(query).AsTaskWrap();
 
-    public Task<ClearOrdreDeFabricationResponse> Clear(ClearOrdreDeFabricationQuery query) =>
-        Mediator.Send(query);
+    public Task<Result<ClearOrdreDeFabricationResponse>> Clear(
+        ClearOrdreDeFabricationQuery query
+    ) => Mediator.Send(query).AsTaskWrap();
 
-    public Task<ClearClientResponse> Clear(ClearClientQuery query) => Mediator.Send(query);
+    public Task<Result<ClearClientResponse>> Clear(ClearClientQuery query) =>
+        Mediator.Send(query).AsTaskWrap();
 
-    public Task<LoadCommandeClientResponse> Load(LoadCommandeClientQuery query) =>
-        Mediator.Send(query);
+    public Task<Result<LoadCommandeClientResponse>> Load(LoadCommandeClientQuery query) =>
+        Mediator.Send(query).AsTaskWrap();
 
-    public Task<LoadArticleResponse> Load(LoadArticleQuery query) => Mediator.Send(query);
+    public Task<Result<LoadArticleResponse>> Load(LoadArticleQuery query) =>
+        Mediator.Send(query).AsTaskWrap();
 
-    public Task<LoadOrdreDeFabricationResponse> Load(LoadOrdreDeFabricationQuery query) =>
-        Mediator.Send(query);
+    public Task<Result<LoadOrdreDeFabricationResponse>> Load(LoadOrdreDeFabricationQuery query) =>
+        Mediator.Send(query).AsTaskWrap();
 
-    public Task<LoadClientResponse> Load(LoadClientQuery query) => Mediator.Send(query);
+    public Task<Result<LoadClientResponse>> Load(LoadClientQuery query) =>
+        Mediator.Send(query).AsTaskWrap();
 }

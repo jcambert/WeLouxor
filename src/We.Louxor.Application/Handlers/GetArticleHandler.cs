@@ -11,7 +11,10 @@ public class GetArticleHandler : BaseHandler<GetArticleQuery, GetArticleResponse
 
     public GetArticleHandler(IAbpLazyServiceProvider serviceProvider) : base(serviceProvider) { }
 
-    protected override async Task<Result<GetArticleResponse>> InternalHandle(GetArticleQuery request, CancellationToken cancellationToken)
+    protected override async Task<Result<GetArticleResponse>> InternalHandle(
+        GetArticleQuery request,
+        CancellationToken cancellationToken
+    )
     {
         var query = await repository.GetQueryableAsync();
         query =
@@ -21,5 +24,4 @@ public class GetArticleHandler : BaseHandler<GetArticleQuery, GetArticleResponse
         var res = await AsyncExecuter.FirstOrDefaultAsync(query, cancellationToken);
         return new GetArticleResponse(res);
     }
- 
 }

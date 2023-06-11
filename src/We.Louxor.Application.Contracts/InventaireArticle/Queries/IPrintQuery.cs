@@ -8,4 +8,4 @@ public interface IPrintQuery : IInventaireQuery<PrintResponse>
     string SheetName { get; set; }
 }
 
-public sealed record PrintResponse(byte[] Content, string ContentType, string Filename):Response;
+public sealed record PrintResponse(byte[] Content, string ContentType, string Filename) : Response;

@@ -1,39 +1,45 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using We.Louxor.InventaireArticle;
+﻿using We.Louxor.InventaireArticle;
 using We.Louxor.InventaireArticle.Queries;
+using We.Mediatr;
+using We.Results;
 
 namespace We.Louxor;
 
 public class InventaireAppService : LouxorAppService, IInventaireAppService
 {
-    public Task<AddLigneInventaireResponse> AddAsync(AddLigneInventaireQuery query) =>
-        Mediator.Send(query);
+    public Task<Result<AddLigneInventaireResponse>> AddAsync(AddLigneInventaireQuery query) =>
+        Mediator.Send(query).AsTaskWrap();
 
-    public Task<GetLigneInventaireResponse> GetAsync(GetLigneInventaireQuery query) =>
-        Mediator.Send(query);
+    public Task<Result<GetLigneInventaireResponse>> GetAsync(GetLigneInventaireQuery query) =>
+        Mediator.Send(query).AsTaskWrap();
 
-    public Task<BrowseLigneInventaireResponse> GetListAsync(BrowseLigneInventaireQuery query) =>
-        Mediator.Send(query);
+    public Task<Result<BrowseLigneInventaireResponse>> GetListAsync(
+        BrowseLigneInventaireQuery query
+    ) => Mediator.Send(query).AsTaskWrap();
 
-    public Task<RemoveLigneInventaireResponse> RemoveAsync(RemoveLigneInventaireQuery query) =>
-        Mediator.Send(query);
+    public Task<Result<RemoveLigneInventaireResponse>> RemoveAsync(
+        RemoveLigneInventaireQuery query
+    ) => Mediator.Send(query).AsTaskWrap();
 
-    public Task<RemoveLigneInventaireResponse> RemoveAllAsync(
+    public Task<Result<RemoveLigneInventaireResponse>> RemoveAllAsync(
         RemoveAllLigneInventaireQuery query
-    ) => Mediator.Send(query);
+    ) => Mediator.Send(query).AsTaskWrap();
 
-    public Task<UpdateLigneInventaireResponse> UpdateAsync(UpdateLigneInventaireQuery query) =>
-        Mediator.Send(query);
+    public Task<Result<UpdateLigneInventaireResponse>> UpdateAsync(
+        UpdateLigneInventaireQuery query
+    ) => Mediator.Send(query).AsTaskWrap();
 
-    public Task<GetArticleResponse> Get(GetArticleQuery query) => Mediator.Send(query);
+    public Task<Result<GetArticleResponse>> Get(GetArticleQuery query) =>
+        Mediator.Send(query).AsTaskWrap();
 
-    public Task<BrowseArticleResponse> Browse(BrowseArticleQuery query) => Mediator.Send(query);
+    public Task<Result<BrowseArticleResponse>> Browse(BrowseArticleQuery query) =>
+        Mediator.Send(query).AsTaskWrap();
 
-    public Task<BrowseOrdreDeFabricationResponse> Browse(BrowseOrdreDeFabricationQuery query) =>
-        Mediator.Send(query);
+    public Task<Result<BrowseOrdreDeFabricationResponse>> Browse(
+        BrowseOrdreDeFabricationQuery query
+    ) => Mediator.Send(query).AsTaskWrap();
 
-    public Task<BrowseOperationPourOrdreDeFabricationResponse> Browse(
+    public Task<Result<BrowseOperationPourOrdreDeFabricationResponse>> Browse(
         BrowseOperationPourOrdreDeFabricationQuery query
-    ) => Mediator.Send(query);
+    ) => Mediator.Send(query).AsTaskWrap();
 }

@@ -13,7 +13,10 @@ public class BrowseLigneInventaireHandler
     public BrowseLigneInventaireHandler(IAbpLazyServiceProvider serviceProvider)
         : base(serviceProvider) { }
 
-    protected override async Task<Result<BrowseLigneInventaireResponse>> InternalHandle(BrowseLigneInventaireQuery request, CancellationToken cancellationToken)
+    protected override async Task<Result<BrowseLigneInventaireResponse>> InternalHandle(
+        BrowseLigneInventaireQuery request,
+        CancellationToken cancellationToken
+    )
     {
         var query = await repository.GetQueryableAsync();
         List<ILigneInventaire> res = await AsyncExecuter.ToListAsync<ILigneInventaire>(
@@ -23,6 +26,4 @@ public class BrowseLigneInventaireHandler
         var res1 = ObjectMapper.Map<List<ILigneInventaire>, List<LigneInventaireDto>>(res);
         return new BrowseLigneInventaireResponse(res1);
     }
-
-
 }

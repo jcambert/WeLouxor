@@ -1,6 +1,9 @@
-﻿namespace We.Louxor.InventaireArticle.Queries;
+﻿using We.Mediatr;
 
-public abstract class ClearBaseQuery : IClearBaseQuery
+namespace We.Louxor.InventaireArticle.Queries;
+
+public abstract class ClearBaseQuery<TResponse> : IClearBaseQuery<TResponse>
+    where TResponse : Response
 {
-    public string Societe { get; set; }
+    public string Societe { get; set; } = string.Empty;
 }

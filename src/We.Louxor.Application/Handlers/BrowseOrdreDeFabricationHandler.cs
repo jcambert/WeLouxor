@@ -13,7 +13,10 @@ public class BrowseOrdreDeFabricationHandler
     public BrowseOrdreDeFabricationHandler(IAbpLazyServiceProvider serviceProvider)
         : base(serviceProvider) { }
 
-    protected override async Task<Result<BrowseOrdreDeFabricationResponse>> InternalHandle(BrowseOrdreDeFabricationQuery request, CancellationToken cancellationToken)
+    protected override async Task<Result<BrowseOrdreDeFabricationResponse>> InternalHandle(
+        BrowseOrdreDeFabricationQuery request,
+        CancellationToken cancellationToken
+    )
     {
         var query = await repository.GetQueryableAsync();
         query = from q in query where q.Societe == request.Societe select q;
@@ -31,6 +34,4 @@ public class BrowseOrdreDeFabricationHandler
             .ToList();
         return new BrowseOrdreDeFabricationResponse(ress);
     }
-
-  
 }

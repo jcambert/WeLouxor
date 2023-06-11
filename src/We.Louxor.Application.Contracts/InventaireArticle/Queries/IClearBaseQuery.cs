@@ -1,3 +1,6 @@
-﻿namespace We.Louxor.InventaireArticle.Queries;
+﻿using We.Mediatr;
 
-public interface IClearBaseQuery : ISociete { }
+namespace We.Louxor.InventaireArticle.Queries;
+
+public interface IClearBaseQuery<TResponse> : ISociete, IQuery<TResponse>
+    where TResponse : Response { }

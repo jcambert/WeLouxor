@@ -11,7 +11,7 @@ namespace We.Louxor.Handlers;
 
 public abstract class BaseLoadHandler<TQuery, TResponse, TEntity, TKey>
     : BaseHandler<TQuery, TResponse>
-    where TQuery :ILoadBaseQuery<TResponse>, IQuery<TResponse>
+    where TQuery : ILoadBaseQuery<TResponse>, IQuery<TResponse>
     where TResponse : Response
     where TEntity : class, IEntityLouxor, IEntity<TKey>
 {
@@ -22,7 +22,10 @@ public abstract class BaseLoadHandler<TQuery, TResponse, TEntity, TKey>
 
     protected BaseLoadHandler(IAbpLazyServiceProvider serviceProvider) : base(serviceProvider) { }
 
-    protected override async Task<Results.Result<TResponse>> InternalHandle(TQuery request, CancellationToken cancellationToken)
+    protected override async Task<Results.Result<TResponse>> InternalHandle(
+        TQuery request,
+        CancellationToken cancellationToken
+    )
     {
         this.Request = request;
         using (var scope = _serviceProvider.CreateScope())
@@ -100,11 +103,10 @@ public abstract class BaseLoadHandler<TQuery, TResponse, TEntity, TKey>
         }
         return GetResponse();
     }
-   
 
     protected virtual bool CheckForDuplicate(List<TEntity> lignes) => true;
 
-    protected abstract TResponse GetResponse() ;
+    protected abstract TResponse GetResponse();
 
     protected List<TEntity> Filter(List<TEntity> records, bool removeDuplicates = false)
     {
@@ -125,53 +127,3 @@ public abstract class BaseLoadHandler<TQuery, TResponse, TEntity, TKey>
             return true;
         };
 }
-/*
-public class LoadCommandeClientHandler : BaseHandler<LoadCommandeClientQuery, LoadCommandeClientResponse>
-{
-
-    IServiceProvider _serviceProvider => LazyServiceProvider.GetRequiredService<IServiceProvider>();
-    IRepository<LigneDeCommande, Guid> Repository => LazyServiceProvider.GetRequiredService<IRepository<LigneDeCommande, Guid>>();
-    public LoadCommandeClientHandler(IAbpLazyServiceProvider serviceProvider) : base(serviceProvider)
-    {
-    }
-
-    public override async Task<LoadCommandeClientResponse> Handle(LoadCommandeClientQuery request, CancellationToken cancellationToken)
-    {
-        using (var scope = _serviceProvider.CreateScope())
-        {
-            DbfDocumentManager Dbf = scope.ServiceProvider.GetService<DbfDocumentManager>();
-            var vfp = scope.ServiceProvider.GetService<IVirtualFileProvider>();
-            var fi = vfp.GetFileInfo(request.Filename);
-            if (!fi.Exists)
-                throw new ArgumentException($"{request.Filename} does not exist in wwww/database/folder ");
-            var stream = fi.CreateReadStream();
-
-            using (var reader = new BinaryReader(stream))
-            {
-                int counter = 0;
-                byte[] bytes = reader.ReadBytes((int)stream.Length);
-                Dbf.AllRecordsLoaded.Subscribe(b =>
-                {
-                    Logger.LogDebug($"\x1B[43m{Path.GetFileNameWithoutExtension( request.Filename)} All records Loaded successfully\x1B[43m");
-                });
-                Dbf.RecordsLoaded.Subscribe(records =>
-                {
-                    Logger.LogDebug($"\x1B[43m{records.Count} where loaded\x1B[43m");
-                    List<LigneDeCommande> lignes = ObjectMapper.Map<List<RecordData>, List<LigneDeCommande>>(records);
-                    counter += records.Count;
-                    Task.Run(async() => {
-                        await Repository.InsertManyAsync(lignes, true, cancellationToken);
-                        Logger.LogDebug($"\x1B[43m{lignes.Count} lines were inserted in database. Total:{counter}/{Dbf.TotalRecord}\x1B[43m");
-                    }).GetAwaiter().GetResult();
-                    Task.Delay(500).GetAwaiter().GetResult();
-                });
-                await Dbf.LoadAsync(bytes, request.Filename,request.LoadRecordStep,request.LimitRecordCountTo, cancellationToken);
-            }
-
-
-
-        }
-        return new LoadCommandeClientResponse();
-    }
-}
-*/

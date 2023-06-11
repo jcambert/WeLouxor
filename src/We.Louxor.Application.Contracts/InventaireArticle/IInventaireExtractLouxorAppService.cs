@@ -1,22 +1,22 @@
-﻿using System.Threading.Tasks;
-using We.Louxor.InventaireArticle.Queries;
+﻿using We.Louxor.InventaireArticle.Queries;
+using We.Results;
 
 namespace We.Louxor.InventaireArticle;
 
 public interface IInventaireExtractLouxorAppService
 {
-    Task<LoadCommandeClientResponse> Load(LoadCommandeClientQuery query);
+    Task<Result<LoadCommandeClientResponse>> Load(LoadCommandeClientQuery query);
 
-    Task<LoadArticleResponse> Load(LoadArticleQuery query);
+    Task<Result<LoadArticleResponse>> Load(LoadArticleQuery query);
 
-    Task<LoadOrdreDeFabricationResponse> Load(LoadOrdreDeFabricationQuery query);
-    Task<LoadClientResponse> Load(LoadClientQuery query);
+    Task<Result<LoadOrdreDeFabricationResponse>> Load(LoadOrdreDeFabricationQuery query);
+    Task<Result<LoadClientResponse>> Load(LoadClientQuery query);
 
-    Task<ClearArticleResponse> Clear(ClearArticleQuery query);
+    Task<Result<ClearArticleResponse>> Clear(ClearArticleQuery query);
 
-    Task<ClearCommandeClientResponse> Clear(ClearCommandeClientQuery query);
+    Task<Result<ClearCommandeClientResponse>> Clear(ClearCommandeClientQuery query);
 
-    Task<ClearOrdreDeFabricationResponse> Clear(ClearOrdreDeFabricationQuery query);
+    Task<Result<ClearOrdreDeFabricationResponse>> Clear(ClearOrdreDeFabricationQuery query);
 
-    Task<ClearClientResponse> Clear(ClearClientQuery query);
+    Task<Result<ClearClientResponse>> Clear(ClearClientQuery query);
 }

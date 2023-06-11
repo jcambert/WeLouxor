@@ -22,8 +22,10 @@ public class AddLigneInventaireHandler
     public AddLigneInventaireHandler(IAbpLazyServiceProvider serviceProvider)
         : base(serviceProvider) { }
 
-
-    protected override async Task<Result<AddLigneInventaireResponse>> InternalHandle(AddLigneInventaireQuery request, CancellationToken cancellationToken)
+    protected override async Task<Result<AddLigneInventaireResponse>> InternalHandle(
+        AddLigneInventaireQuery request,
+        CancellationToken cancellationToken
+    )
     {
         Article article = null;
         Article articleTete = null;
@@ -256,5 +258,4 @@ public class AddLigneInventaireHandler
         LigneInventaireDto res = ObjectMapper.Map<LigneInventaire, LigneInventaireDto>(inventaire);
         return new AddLigneInventaireResponse(res);
     }
-
 }

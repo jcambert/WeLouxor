@@ -1,6 +1,5 @@
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
-using MediatR;
 using Microsoft.AspNetCore.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using OpenIddict.Validation.AspNetCore;
@@ -29,7 +28,12 @@ using We.Louxor.Blazor.Menus;
 using We.Louxor.EntityFrameworkCore;
 using We.Louxor.Localization;
 using We.Louxor.MultiTenancy;
-
+#if MEDIATR
+using MediatR;
+#endif
+#if MEDIATOR
+using Mediator;
+#endif
 namespace We.Louxor.Blazor;
 
 [DependsOn(
@@ -84,7 +88,7 @@ public class LouxorBlazorModule : AbpModule
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
 
-        context.Services.AddMediatR(typeof(LouxorApplicationModule).Assembly);
+ 
 
         //ConfigureAuthentication(context);
         ConfigureUrls(configuration);
@@ -96,8 +100,27 @@ public class LouxorBlazorModule : AbpModule
         ConfigureBlazorise(context);
         ConfigureRouter(context);
         ConfigureMenu(context);
+        ConfigureMediator(context);
     }
 
+    private static void ConfigureMediator(ServiceConfigurationContext context)
+    {
+#if MEDIATOR
+        context.Services.AddMediator();
+#endif
+#if MEDIATR
+        context.Services.AddMediatR(
+            cfg =>
+            {
+                cfg.RegisterServicesFromAssemblies(
+                    typeof(AbpExtensionsModule).Assembly,
+                    typeof(LouxorApplicationModule).Assembly,
+                );
+            }
+        );
+#endif
+
+    }
     private void ConfigureAuthentication(ServiceConfigurationContext context)
     {
         context.Services.ForwardIdentityAuthenticationForBearer(

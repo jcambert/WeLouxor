@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿using Mediator;
 using Volo.Abp.Application.Services;
 using We.Louxor.Localization;
 

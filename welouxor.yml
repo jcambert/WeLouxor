@@ -20,7 +20,7 @@ services:
       - POSTGRESQL_PASSWORD=zy4fVNVu
 
     ports:
-      - '5433:5432'
+      - '5434:5432'
     volumes:
      - 'welouxor_db_data:/bitnami/postgresql'
     

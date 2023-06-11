@@ -13,8 +13,10 @@ public class UpdateLigneInventaireHandler
     public UpdateLigneInventaireHandler(IAbpLazyServiceProvider serviceProvider)
         : base(serviceProvider) { }
 
-
-    protected override async Task<Result<UpdateLigneInventaireResponse>> InternalHandle(UpdateLigneInventaireQuery request, CancellationToken cancellationToken)
+    protected override async Task<Result<UpdateLigneInventaireResponse>> InternalHandle(
+        UpdateLigneInventaireQuery request,
+        CancellationToken cancellationToken
+    )
     {
         //request.Ligne
         var row = await _inv_repository.SingleOrDefaultAsync(x => x.Id == request.Id);
@@ -26,7 +28,6 @@ public class UpdateLigneInventaireHandler
                 ObjectMapper.Map<LigneInventaire, LigneInventaireDto>(res)
             );
         }
-        return NotFound("Npt Founc",$"La ligne d'inventaire avec l'id {request.Id} n'existe pas");
+        return NotFound("Npt Founc", $"La ligne d'inventaire avec l'id {request.Id} n'existe pas");
     }
-    
 }
