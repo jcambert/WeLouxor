@@ -11,45 +11,48 @@
 @inject IInventaireAppService appService;
 @inject IUiNotificationService Notification
 @inherits LouxorComponentBase
-<div class="container-fluid">
+<Container Fluid>
     @if (IsInitialized)
     {
-        <div class="row mb-3">
-            <div class="col-2">
-                <label for="page" class="form-label">Page</label>
-                <input type="number" min="1" class="form-control" id="page" placeholder="Page" @bind-value="Page">
+        <Row Class="mb-3">
+            <Column ColumnSize="ColumnSize.Is2">
+                <Field>
+                    <FieldLabel>Page</FieldLabel>
+                    <NumericEdit Value="Page" Min="1" Placeholder="Page de l'inventaire"/>
+                </Field>
 
-            </div>
+            </Column>
+        
             <Divider Class="mt-2" />
-        </div>
-        <div class="row mb-3">
-            <div class="col-4">
-                <label class="form-label">Code Article</label>
+        </Row>
+        <Row Class="mb-3">
+            <Fields>
+                <Field ColumnSize="ColumnSize.Is4">
+                    <FieldLabel>Code Article</FieldLabel>
+                    <Autocomplete TItem="string"
+                                  TValue="string"
+                                  Data="@Articles"
+                                  DebounceInterval=500
+                                  TextField="@(( item ) => item)"
+                                  ValueField="@(( item ) => item)"
+                    @bind-SelectedValue="@article_selectedSearchValue"
+                    @bind-SelectedText="article_selectedAutoCompleteText"
+                                  Placeholder="Code Article"
+                                  Filter="AutocompleteFilter.StartsWith"
+                                  FreeTyping=false
+                                  CustomFilter="@(( item, searchValue ) => item.IndexOf( searchValue, 0, StringComparison.CurrentCultureIgnoreCase ) >= 0 )">
+                        <NotFoundContent> Désolé... @context n'existe pas! :( </NotFoundContent>
+                    </Autocomplete>
+                </Field>
+                <Field ColumnSize="ColumnSize.Is4">
+                    <FieldLabel>Client</FieldLabel>
+                    <TextEdit Value="Client"  Placeholder="Client"/>
+                </Field>
+                <Divider Class="mt-2" />
+            </Fields>
 
-
-                <Autocomplete TItem="string"
-                              TValue="string"
-                              Data="@Articles"
-                              DebounceInterval=500
-                              TextField="@(( item ) => item)"
-                              ValueField="@(( item ) => item)"
-                @bind-SelectedValue="@article_selectedSearchValue"
-                @bind-SelectedText="article_selectedAutoCompleteText"
-                              Placeholder="Code Article"
-                              Filter="AutocompleteFilter.StartsWith"
-                              FreeTyping=false
-                              CustomFilter="@(( item, searchValue ) => item.IndexOf( searchValue, 0, StringComparison.CurrentCultureIgnoreCase ) >= 0 )">
-                    <NotFoundContent> Sorry... @context was not found! :( </NotFoundContent>
-                </Autocomplete>
-
-            </div>
-            <div class="col-4">
-                <label for="client" class="form-label">Client</label>
-                <input class="form-control" id="client" placeholder="Client" @bind-value="Client">
-
-            </div>
-            <Divider Class="mt-2" />
-        </div>
+        </Row>
+        
         <div class="row mb-3">
             <div class="col-4">
                 <label class="form-label">Ordre de fabrication</label>
@@ -199,8 +202,7 @@
             </div>
         </div>
     }
-</div>
-
+</Container>
 @code {
     const string SOCIETE = "001";
     private bool IsInitialized = false;
