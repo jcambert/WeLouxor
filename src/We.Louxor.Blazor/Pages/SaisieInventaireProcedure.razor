@@ -13,14 +13,22 @@
                 <Paragraph>
                     Reset
                 </Paragraph>
-                <code>update pparti set codsfa='' where sigsoc='001'</code>
+                <Code @ref="Code1" CopyToClipboard="true">update pparti set codsfa='' where sigsoc='001'</Code>
+                <br />
+                <Button Clicked="(args)=>CopyToClipboard(Code1 )" Color="Color.Info">
+                    Copy To Clipboard
+                </Button>
                 <Divider />
 
             </li>
             <li>
 
                 <Paragraph>
-                    <code>update pparti set codsfa='PF' where sigsoc='001' and gessto='O' and coddom='V' and codfam='01' and codsfa='' and codart in (select distinct codart from cmlign where sigsoc='001')</code>
+                    <Code @ref="Code2" CopyToClipboard="true">update pparti set codsfa='PF' where sigsoc='001' and gessto='O' and coddom='V' and codfam='01' and codsfa='' and codart in (select distinct codart from cmlign where sigsoc='001')</Code>
+                    <br />
+                    <Button Clicked="(args)=>CopyToClipboard(Code2 )" Color="Color.Info">
+                        Copy To Clipboard
+                    </Button>
                 </Paragraph>
             </li>
         </ul>
@@ -36,16 +44,24 @@
                 <Paragraph>
                     Reset
                 </Paragraph>
-                <code>update pparti set class3='' where sigsoc='001'</code>
+                <Code @ref="Code3" CopyToClipboard="true">update pparti set class3='' where sigsoc='001'</Code>
+                <br />
+                <Button Clicked="(args)=>CopyToClipboard(Code3 )" Color="Color.Info">
+                    Copy To Clipboard
+                </Button>
                 <Divider />
             </li>
             <li>
                 <Paragraph>
                     Mise a jour du champs analytique 3
                 </Paragraph>
-                <code>
+                <Code @ref="Code4" CopyToClipboard="true">
                     update a set a.class3='VEN' from pparti a where a.sigsoc='001' and a.codart in (select distinct m.codart from cmlign m where m.sigsoc='001' and m.credat>={01/01/2021})
-                </code>
+                </Code>
+                <br />
+                <Button Clicked="(args)=>CopyToClipboard(Code4 )" Color="Color.Info">
+                    Copy To Clipboard
+                </Button>
             </li>
 
         </ul>
@@ -55,7 +71,11 @@
         <Paragraph>
             MISE A JOUR Lot Appro en fonction de la commande
         </Paragraph>
-        <code>update a set  a.lotapp=(select d.quanti from cmlign d where d.sigsoc='001' and d.codart=a.codart and d.numdoc in (select min(c.numdoc) as numdoc from cmlign c where c.sigsoc='001' and c.codart=d.codart and c.credat>={01/01/2021})  ) from pparti a where a.sigsoc='001' and a.coddom='V' and a.codfam='01' and a.codsfa='PF' and a.class3='VEN'</code>
+        <Code @ref="Code5" CopyToClipboard="true">update a set  a.lotapp=(select d.quanti from cmlign d where d.sigsoc='001' and d.codart=a.codart and d.numdoc in (select min(c.numdoc) as numdoc from cmlign c where c.sigsoc='001' and c.codart=d.codart and c.credat>={01/01/2021})  ) from pparti a where a.sigsoc='001' and a.coddom='V' and a.codfam='01' and a.codsfa='PF' and a.class3='VEN'</Code>
+        <br />
+        <Button Clicked="(args)=>CopyToClipboard(Code5 )" Color="Color.Info">
+            Copy To Clipboard
+        </Button>
         <Divider />
     </li>
     <li>
@@ -84,4 +104,14 @@
 </ul>
 @code {
 
+    Code? Code1;
+    Code? Code2;
+    Code? Code3;
+    Code? Code4;
+    Code? Code5;
+    async Task CopyToClipboard(Code elt)
+    {
+        if (elt is not null)
+            await elt.JSUtilitiesModule.CopyToClipboard(elt.ElementRef, elt.ElementId);
+    }
 }

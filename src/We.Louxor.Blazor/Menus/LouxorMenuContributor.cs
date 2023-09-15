@@ -52,6 +52,17 @@ public class LouxorMenuContributor : IMenuContributor
                             order: 2
                         )
                     )
+            )
+            .AddItem(
+                new ApplicationMenuItem(LouxorMenus.Application, l["Menu:Helping"]).AddItem(
+                    new ApplicationMenuItem(
+                        LouxorMenus.RequeteSql,
+                        l["Menu:Helping:RequeteSql"],
+                        "/requetesql",
+                        icon: "fas fa-pen-nib",
+                        order: 3
+                    )
+                )
             );
 
         context.Menu.AddItem(

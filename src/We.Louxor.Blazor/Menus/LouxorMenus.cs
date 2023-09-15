@@ -1,6 +1,4 @@
-﻿using DocumentFormat.OpenXml.Drawing.Diagrams;
-
-namespace We.Louxor.Blazor.Menus;
+﻿namespace We.Louxor.Blazor.Menus;
 
 public class LouxorMenus
 {
@@ -10,5 +8,6 @@ public class LouxorMenus
     public const string Api = Prefix + ".Swagger";
     public const string InventaireSaisie = Prefix + ".Inventaire.Saisie";
     public const string InventaireSaisieProcedure = Prefix + ".Inventaire.Procedure";
+    public const string RequeteSql = Prefix + ".RequeteSql";
     //Add your menu items here...
 }

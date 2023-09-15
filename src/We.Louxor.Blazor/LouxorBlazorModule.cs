@@ -165,6 +165,14 @@ public class LouxorBlazorModule : AbpModule
                         bundle.AddFiles("/We.Louxor.Blazor.styles.css");
                     }
                 );
+
+                options.ScriptBundles.Configure(
+                    BlazorBasicThemeBundles.Scripts.Global,
+                    bundle =>
+                    {
+                        bundle.AddFiles("/js/app.js");
+                    }
+                    );
             }
         );
     }

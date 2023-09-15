@@ -1,0 +1,56 @@
+﻿@page "/requetesql"
+@using Microsoft.JSInterop
+@inject IJSRuntime js
+<h3>Requetes standards</h3>
+<h4>Dans Superviseur Louxor, taper les requetes SQL ci-dessous<br /></h4>
+<Divider />
+
+<ul>
+
+    <li>
+        <Paragraph>
+            Mise a jour de la sous-famille en PF (Produit fini) pour tous les articles Vendus
+        </Paragraph>
+        <ul>
+            <li>
+
+                <Paragraph>
+                    <Code @ref="Code1" CopyToClipboard="true">update pparti set codsfa='PF' where sigsoc='001' and gessto='O' and coddom='V' and codfam='01' and codsfa='' and codart in (select distinct codart from cmlign where sigsoc='001')</Code>
+                    <br />
+                    <Button Clicked="(args)=>CopyToClipboard(Code1 )" Color="Color.Info">
+                        Copy To Clipboard
+                    </Button>
+                </Paragraph>
+            </li>
+        </ul>
+        <Divider />
+    </li>
+    <li>
+        <Paragraph>
+            Mise à jour de l'interdication du stock négatif
+        </Paragraph>
+        <ul>
+            <li>
+                <Paragraph>
+                    <Code  @ref="Code2" CopyToClipboard="true">
+                        update pparti set stoneg='N' where sigsoc='001' and gessto='O' and coddom='V' and codfam='01'
+                    </Code>
+                    <br />
+                    <Button Clicked="(args)=>CopyToClipboard(Code2 )" Color="Color.Info">
+                        Copy To Clipboard
+                    </Button>
+                </Paragraph>
+            </li>
+        </ul>
+    </li>
+</ul>
+@code {
+    Code? Code1;
+    Code? Code2;
+
+    async Task CopyToClipboard(Code elt)
+    {
+        if (elt is not null)
+            await elt.JSUtilitiesModule.CopyToClipboard(elt.ElementRef, elt.ElementId);
+    }
+}

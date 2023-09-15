@@ -7,6 +7,8 @@
     "Menu:Inventaire": "Inventaire",
     "Menu:Inventaire:Saisie": "Saisie",
     "Menu:Inventaire:Procedure": "Procedure ",
+    "Menu:Helping": "Aides Diverses",
+    "Menu:Helping:RequeteSql": "Requetes Standards",
     "Menu:Swagger": "Api"
   }
 }
